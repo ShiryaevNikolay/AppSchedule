@@ -5,11 +5,11 @@
     <item
         android:id="@+id/item_schedule"
         android:icon="@drawable/ic_calendar_edit"
-        android:title="@string/menu_bottom_nav_homework"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/menu_bottom_nav_schedule"
+        app:showAsAction="always"/>
     <item
         android:id="@+id/item_homework"
-        android:icon="@drawable/ic_homework"
+        android:icon="@drawable/ic_notebook"
         android:title="@string/menu_bottom_nav_homework"
         app:showAsAction="ifRoom"/>
 </menu>
