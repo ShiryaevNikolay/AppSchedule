@@ -1,6 +1,7 @@
 package com.example.schedule
 
 import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.schedule.adapters.TabsPagerFragmentAdapter
@@ -22,6 +23,10 @@ class ScheduleActivity : AppCompatActivity(), ShowOrHideFab {
         }
 
         initTabs()
+
+        fab.setOnClickListener {
+            startActivity(Intent(this, AddScheduleActivity::class.java))
+        }
     }
 
     private fun initTabs() {
@@ -40,5 +45,11 @@ class ScheduleActivity : AppCompatActivity(), ShowOrHideFab {
         } else {
             fab.show()
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        setResult(Activity.RESULT_OK)
+        finish()
     }
 }

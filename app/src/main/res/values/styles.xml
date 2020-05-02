@@ -13,6 +13,7 @@
         <item name="bottomNavigationStyle">@style/BottomNavViewLightStyle</item>
         <item name="toolbarStyle">@style/ToolbarLightStyle</item>
         <item name="tabStyle">@style/TabLayoutLightStyle</item>
+        <item name="bottomAppBarStyle">@style/BottomAppBarLightStyle</item>
     </style>
 
 </resources>

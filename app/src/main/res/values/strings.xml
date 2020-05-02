@@ -19,4 +19,8 @@
     <string name="menu_bottom_nav_homework">Notes</string>
     <string name="menu_bottom_nav_schedule">Schedule</string>
 
+    <string name="et_lesson">Lesson</string>
+    <string name="et_teacher">Teacher</string>
+    <string name="et_auditorium">Auditorium</string>
+    <string name="et_required_field">*Required field</string>
 </resources>
