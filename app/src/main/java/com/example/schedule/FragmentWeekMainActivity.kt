@@ -5,10 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.example.schedule.adapters.ScheduleAdapter
 import com.example.schedule.adapters.TabsPagerFragmentAdapter
 import com.example.schedule.interfaces.ChangeTitleToolbarInterface
-import kotlinx.android.synthetic.main.fr_week_main_activity.*
+import kotlinx.android.synthetic.main.fr_schedule.view.*
 import kotlinx.android.synthetic.main.fr_week_main_activity.view.*
 
 class FragmentWeekMainActivity : Fragment() {
@@ -31,14 +34,12 @@ class FragmentWeekMainActivity : Fragment() {
         view.viewPager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
-
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
             }
-
             override fun onPageSelected(position: Int) {
                 changeTitleToolbarInterface.changeTitle(position)
             }
