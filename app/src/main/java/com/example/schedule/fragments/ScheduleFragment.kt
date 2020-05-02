@@ -6,18 +6,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.R
 import com.example.schedule.adapters.ScheduleAdapter
+import com.example.schedule.interfaces.ShowOrHideFab
+import com.example.schedule.util.RequestCode
 import kotlinx.android.synthetic.main.fr_schedule.view.*
 
 class ScheduleFragment() : AbstractTabFragment() {
 
     private lateinit var itemAdapter: ScheduleAdapter
+    private lateinit var showOrHideFab: ShowOrHideFab
+    private var requestCode: Int = 0
 
-    fun getInstance(context: Context) : ScheduleFragment {
+    fun getInstance(context: Context, position: Int, requestCode: Int) : ScheduleFragment {
         val args = Bundle()
         val fragment = ScheduleFragment()
         fragment.arguments = args
+        fragment.requestCode = requestCode
+        when (position) {
+            0 -> context.getString(R.string.tab_title_mon).let { fragment.setTitle(it) }
+            1 -> context.getString(R.string.tab_title_tues).let { fragment.setTitle(it) }
+            2 -> context.getString(R.string.tab_title_wed).let { fragment.setTitle(it) }
+            3 -> context.getString(R.string.tab_title_thurs).let { fragment.setTitle(it) }
+            4 -> context.getString(R.string.tab_title_fri).let { fragment.setTitle(it) }
+            5 -> context.getString(R.string.tab_title_sat).let { fragment.setTitle(it) }
+            6 -> {}
+        }
         return fragment
     }
 
@@ -31,6 +46,23 @@ class ScheduleFragment() : AbstractTabFragment() {
         view.recyclerView.setHasFixedSize(true)
         itemAdapter = ScheduleAdapter()
         view.recyclerView.adapter = itemAdapter
+        if (requestCode == RequestCode().REQUEST_CODE_SCHEDULE_ACTIVITY) {
+            showOrHideFab = context as ShowOrHideFab
+        }
+        view.recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0 && requestCode == RequestCode().REQUEST_CODE_SCHEDULE_ACTIVITY) {
+                    showOrHideFab.showOrHideFab(dy)
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && requestCode == RequestCode().REQUEST_CODE_SCHEDULE_ACTIVITY) {
+                    showOrHideFab.showOrHideFab(0)
+                }
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+        })
         return view
     }
 }

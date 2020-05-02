@@ -9,6 +9,13 @@
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
 
+    <string name="tab_title_mon">MON</string>
+    <string name="tab_title_tues">TUES</string>
+    <string name="tab_title_wed">WED</string>
+    <string name="tab_title_thurs">THURS</string>
+    <string name="tab_title_fri">FRI</string>
+    <string name="tab_title_sat">SAT</string>
+
     <string name="menu_bottom_nav_homework">Notes</string>
     <string name="menu_bottom_nav_schedule">Schedule</string>
 

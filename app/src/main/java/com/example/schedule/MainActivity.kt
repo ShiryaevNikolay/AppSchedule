@@ -1,8 +1,8 @@
 package com.example.schedule
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.schedule.adapters.TabsPagerFragmentAdapter
 import com.example.schedule.interfaces.ChangeTitleToolbarInterface
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -43,6 +43,19 @@ class MainActivity : AppCompatActivity(), ChangeTitleToolbarInterface {
             Calendar.SUNDAY -> {
                 currentDayInt = 6
                 toolbar.title = applicationContext.resources.getString(R.string.sunday)
+            }
+        }
+        nav_view_main_activity.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.item_schedule -> {
+                    startActivity(Intent(this, ScheduleActivity::class.java))
+                    true
+                }
+                R.id.item_notes -> {
+
+                    true
+                }
+                else -> false
             }
         }
     }

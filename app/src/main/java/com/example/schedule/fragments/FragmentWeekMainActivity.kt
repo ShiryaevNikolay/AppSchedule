@@ -1,17 +1,15 @@
-package com.example.schedule
+package com.example.schedule.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import com.example.schedule.adapters.ScheduleAdapter
+import com.example.schedule.R
 import com.example.schedule.adapters.TabsPagerFragmentAdapter
 import com.example.schedule.interfaces.ChangeTitleToolbarInterface
-import kotlinx.android.synthetic.main.fr_schedule.view.*
+import com.example.schedule.util.RequestCode
 import kotlinx.android.synthetic.main.fr_week_main_activity.view.*
 
 class FragmentWeekMainActivity : Fragment() {
@@ -61,7 +59,8 @@ class FragmentWeekMainActivity : Fragment() {
     private fun initPager(viewPager: ViewPager) {
         val adapter = context?.let { activity?.supportFragmentManager?.let { it1 ->
             TabsPagerFragmentAdapter(it,
-                it1
+                it1,
+                RequestCode().REQUEST_CODE_MAIN_ACTIVITY
             )
         } }
         viewPager.adapter = adapter

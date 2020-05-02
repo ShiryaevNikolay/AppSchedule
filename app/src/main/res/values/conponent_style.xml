@@ -11,4 +11,8 @@
     <style name="ToolbarLightStyle" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">@color/white</item>
     </style>
+
+    <style name="TabLayoutLightStyle" parent="Widget.MaterialComponents.TabLayout">
+        <item name="android:background">@color/white</item>
+    </style>
 </resources>
