@@ -108,6 +108,7 @@
                     android:src="@drawable/ic_calendar_refresh"/>
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_week_schedule"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
@@ -128,7 +129,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        app:srcCompat="@drawable/ic_done_fab"
+        app:srcCompat="@drawable/ic_back_fab"
         android:focusable="true"
         android:layout_margin="@dimen/fab_margin"
         android:layout_alignParentEnd="true"
