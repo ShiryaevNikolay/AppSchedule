@@ -30,4 +30,6 @@
     <string name="week1">Week 1</string>
     <string name="week2">Week 2</string>
     <string name="ever_week">Ever week</string>
+
+    <string name="title_dialog_select_week">Select week</string>
 </resources>
