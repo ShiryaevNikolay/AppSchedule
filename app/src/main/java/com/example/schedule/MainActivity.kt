@@ -9,7 +9,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), ChangeTitleToolbarInterface {
 
-    private var currentDayInt: Int = 0
+    var currentDayInt: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

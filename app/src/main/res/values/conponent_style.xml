@@ -8,6 +8,10 @@
 <!--        <item name="labelVisibilityMode">unlabeled</item>-->
     </style>
 
+    <style name="ButtonLightStyle" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/gray_600</item>
+    </style>
+
     <style name="ToolbarLightStyle" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">@color/white</item>
     </style>

@@ -14,6 +14,7 @@
         <item name="toolbarStyle">@style/ToolbarLightStyle</item>
         <item name="tabStyle">@style/TabLayoutLightStyle</item>
         <item name="bottomAppBarStyle">@style/BottomAppBarLightStyle</item>
+        <item name="materialButtonStyle">@style/ButtonLightStyle</item>
     </style>
 
 </resources>

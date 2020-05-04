@@ -11,6 +11,7 @@ import com.example.schedule.adapters.TabsPagerFragmentAdapter
 import com.example.schedule.interfaces.ChangeTitleToolbarInterface
 import com.example.schedule.util.RequestCode
 import kotlinx.android.synthetic.main.fr_week_main_activity.view.*
+import java.util.*
 
 class FragmentWeekMainActivity : Fragment() {
 
@@ -64,5 +65,14 @@ class FragmentWeekMainActivity : Fragment() {
             )
         } }
         viewPager.adapter = adapter
+        when (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
+            Calendar.MONDAY -> viewPager.currentItem = 0
+            Calendar.TUESDAY -> viewPager.currentItem = 1
+            Calendar.WEDNESDAY -> viewPager.currentItem = 2
+            Calendar.THURSDAY -> viewPager.currentItem = 3
+            Calendar.FRIDAY -> viewPager.currentItem = 4
+            Calendar.SATURDAY -> viewPager.currentItem = 5
+            Calendar.SUNDAY -> viewPager.currentItem = 6
+        }
     }
 }
