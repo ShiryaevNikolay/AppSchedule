@@ -15,6 +15,8 @@
         <item name="tabStyle">@style/TabLayoutLightStyle</item>
         <item name="bottomAppBarStyle">@style/BottomAppBarLightStyle</item>
         <item name="materialButtonStyle">@style/ButtonLightStyle</item>
+        <item name="android:timePickerDialogTheme">@style/TimePickerDialogLightStyle</item>
+        <item name="android:timePickerStyle">@style/TimePickerDialogLightStyle</item>
     </style>
 
 </resources>

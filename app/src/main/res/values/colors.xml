@@ -12,4 +12,10 @@
     <color name="gray_900">#212121</color>
 
     <color name="blue_gray_700">#455A64</color>
+
+    <color name="red_900">#b71c1c</color>
+
+    <color name="deep_orange_900">#BF360C</color>
+
+    <color name="lime_800">#9E9D24</color>
 </resources>

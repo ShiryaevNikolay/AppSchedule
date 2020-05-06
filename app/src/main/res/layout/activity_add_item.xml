@@ -86,7 +86,7 @@
                     android:hint="@string/btn_start_time_schedule" />
 
                 <View
-                    android:layout_width="15dp"
+                    android:layout_width="5dp"
                     android:layout_height="1dp"
                     android:background="?android:attr/colorAccent"/>
 
@@ -118,7 +118,7 @@
                     android:id="@+id/iv_indicator_week_schedule"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginStart="5dp"
                     app:srcCompat="@drawable/ic_color" />
             </TableRow>
         </LinearLayout>

@@ -5,15 +5,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.R
+import com.example.schedule.database.Schedule
 
-class ScheduleAdapter : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
+class ScheduleAdapter(
+    private var listSchedule: List<Schedule>,
+    private var fromActivity: Int
+) : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduleViewHolder {
         return ScheduleViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_schedule_rv, parent, false))
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return listSchedule.size
     }
 
     override fun onBindViewHolder(holder: ScheduleViewHolder, position: Int) {

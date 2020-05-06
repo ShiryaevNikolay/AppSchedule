@@ -9,21 +9,28 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.R
 import com.example.schedule.adapters.ScheduleAdapter
+import com.example.schedule.database.Schedule
+import com.example.schedule.database.room.AppRoomDatabase
 import com.example.schedule.interfaces.ShowOrHideFab
 import com.example.schedule.util.RequestCode
 import kotlinx.android.synthetic.main.fr_schedule.view.*
 
 class ScheduleFragment() : AbstractTabFragment() {
 
+    private var daySchedule = 0
     private lateinit var itemAdapter: ScheduleAdapter
     private lateinit var showOrHideFab: ShowOrHideFab
     private var requestCode: Int = 0
+    private var listSchedule: ArrayList<Schedule> = ArrayList()
+    private lateinit var roomDatabase: AppRoomDatabase
 
-    fun getInstance(context: Context, position: Int, requestCode: Int) : ScheduleFragment {
+    fun getInstance(context: Context, position: Int, roomDatabase: AppRoomDatabase, requestCode: Int) : ScheduleFragment {
         val args = Bundle()
         val fragment = ScheduleFragment()
         fragment.arguments = args
         fragment.requestCode = requestCode
+        fragment.daySchedule = position
+        fragment.roomDatabase = roomDatabase
         when (position) {
             0 -> context.getString(R.string.tab_title_mon).let { fragment.setTitle(it) }
             1 -> context.getString(R.string.tab_title_tues).let { fragment.setTitle(it) }
@@ -44,20 +51,20 @@ class ScheduleFragment() : AbstractTabFragment() {
         val view: View = inflater.inflate(R.layout.fr_schedule, container, false)
         view.recyclerView.layoutManager = LinearLayoutManager(activity)
         view.recyclerView.setHasFixedSize(true)
-        itemAdapter = ScheduleAdapter()
+        itemAdapter = ScheduleAdapter(roomDatabase.getScheduleDao().getAll(), requestCode)
         view.recyclerView.adapter = itemAdapter
-        if (requestCode == RequestCode().REQUEST_CODE_SCHEDULE_ACTIVITY) {
+        if (requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
             showOrHideFab = context as ShowOrHideFab
         }
         view.recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 0 && requestCode == RequestCode().REQUEST_CODE_SCHEDULE_ACTIVITY) {
+                if (dy > 0 && requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
                     showOrHideFab.showOrHideFab(dy)
                 }
             }
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && requestCode == RequestCode().REQUEST_CODE_SCHEDULE_ACTIVITY) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
                     showOrHideFab.showOrHideFab(0)
                 }
                 super.onScrollStateChanged(recyclerView, newState)

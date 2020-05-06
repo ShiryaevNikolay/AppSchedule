@@ -9,7 +9,13 @@
     </style>
 
     <style name="ButtonLightStyle" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="android:textColor">@color/gray_600</item>
+        <item name="android:textColor">@color/blue_gray_700</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+    <style name="ButtonNegativeStyle" parent="ButtonLightStyle">
+        <item name="android:textColor">@color/red_900</item>
+        <item name="colorAccent">@color/red_900</item>
     </style>
 
     <style name="ToolbarLightStyle" parent="Widget.AppCompat.Toolbar">
@@ -22,5 +28,12 @@
 
     <style name="BottomAppBarLightStyle" parent="Widget.MaterialComponents.BottomAppBar">
         <item name="backgroundTint">@color/white</item>
+    </style>
+
+    <style name="TimePickerDialogLightStyle" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/white</item>
+        <item name="android:headerBackground">@color/blue_gray_700</item>
+        <item name="colorAccent">@color/blue_gray_700</item>
+        <item name="materialButtonStyle">@style/ButtonLightStyle</item>
     </style>
 </resources>

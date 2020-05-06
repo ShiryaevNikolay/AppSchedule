@@ -29,7 +29,11 @@
 
     <string name="week1">Week 1</string>
     <string name="week2">Week 2</string>
-    <string name="ever_week">Ever week</string>
+    <string name="every_week">Every week</string>
 
     <string name="title_dialog_select_week">Select week</string>
+    
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_add">Add</string>
+    <string name="btn_remove">Remove</string>
 </resources>
