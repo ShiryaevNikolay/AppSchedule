@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fr_schedule.view.*
 
 class ScheduleFragment() : AbstractTabFragment() {
 
-    private var daySchedule = 0
+    private var daySchedule: Int = 0
     private lateinit var itemAdapter: ScheduleAdapter
     private lateinit var showOrHideFab: ShowOrHideFab
     private var requestCode: Int = 0
@@ -51,7 +51,8 @@ class ScheduleFragment() : AbstractTabFragment() {
         val view: View = inflater.inflate(R.layout.fr_schedule, container, false)
         view.recyclerView.layoutManager = LinearLayoutManager(activity)
         view.recyclerView.setHasFixedSize(true)
-        itemAdapter = ScheduleAdapter(roomDatabase.getScheduleDao().getAll(), requestCode)
+//        sortListWeek()
+        itemAdapter = ScheduleAdapter(roomDatabase.getScheduleDao().getAllByDay(daySchedule).sortedWith(compareBy({it.timeStart})), requestCode)
         view.recyclerView.adapter = itemAdapter
         if (requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
             showOrHideFab = context as ShowOrHideFab
@@ -72,4 +73,8 @@ class ScheduleFragment() : AbstractTabFragment() {
         })
         return view
     }
+
+//    fun sortListWeek() {
+//        listSchedule = roomDatabase.getScheduleDao().getAllByDay(daySchedule).sortedWith(compareBy({it.timeStart})) as ArrayList<Schedule>
+//    }
 }

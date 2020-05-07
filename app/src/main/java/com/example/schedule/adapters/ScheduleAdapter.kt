@@ -46,12 +46,21 @@ class ScheduleAdapter(
         if (listSchedule[position].auditorium == "")
             holder.itemView.auditorium_item_rv_schedule.isVisible = false
         else holder.itemView.auditorium_item_rv_schedule.text = listSchedule[position].auditorium
-
+        // Цвет индикатора недели
         if (fromActivity == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
             when (listSchedule[position].week) {
-                "1" -> holder.itemView.indicator_week.background = ContextCompat.getDrawable(context, R.color.lime_800)
-                "2" -> holder.itemView.indicator_week.background = ContextCompat.getDrawable(context, R.color.deep_orange_900)
-                "12" -> holder.itemView.indicator_week.background = ContextCompat.getDrawable(context, R.color.blue_gray_700)
+                "1" -> {
+                    holder.itemView.indicator_week.background = ContextCompat.getDrawable(context, R.color.lime_800)
+                    holder.itemView.card_time_item_rv_schedule.background = ContextCompat.getDrawable(context, R.color.lime_800)
+                }
+                "2" -> {
+                    holder.itemView.indicator_week.background = ContextCompat.getDrawable(context, R.color.deep_orange_900)
+                    holder.itemView.card_time_item_rv_schedule.background = ContextCompat.getDrawable(context, R.color.deep_orange_900)
+                }
+                "12" -> {
+                    holder.itemView.indicator_week.background = ContextCompat.getDrawable(context, R.color.blue_gray_700)
+                    holder.itemView.card_time_item_rv_schedule.background = ContextCompat.getDrawable(context, R.color.blue_gray_700)
+                }
             }
         }
     }

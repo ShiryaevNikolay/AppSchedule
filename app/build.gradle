@@ -53,4 +53,8 @@ dependencies {
     implementation 'com.google.dagger:dagger-android:2.27'
     implementation 'com.google.dagger:dagger-android-support:2.27'
     kapt 'com.google.dagger:dagger-android-processor:2.27'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    //noinspection LifecycleAnnotationProcessorWithJava8
+    kapt 'android.arch.lifecycle:compiler:1.1.1'
+    implementation 'android.arch.lifecycle:common-java8:1.1.1'
 }

@@ -51,7 +51,8 @@ class ScheduleActivity : AppCompatActivity(), ShowOrHideFab {
                                     clockEnd = data.getStringExtra("clockEnd")!!,
                                     timeStart = data.extras?.getInt("timeStart")!!,
                                     timeEnd = data.extras?.getInt("timeEnd")!!,
-                                    week = data.getStringExtra("week")!!)
+                                    week = data.getStringExtra("week")!!,
+                                    day = data.extras!!.getInt("day"))
             }
             if (requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
                 roomDatabase.getScheduleDao().insert(schedule)

@@ -29,6 +29,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
     private var timeStart = -1
     private var timeEnd = -1
     private var week = ""
+    private var daySchedule: Int = 0
     private lateinit var animShowFab: Animation
     private var flagModeFab = false
 
@@ -156,7 +157,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
 
     private fun sendDataResult() {
         val data = Intent()
-        data.putExtra("day", intent.getStringExtra("day"))
+        data.putExtra("day", intent.extras?.getInt("day"))
         data.putExtra("clockStart", btn_start_time_schedule.text)
         data.putExtra("clockEnd", btn_end_time_schedule.text)
         data.putExtra("timeStart", timeStart)

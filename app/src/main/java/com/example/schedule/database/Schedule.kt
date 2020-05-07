@@ -1,5 +1,6 @@
 package com.example.schedule.database
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -14,4 +15,6 @@ class Schedule (
     var clockEnd: String,
     var timeStart: Int,
     var timeEnd: Int,
-    var week: String)
+    var week: String,
+    var day: Int
+)

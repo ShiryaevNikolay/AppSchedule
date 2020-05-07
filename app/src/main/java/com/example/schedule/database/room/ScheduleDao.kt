@@ -12,6 +12,9 @@ interface ScheduleDao {
     @Query("SELECT * FROM schedule WHERE id = :id")
     fun getById(id: Long) : Schedule
 
+    @Query("SELECT * FROM schedule WHERE day = :day")
+    fun getAllByDay(day: Int) : List<Schedule>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(schedule: Schedule)
 
