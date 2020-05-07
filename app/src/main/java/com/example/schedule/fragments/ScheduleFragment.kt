@@ -5,17 +5,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.R
 import com.example.schedule.adapters.ScheduleAdapter
 import com.example.schedule.database.Schedule
 import com.example.schedule.database.room.AppRoomDatabase
+import com.example.schedule.interfaces.ItemTouchHelperListener
 import com.example.schedule.interfaces.ShowOrHideFab
+import com.example.schedule.modules.SwipeDragItemHelper
 import com.example.schedule.util.RequestCode
 import kotlinx.android.synthetic.main.fr_schedule.view.*
 
-class ScheduleFragment() : AbstractTabFragment() {
+class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener {
 
     private var daySchedule: Int = 0
     private lateinit var itemAdapter: ScheduleAdapter
@@ -55,12 +59,14 @@ class ScheduleFragment() : AbstractTabFragment() {
         itemAdapter = ScheduleAdapter(roomDatabase.getScheduleDao().getAllByDay(daySchedule).sortedWith(compareBy({it.timeStart})), requestCode)
         view.recyclerView.adapter = itemAdapter
         if (requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
+            context?.let { SwipeDragItemHelper(this, it) }?.let { ItemTouchHelper(it).attachToRecyclerView(view.recyclerView) }
             showOrHideFab = context as ShowOrHideFab
         }
         view.recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0 && requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
                     showOrHideFab.showOrHideFab(dy)
+
                 }
             }
 
@@ -72,6 +78,10 @@ class ScheduleFragment() : AbstractTabFragment() {
             }
         })
         return view
+    }
+
+    override fun onItemSwipe(position: Int) {
+        Toast.makeText(context, "Swiped item!", Toast.LENGTH_SHORT).show()
     }
 
 //    fun sortListWeek() {
