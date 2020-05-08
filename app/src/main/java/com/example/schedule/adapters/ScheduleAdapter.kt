@@ -13,7 +13,7 @@ import com.example.schedule.util.RequestCode
 import kotlinx.android.synthetic.main.item_schedule_rv.view.*
 
 class ScheduleAdapter(
-    private var listSchedule: List<Schedule>,
+    private var listSchedule: ArrayList<Schedule>,
     private var fromActivity: Int
 ) : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 

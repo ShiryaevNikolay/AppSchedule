@@ -32,8 +32,11 @@
     <string name="every_week">Every week</string>
 
     <string name="title_dialog_select_week">Select week</string>
-    
+    <string name="title_dialog_remove_schedule">Remove schedule</string>
+
     <string name="btn_cancel">Cancel</string>
     <string name="btn_add">Add</string>
     <string name="btn_remove">Remove</string>
+
+    <string name="no_lesson">No lessons</string>
 </resources>
