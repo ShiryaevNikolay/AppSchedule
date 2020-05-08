@@ -26,6 +26,7 @@
     <string name="btn_start_time_schedule">Start</string>
     <string name="btn_end_time_schedule">End</string>
     <string name="btn_hint_week_schedule">A week</string>
+    <string name="btn_default_week">Default: every week</string>
 
     <string name="week1">Week 1</string>
     <string name="week2">Week 2</string>

@@ -1,6 +1,7 @@
 package com.example.schedule.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.schedule.AddScheduleActivity
 import com.example.schedule.R
 import com.example.schedule.adapters.ScheduleAdapter
 import com.example.schedule.database.Schedule
@@ -18,12 +20,13 @@ import com.example.schedule.database.room.AppRoomDatabase
 import com.example.schedule.dialogs.CustomDialog
 import com.example.schedule.interfaces.DialogRemoveListener
 import com.example.schedule.interfaces.ItemTouchHelperListener
+import com.example.schedule.interfaces.OnClickItemListener
 import com.example.schedule.interfaces.ShowOrHideFab
 import com.example.schedule.modules.SwipeDragItemHelper
 import com.example.schedule.util.RequestCode
 import kotlinx.android.synthetic.main.fr_schedule.view.*
 
-class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, DialogRemoveListener {
+class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, DialogRemoveListener, OnClickItemListener {
 
     private var daySchedule: Int = 0
     private lateinit var itemAdapter: ScheduleAdapter
@@ -63,7 +66,7 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
         listSchedule = ArrayList(roomDatabase.getScheduleDao().getAllByDay(daySchedule).sortedWith(compareBy({it.timeStart})))
         if (listSchedule.count() != 0) sortListWeek()
         view.ll_no_lesson_fr_schedule?.isVisible = listSchedule.count() == 0
-        itemAdapter = ScheduleAdapter(listSchedule, requestCode)
+        itemAdapter = ScheduleAdapter(listSchedule, requestCode, this)
         view.recyclerView.adapter = itemAdapter
         if (requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
             context?.let { SwipeDragItemHelper(this, it) }?.let { ItemTouchHelper(it).attachToRecyclerView(view.recyclerView) }
@@ -109,6 +112,22 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
         itemAdapter.notifyDataSetChanged()
         removeSchedule = null
         view?.ll_no_lesson_fr_schedule?.isVisible = itemAdapter.itemCount == 0
+    }
+
+    override fun onClickItem(position: Int) {
+        val intent = Intent(context, AddScheduleActivity::class.java)
+        intent.putExtra("day", daySchedule)
+        intent.putExtra("itemId", listSchedule[position].id)
+        intent.putExtra("lesson", listSchedule[position].lesson)
+        intent.putExtra("teacher", listSchedule[position].teacher)
+        intent.putExtra("auditorium", listSchedule[position].auditorium)
+        intent.putExtra("clockStart", listSchedule[position].clockStart)
+        intent.putExtra("clockEnd", listSchedule[position].clockEnd)
+        intent.putExtra("timeStart", listSchedule[position].timeStart)
+        intent.putExtra("timeEnd", listSchedule[position].timeEnd)
+        intent.putExtra("week", listSchedule[position].week)
+        intent.putExtra("REQUEST_CODE", RequestCode.REQUEST_CHANGE_SCHEDULE_FRAGMENT)
+        startActivityForResult(intent, RequestCode.REQUEST_CHANGE_SCHEDULE_FRAGMENT)
     }
 
     private fun sortListWeek() {

@@ -16,7 +16,6 @@ import javax.inject.Inject
 class ScheduleActivity : AppCompatActivity(), ShowOrHideFab {
 
     private var tabPosition = 0
-    private lateinit var schedule: Schedule
 
     @Inject
     lateinit var roomDatabase: AppRoomDatabase
@@ -43,21 +42,32 @@ class ScheduleActivity : AppCompatActivity(), ShowOrHideFab {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
+            var schedule: Schedule? = null
             if (data != null) {
-                schedule = Schedule(lesson = data.getStringExtra("lesson")!!,
-                                    teacher = data.getStringExtra("teacher")!!,
-                                    auditorium = data.getStringExtra("auditorium")!!,
-                                    clockStart = data.getStringExtra("clockStart")!!,
-                                    clockEnd = data.getStringExtra("clockEnd")!!,
-                                    timeStart = data.extras?.getInt("timeStart")!!,
-                                    timeEnd = data.extras?.getInt("timeEnd")!!,
-                                    week = data.getStringExtra("week")!!,
-                                    day = data.extras!!.getInt("day"))
-            }
-            if (requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
-                roomDatabase.getScheduleDao().insert(schedule)
-            } else {
-
+                if (requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
+                    schedule = Schedule(lesson = data.getStringExtra("lesson")!!,
+                        teacher = data.getStringExtra("teacher")!!,
+                        auditorium = data.getStringExtra("auditorium")!!,
+                        clockStart = data.getStringExtra("clockStart")!!,
+                        clockEnd = data.getStringExtra("clockEnd")!!,
+                        timeStart = data.extras?.getInt("timeStart")!!,
+                        timeEnd = data.extras?.getInt("timeEnd")!!,
+                        week = data.getStringExtra("week")!!,
+                        day = data.extras!!.getInt("day"))
+                    roomDatabase.getScheduleDao().insert(schedule)
+                } else {
+                    schedule = data.extras?.getLong("itemId")?.let { roomDatabase.getScheduleDao().getById(it) }
+                    schedule?.lesson = data.getStringExtra("lesson")!!
+                    schedule?.teacher = data.getStringExtra("teacher")!!
+                    schedule?.auditorium = data.getStringExtra("auditorium")!!
+                    schedule?.clockStart = data.getStringExtra("clockStart")!!
+                    schedule?.clockEnd = data.getStringExtra("clockEnd")!!
+                    schedule?.timeStart = data.extras?.getInt("timeStart")!!
+                    schedule?.timeEnd = data.extras?.getInt("timeEnd")!!
+                    schedule?.week = data.getStringExtra("week")!!
+                    schedule?.day = data.extras?.getInt("day")!!
+                    schedule?.let { roomDatabase.getScheduleDao().update(it) }
+                }
             }
             initTabs()
         }

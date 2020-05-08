@@ -9,12 +9,14 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.R
 import com.example.schedule.database.Schedule
+import com.example.schedule.interfaces.OnClickItemListener
 import com.example.schedule.util.RequestCode
 import kotlinx.android.synthetic.main.item_schedule_rv.view.*
 
 class ScheduleAdapter(
     private var listSchedule: ArrayList<Schedule>,
-    private var fromActivity: Int
+    private var fromActivity: Int,
+    private var onClickItemListener: OnClickItemListener
 ) : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
     private lateinit var context: Context
@@ -50,17 +52,20 @@ class ScheduleAdapter(
         if (fromActivity == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
             when (listSchedule[position].week) {
                 "1" -> {
-                    holder.itemView.indicator_week.background = ContextCompat.getDrawable(context, R.color.lime_800)
-                    holder.itemView.card_time_item_rv_schedule.background = ContextCompat.getDrawable(context, R.color.lime_800)
+                    holder.itemView.indicator_week.background = ContextCompat.getDrawable(context, R.color.cyan_600)
+                    holder.itemView.card_time_item_rv_schedule.background = ContextCompat.getDrawable(context, R.color.cyan_600)
                 }
                 "2" -> {
-                    holder.itemView.indicator_week.background = ContextCompat.getDrawable(context, R.color.deep_orange_900)
-                    holder.itemView.card_time_item_rv_schedule.background = ContextCompat.getDrawable(context, R.color.deep_orange_900)
+                    holder.itemView.indicator_week.background = ContextCompat.getDrawable(context, R.color.indigo_600)
+                    holder.itemView.card_time_item_rv_schedule.background = ContextCompat.getDrawable(context, R.color.indigo_600)
                 }
                 "12" -> {
-                    holder.itemView.indicator_week.background = ContextCompat.getDrawable(context, R.color.blue_gray_700)
-                    holder.itemView.card_time_item_rv_schedule.background = ContextCompat.getDrawable(context, R.color.blue_gray_700)
+                    holder.itemView.indicator_week.background = ContextCompat.getDrawable(context, R.color.gray_600)
+                    holder.itemView.card_time_item_rv_schedule.background = ContextCompat.getDrawable(context, R.color.gray_600)
                 }
+            }
+            holder.itemView.setOnClickListener {
+                onClickItemListener.onClickItem(holder.adapterPosition)
             }
         }
     }
