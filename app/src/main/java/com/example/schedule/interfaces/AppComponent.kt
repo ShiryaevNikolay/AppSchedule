@@ -1,6 +1,7 @@
 package com.example.schedule.interfaces
 
 import android.content.Context
+import com.example.schedule.AddScheduleActivity
 import com.example.schedule.MainActivity
 import com.example.schedule.ScheduleActivity
 import com.example.schedule.daggers.StorageModule
@@ -12,4 +13,5 @@ import dagger.Component
 interface AppComponent {
     fun injectsFragmentWeekMainActivity(fragmentWeekMainActivity: FragmentWeekMainActivity)
     fun injectsScheduleActivity(scheduleActivity: ScheduleActivity)
+    fun injectsAddScheduleActivity(addScheduleActivity: AddScheduleActivity)
 }

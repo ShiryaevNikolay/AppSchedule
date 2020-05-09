@@ -12,15 +12,20 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import com.example.schedule.database.Schedule
+import com.example.schedule.database.room.AppRoomDatabase
 import com.example.schedule.dialogs.RadioDialog
 import com.example.schedule.interfaces.DialogRadioButtonListener
+import com.example.schedule.util.App
 import com.example.schedule.util.RequestCode
 import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.item_schedule_rv.*
+import javax.inject.Inject
 
 class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMenuItemClickListener, DialogRadioButtonListener {
 
@@ -29,10 +34,12 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
     private var auditorium: String? = ""
     private var timeStart = -1
     private var timeEnd = -1
-    private var week: String? = "12"
+    private var week: String = "12"
     private var daySchedule: Int = 0
     private lateinit var animShowFab: Animation
     private var flagModeFab = false
+    @Inject
+    lateinit var roomDatabase: AppRoomDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +55,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             finish()
         }
 
+        App.getComponent()?.injectsAddScheduleActivity(this)
         fab.setOnClickListener(this)
         btn_start_time_schedule.setOnClickListener(this)
         btn_end_time_schedule.setOnClickListener(this)
@@ -84,7 +92,10 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             }
         }
 
-        et_lesson_schedule.addTextChangedListener { lesson = it.toString() }
+        et_lesson_schedule.addTextChangedListener {
+            lesson = it.toString()
+            checkMandatoryItem()
+        }
         et_teacher_schedule.addTextChangedListener { teacher = it.toString() }
         et_auditorium_schedule.addTextChangedListener { auditorium = it.toString() }
 
@@ -120,35 +131,44 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
                 callTimePicker(false)
             }
             R.id.btn_week_schedule -> {
-                week?.let { RadioDialog(this, it).show(supportFragmentManager, "selectWeek") }
+                week.let { RadioDialog(this, it).show(supportFragmentManager, "selectWeek") }
             }
         }
     }
 
     override fun onClickBtnRadio(select: String) {
-        iv_indicator_week_schedule.isVisible = true
-        when (select) {
-            "1" -> {
-                week = "1"
-                btn_week_schedule.text = this.resources.getString(R.string.week1)
-                iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.cyan_600))
+        if (checkCondition(select, timeStart)) {
+            iv_indicator_week_schedule.isVisible = true
+            when (select) {
+                "1" -> {
+                    week = "1"
+                    btn_week_schedule.text = this.resources.getString(R.string.week1)
+                    iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.cyan_600))
+                }
+                "2" -> {
+                    week = "2"
+                    btn_week_schedule.text = this.resources.getString(R.string.week2)
+                    iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.indigo_600))
+                }
+                "12" -> {
+                    week = "12"
+                    btn_week_schedule.text = this.resources.getString(R.string.every_week)
+                    iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.gray_600))
+                }
             }
-            "2" -> {
-                week = "2"
-                btn_week_schedule.text = this.resources.getString(R.string.week2)
-                iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.indigo_600))
-            }
-            "12" -> {
-                week = "12"
-                btn_week_schedule.text = this.resources.getString(R.string.every_week)
-                iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.gray_600))
-            }
+            checkMandatoryItem()
+        } else {
+            Toast.makeText(this, this.resources.getString(R.string.there_are_lessons_at_this_time), Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun onClickBtnNegative(select: String) {
-        week = "12"
-        btn_week_schedule.text = this.resources.getString(R.string.every_week)
+        if (checkCondition(select, timeStart)) {
+            week = "12"
+            btn_week_schedule.text = this.resources.getString(R.string.every_week)
+        } else {
+            Toast.makeText(this, this.resources.getString(R.string.there_are_lessons_at_this_time), Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun checkMandatoryItem() {
@@ -173,14 +193,18 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
         val dialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
             val hourString = if (hourOfDay < 10) "0$hourOfDay" else "$hourOfDay"
             val minuteString = if (minute < 10) "0$minute" else "$minute"
-            if (clock) {
-                btn_start_time_schedule.text = "$hourString:$minuteString"
-                timeStart = ("$hourString$minuteString").toInt()
+            if (checkCondition(week, ("$hourString$minuteString").toInt())) {
+                if (clock) {
+                    btn_start_time_schedule.text = "$hourString:$minuteString"
+                    timeStart = ("$hourString$minuteString").toInt()
+                } else {
+                    btn_end_time_schedule.text = "$hourString:$minuteString"
+                    timeEnd = ("$hourString$minuteString").toInt()
+                }
+                checkMandatoryItem()
             } else {
-                btn_end_time_schedule.text = "$hourString:$minuteString"
-                timeEnd = ("$hourString$minuteString").toInt()
+                Toast.makeText(this, this.resources.getString(R.string.there_are_lessons_at_this_time), Toast.LENGTH_SHORT).show()
             }
-            checkMandatoryItem()
         }, hour, minutes, true)
         dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_style)
         dialog.show()
@@ -200,5 +224,18 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
         data.putExtra("week", week)
         setResult(Activity.RESULT_OK, data)
         finish()
+    }
+
+    private fun checkCondition(select: String, timeStart: Int) : Boolean {
+        var flag = true
+        var listSchedule: ArrayList<Schedule> = ArrayList(roomDatabase.getScheduleDao().getAllByDay(daySchedule).sortedWith(compareBy({it.timeStart})))
+        for (i in 0 until listSchedule.size) {
+            if (listSchedule.get(i).timeStart == timeStart) {
+                if (listSchedule[i].week == "12" && (select == "1" || select == "2")) flag = false
+                else if (listSchedule[i].week != "12" && select == "12") flag = false
+                else if (listSchedule[i].week == select) flag = false
+            }
+        }
+        return flag
     }
 }
