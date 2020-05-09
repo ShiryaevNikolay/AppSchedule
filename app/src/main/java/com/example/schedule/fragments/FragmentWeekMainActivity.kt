@@ -40,7 +40,7 @@ class FragmentWeekMainActivity : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.fr_week_main_activity, container, false)
         view.tabLayout.isVisible = false
-        (activity as MainActivity).toolbar.setOnClickListener {
+        (activity as MainActivity).toolbar.getChildAt(0).setOnClickListener {
             view.tabLayout.isVisible = !view.tabLayout.isVisible
         }
         initPager(view.viewPager, view.tabLayout, roomDatabase)
