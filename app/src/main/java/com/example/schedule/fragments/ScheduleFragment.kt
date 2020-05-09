@@ -25,6 +25,7 @@ import com.example.schedule.interfaces.ShowOrHideFab
 import com.example.schedule.modules.SwipeDragItemHelper
 import com.example.schedule.util.RequestCode
 import kotlinx.android.synthetic.main.fr_schedule.view.*
+import kotlinx.android.synthetic.main.fr_week_main_activity.view.*
 
 class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, DialogRemoveListener, OnClickItemListener {
 
@@ -44,13 +45,53 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
         fragment.daySchedule = position
         fragment.roomDatabase = roomDatabase
         when (position) {
-            0 -> context.getString(R.string.tab_title_mon).let { fragment.setTitle(it) }
-            1 -> context.getString(R.string.tab_title_tues).let { fragment.setTitle(it) }
-            2 -> context.getString(R.string.tab_title_wed).let { fragment.setTitle(it) }
-            3 -> context.getString(R.string.tab_title_thurs).let { fragment.setTitle(it) }
-            4 -> context.getString(R.string.tab_title_fri).let { fragment.setTitle(it) }
-            5 -> context.getString(R.string.tab_title_sat).let { fragment.setTitle(it) }
-            6 -> {}
+            0 -> {
+                if (requestCode == RequestCode.REQUEST_MAIN_ACTIVITY) {
+                    context.getString(R.string.tab_title_mon_main).let { fragment.setTitle(it) }
+                } else {
+                    context.getString(R.string.tab_title_mon).let { fragment.setTitle(it) }
+                }
+            }
+            1 -> {
+                if (requestCode == RequestCode.REQUEST_MAIN_ACTIVITY) {
+                    context.getString(R.string.tab_title_tues_main).let { fragment.setTitle(it) }
+                } else {
+                    context.getString(R.string.tab_title_tues).let { fragment.setTitle(it) }
+                }
+            }
+            2 -> {
+                if (requestCode == RequestCode.REQUEST_MAIN_ACTIVITY) {
+                    context.getString(R.string.tab_title_wed_main).let { fragment.setTitle(it) }
+                } else {
+                    context.getString(R.string.tab_title_wed).let { fragment.setTitle(it) }
+                }
+            }
+            3 -> {
+                if (requestCode == RequestCode.REQUEST_MAIN_ACTIVITY) {
+                    context.getString(R.string.tab_title_thurs_main).let { fragment.setTitle(it) }
+                } else {
+                    context.getString(R.string.tab_title_thurs).let { fragment.setTitle(it) }
+                }
+            }
+            4 -> {
+                if (requestCode == RequestCode.REQUEST_MAIN_ACTIVITY) {
+                    context.getString(R.string.tab_title_fri_main).let { fragment.setTitle(it) }
+                } else {
+                    context.getString(R.string.tab_title_fri).let { fragment.setTitle(it) }
+                }
+            }
+            5 -> {
+                if (requestCode == RequestCode.REQUEST_MAIN_ACTIVITY) {
+                    context.getString(R.string.tab_title_sat_main).let { fragment.setTitle(it) }
+                } else {
+                    context.getString(R.string.tab_title_sat).let { fragment.setTitle(it) }
+                }
+            }
+            6 -> {
+                if (requestCode == RequestCode.REQUEST_MAIN_ACTIVITY) {
+                    context.getString(R.string.tab_title_sun_main).let { fragment.setTitle(it) }
+                }
+            }
         }
         return fragment
     }

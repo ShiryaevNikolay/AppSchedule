@@ -16,6 +16,14 @@
     <string name="tab_title_fri">FRI</string>
     <string name="tab_title_sat">SAT</string>
 
+    <string name="tab_title_mon_main">M</string>
+    <string name="tab_title_tues_main">T</string>
+    <string name="tab_title_wed_main">W</string>
+    <string name="tab_title_thurs_main">T</string>
+    <string name="tab_title_fri_main">F</string>
+    <string name="tab_title_sat_main">S</string>
+    <string name="tab_title_sun_main">S</string>
+
     <string name="menu_bottom_nav_homework">Notes</string>
     <string name="menu_bottom_nav_schedule">Schedule</string>
 
