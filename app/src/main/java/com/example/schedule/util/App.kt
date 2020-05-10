@@ -1,8 +1,6 @@
 package com.example.schedule.util
 
 import android.app.Application
-import androidx.room.Room
-import com.example.schedule.database.room.AppRoomDatabase
 import com.example.schedule.interfaces.AppComponent
 import com.example.schedule.interfaces.DaggerAppComponent
 

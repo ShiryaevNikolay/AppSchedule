@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Observer
 import com.example.schedule.database.Schedule
 import com.example.schedule.database.room.AppRoomDatabase
 import com.example.schedule.dialogs.RadioDialog
@@ -228,14 +229,16 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
 
     private fun checkCondition(select: String, timeStart: Int) : Boolean {
         var flag = true
-        var listSchedule: ArrayList<Schedule> = ArrayList(roomDatabase.getScheduleDao().getAllByDay(daySchedule).sortedWith(compareBy({it.timeStart})))
-        for (i in 0 until listSchedule.size) {
-            if (listSchedule.get(i).timeStart == timeStart) {
-                if (listSchedule[i].week == "12" && (select == "1" || select == "2")) flag = false
-                else if (listSchedule[i].week != "12" && select == "12") flag = false
-                else if (listSchedule[i].week == select) flag = false
+        roomDatabase.getScheduleDao().getAllByDay(daySchedule).observe(this, Observer {
+            var listSchedule: ArrayList<Schedule> = ArrayList(it.sortedWith(compareBy({it.timeStart})))
+            for (i in 0 until listSchedule.size) {
+                if (listSchedule.get(i).timeStart == timeStart) {
+                    if (listSchedule[i].week == "12" && (select == "1" || select == "2")) flag = false
+                    else if (listSchedule[i].week != "12" && select == "12") flag = false
+                    else if (listSchedule[i].week == select) flag = false
+                }
             }
-        }
+        })
         return flag
     }
 }

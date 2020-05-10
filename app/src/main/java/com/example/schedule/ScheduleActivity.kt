@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import com.example.schedule.adapters.TabsPagerFragmentAdapter
 import com.example.schedule.database.Schedule
 import com.example.schedule.database.room.AppRoomDatabase
@@ -11,6 +12,7 @@ import com.example.schedule.interfaces.ShowOrHideFab
 import com.example.schedule.util.App
 import com.example.schedule.util.RequestCode
 import kotlinx.android.synthetic.main.activity_schedule.*
+import java.util.*
 import javax.inject.Inject
 
 class ScheduleActivity : AppCompatActivity(), ShowOrHideFab {
@@ -56,17 +58,21 @@ class ScheduleActivity : AppCompatActivity(), ShowOrHideFab {
                         day = data.extras!!.getInt("day"))
                     roomDatabase.getScheduleDao().insert(schedule)
                 } else {
-                    schedule = data.extras?.getLong("itemId")?.let { roomDatabase.getScheduleDao().getById(it) }
-                    schedule?.lesson = data.getStringExtra("lesson")!!
-                    schedule?.teacher = data.getStringExtra("teacher")!!
-                    schedule?.auditorium = data.getStringExtra("auditorium")!!
-                    schedule?.clockStart = data.getStringExtra("clockStart")!!
-                    schedule?.clockEnd = data.getStringExtra("clockEnd")!!
-                    schedule?.timeStart = data.extras?.getInt("timeStart")!!
-                    schedule?.timeEnd = data.extras?.getInt("timeEnd")!!
-                    schedule?.week = data.getStringExtra("week")!!
-                    schedule?.day = data.extras?.getInt("day")!!
-                    schedule?.let { roomDatabase.getScheduleDao().update(it) }
+                    data.extras?.getLong("itemId")?.let {
+                        roomDatabase.getScheduleDao().getById(it).observe(this, Observer {
+                            schedule = it
+                            schedule?.lesson = data.getStringExtra("lesson")!!
+                            schedule?.teacher = data.getStringExtra("teacher")!!
+                            schedule?.auditorium = data.getStringExtra("auditorium")!!
+                            schedule?.clockStart = data.getStringExtra("clockStart")!!
+                            schedule?.clockEnd = data.getStringExtra("clockEnd")!!
+                            schedule?.timeStart = data.extras?.getInt("timeStart")!!
+                            schedule?.timeEnd = data.extras?.getInt("timeEnd")!!
+                            schedule?.week = data.getStringExtra("week")!!
+                            schedule?.day = data.extras?.getInt("day")!!
+                            schedule?.let { roomDatabase.getScheduleDao().update(it) }
+                        })
+                    }
                 }
             }
             initTabs()

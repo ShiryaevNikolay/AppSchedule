@@ -17,9 +17,6 @@ class StorageModule {
 
     @Provides
     fun provideAppRoomDatabase(): AppRoomDatabase {
-        var database: AppRoomDatabase = Room.databaseBuilder(App.getInstance(), AppRoomDatabase::class.java, "schedule")
-            .allowMainThreadQueries()
-            .build()
-        return database
+        return AppRoomDatabase.getInstance(App.getInstance())
     }
 }

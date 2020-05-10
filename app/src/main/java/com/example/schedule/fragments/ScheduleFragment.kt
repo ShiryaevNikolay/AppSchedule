@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -104,11 +106,13 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
         val view: View = inflater.inflate(R.layout.fr_schedule, container, false)
         view.recyclerView.layoutManager = LinearLayoutManager(activity)
         view.recyclerView.setHasFixedSize(true)
-        listSchedule = ArrayList(roomDatabase.getScheduleDao().getAllByDay(daySchedule).sortedWith(compareBy({it.timeStart})))
-        if (listSchedule.count() != 0) sortListWeek()
-        view.ll_no_lesson_fr_schedule?.isVisible = listSchedule.count() == 0
-        itemAdapter = ScheduleAdapter(listSchedule, requestCode, this)
-        view.recyclerView.adapter = itemAdapter
+        roomDatabase.getScheduleDao().getAllByDay(daySchedule).observe(viewLifecycleOwner, Observer {
+            listSchedule = ArrayList(it.sortedWith(compareBy({it.timeStart})))
+            if (listSchedule.count() != 0) sortListWeek()
+            view.ll_no_lesson_fr_schedule?.isVisible = listSchedule.count() == 0
+            itemAdapter = ScheduleAdapter(listSchedule, requestCode, this)
+            view.recyclerView.adapter = itemAdapter
+        })
         if (requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
             context?.let { SwipeDragItemHelper(this, it) }?.let { ItemTouchHelper(it).attachToRecyclerView(view.recyclerView) }
             showOrHideFab = context as ShowOrHideFab
