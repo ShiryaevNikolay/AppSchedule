@@ -6,11 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +17,6 @@ import com.example.schedule.AddScheduleActivity
 import com.example.schedule.R
 import com.example.schedule.adapters.ScheduleAdapter
 import com.example.schedule.database.Schedule
-import com.example.schedule.database.room.AppRoomDatabase
 import com.example.schedule.dialogs.CustomDialog
 import com.example.schedule.interfaces.DialogRemoveListener
 import com.example.schedule.interfaces.ItemTouchHelperListener
@@ -26,8 +24,8 @@ import com.example.schedule.interfaces.OnClickItemListener
 import com.example.schedule.interfaces.ShowOrHideFab
 import com.example.schedule.modules.SwipeDragItemHelper
 import com.example.schedule.util.RequestCode
+import com.example.schedule.viewmodels.ScheduleFragmentViewModel
 import kotlinx.android.synthetic.main.fr_schedule.view.*
-import kotlinx.android.synthetic.main.fr_week_main_activity.view.*
 
 class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, DialogRemoveListener, OnClickItemListener {
 
@@ -37,15 +35,16 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
     private var requestCode: Int = 0
     private var listSchedule: ArrayList<Schedule> = ArrayList()
     private var removeSchedule: Schedule? = null
-    private lateinit var roomDatabase: AppRoomDatabase
+    private lateinit var scheduleFragmentViewModel: ScheduleFragmentViewModel
 
-    fun getInstance(context: Context, position: Int, roomDatabase: AppRoomDatabase, requestCode: Int) : ScheduleFragment {
+    fun getInstance(context: Context, position: Int, requestCode: Int) : ScheduleFragment {
         val args = Bundle()
+        args.putInt("daySchedule", position)
+        args.putInt("requestCode", requestCode)
         val fragment = ScheduleFragment()
         fragment.arguments = args
         fragment.requestCode = requestCode
         fragment.daySchedule = position
-        fragment.roomDatabase = roomDatabase
         when (position) {
             0 -> {
                 if (requestCode == RequestCode.REQUEST_MAIN_ACTIVITY) {
@@ -98,6 +97,15 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
         return fragment
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        scheduleFragmentViewModel = ViewModelProviders.of(this).get(ScheduleFragmentViewModel::class.java)
+        if (savedInstanceState != null) {
+            daySchedule = savedInstanceState.getInt("daySchedule")
+            requestCode = savedInstanceState.getInt("requestCode")
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -106,13 +114,23 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
         val view: View = inflater.inflate(R.layout.fr_schedule, container, false)
         view.recyclerView.layoutManager = LinearLayoutManager(activity)
         view.recyclerView.setHasFixedSize(true)
-        roomDatabase.getScheduleDao().getAllByDay(daySchedule).observe(viewLifecycleOwner, Observer {
-            listSchedule = ArrayList(it.sortedWith(compareBy({it.timeStart})))
-            if (listSchedule.count() != 0) sortListWeek()
-            view.ll_no_lesson_fr_schedule?.isVisible = listSchedule.count() == 0
-            itemAdapter = ScheduleAdapter(listSchedule, requestCode, this)
-            view.recyclerView.adapter = itemAdapter
-        })
+        view.ll_no_lesson_fr_schedule?.isVisible = listSchedule.count() == 0
+        itemAdapter = ScheduleAdapter(requestCode, this)
+        view.recyclerView.adapter = itemAdapter
+        activity?.let {
+            scheduleFragmentViewModel.getAllListByDay(daySchedule).observe(it, object : Observer<List<Schedule>> {
+                override fun onChanged(t: List<Schedule>?) {
+                    if (t != null) {
+                        listSchedule =
+                            ArrayList(t.sortedWith(compareBy({it.timeStart})))
+                        if (listSchedule.count() != 0) sortListWeek()
+                        itemAdapter.setListSchedule(listSchedule)
+                        view.ll_no_lesson_fr_schedule?.isVisible = listSchedule.count() == 0
+                    }
+                }
+
+            })
+        }
         if (requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
             context?.let { SwipeDragItemHelper(this, it) }?.let { ItemTouchHelper(it).attachToRecyclerView(view.recyclerView) }
             showOrHideFab = context as ShowOrHideFab
@@ -135,6 +153,12 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
         return view
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("daySchedule", daySchedule)
+        outState.putInt("requestCode", requestCode)
+    }
+
     override fun onItemSwipe(position: Int) {
         removeSchedule = listSchedule[position]
         listSchedule.removeAt(position)
@@ -153,7 +177,7 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
     }
 
     override fun onClickNegativeBtn(position: Int) {
-        roomDatabase.getScheduleDao().delete(removeSchedule!!)
+        scheduleFragmentViewModel.delete(removeSchedule!!)
         itemAdapter.notifyDataSetChanged()
         removeSchedule = null
         view?.ll_no_lesson_fr_schedule?.isVisible = itemAdapter.itemCount == 0

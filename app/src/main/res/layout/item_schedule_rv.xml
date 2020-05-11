@@ -23,7 +23,7 @@
             app:cardCornerRadius="5dp"
             app:cardElevation="0dp"
             app:cardBackgroundColor="@color/gray_600"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="7dp">
 
             <LinearLayout
                 android:id="@+id/card_time_item_rv_schedule"
@@ -90,7 +90,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:gravity="center_vertical"/>
+                android:gravity="center_vertical"
+                android:layout_marginTop="5dp"/>
 
             <TextView
                 android:id="@+id/auditorium_item_rv_schedule"
