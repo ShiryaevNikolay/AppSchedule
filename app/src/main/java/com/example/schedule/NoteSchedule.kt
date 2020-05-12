@@ -1,0 +1,12 @@
+package com.example.schedule
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+
+class NoteSchedule : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_note)
+    }
+}

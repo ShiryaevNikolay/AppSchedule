@@ -10,4 +10,9 @@
         android:title=""
         android:icon="@drawable/ic_close"
         app:showAsAction="ifRoom"/>
+
+    <item
+        android:title=""
+        android:icon="@drawable/ic_dots"
+        app:showAsAction="ifRoom"/>
 </menu>

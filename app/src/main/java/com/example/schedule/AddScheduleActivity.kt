@@ -55,6 +55,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
 
         toolbar.menu.getItem(0).isVisible = false
         toolbar.menu.getItem(1).isVisible = false
+        toolbar.menu.getItem(2).isVisible = false
         toolbar.menu.getItem(0).setOnMenuItemClickListener(this)
         toolbar.setNavigationOnClickListener {
             setResult(Activity.RESULT_CANCELED)

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Schedule</string>
 
+    <string name="note_title_toolbar">Notes</string>
+
     <string name="monday">Monday</string>
     <string name="tuesday">Tuesday</string>
     <string name="wednesday">Wednesday</string>
@@ -50,4 +52,7 @@
     <string name="btn_remove">Remove</string>
 
     <string name="no_lesson">No lessons</string>
+    <string name="img_no_lesson">No lessons</string>
+
+    <string name="img_deadline">Deadline</string>
 </resources>

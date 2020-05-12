@@ -9,12 +9,14 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
+        android:gravity="center"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_list_remove"/>
+            android:src="@drawable/ic_list_remove"
+            android:contentDescription="@string/img_no_lesson" />
 
         <TextView
             android:layout_width="wrap_content"

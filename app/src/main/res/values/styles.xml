@@ -17,6 +17,7 @@
         <item name="materialButtonStyle">@style/ButtonLightStyle</item>
         <item name="android:timePickerDialogTheme">@style/TimePickerDialogLightStyle</item>
         <item name="android:timePickerStyle">@style/TimePickerDialogLightStyle</item>
+        <item name="checkboxStyle">@style/CheckBoxStyle</item>
     </style>
 
 </resources>
