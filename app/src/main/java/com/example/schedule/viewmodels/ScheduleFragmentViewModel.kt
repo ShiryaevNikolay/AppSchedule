@@ -11,27 +11,9 @@ import javax.inject.Inject
 
 class ScheduleFragmentViewModel(application: Application) : AndroidViewModel(application) {
     private var scheduleRepository: ScheduleRepository
-    private var day: Int = 0
-    private var requestCode: Int = 0
 
     init {
         scheduleRepository = ScheduleRepository()
-    }
-
-    fun setDay(day: Int) {
-        this.day = day
-    }
-
-    fun getDay() : Int {
-        return this.day
-    }
-
-    fun setRequestCode(requestCode: Int) {
-        this.requestCode = requestCode
-    }
-
-    fun getRequestCode() : Int {
-        return this.requestCode
     }
 
     fun insert(schedule: Schedule) {

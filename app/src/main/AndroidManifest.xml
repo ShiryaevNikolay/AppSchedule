@@ -12,7 +12,8 @@
         android:name=".util.App">
         <activity android:name=".AddScheduleActivity"
             android:parentActivityName=".ScheduleActivity"/>
-        <activity android:name=".ScheduleActivity"/>
+        <activity android:name=".ScheduleActivity"
+            android:launchMode="singleTop"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

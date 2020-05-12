@@ -1,5 +1,7 @@
 package com.example.schedule.interfaces
 
+import com.example.schedule.database.Schedule
+
 interface OnClickItemListener {
-    fun onClickItem(position: Int)
+    fun onClickItem(schedule: Schedule)
 }

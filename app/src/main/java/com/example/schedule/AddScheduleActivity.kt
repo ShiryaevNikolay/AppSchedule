@@ -18,12 +18,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.example.schedule.database.Schedule
 import com.example.schedule.database.room.AppRoomDatabase
 import com.example.schedule.dialogs.RadioDialog
 import com.example.schedule.interfaces.DialogRadioButtonListener
 import com.example.schedule.util.App
 import com.example.schedule.util.RequestCode
+import com.example.schedule.viewmodels.ScheduleFragmentViewModel
 import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.item_schedule_rv.*
 import javax.inject.Inject
@@ -39,12 +41,15 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
     private var daySchedule: Int = 0
     private lateinit var animShowFab: Animation
     private var flagModeFab = false
-    @Inject
-    lateinit var roomDatabase: AppRoomDatabase
+    private lateinit var scheduleFragmentViewModel: ScheduleFragmentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_item)
+
+        if (savedInstanceState != null) {
+            daySchedule = savedInstanceState.getInt("daySchedule")
+        }
 
         animShowFab = AnimationUtils.loadAnimation(this, R.anim.fab_show)
 
@@ -56,11 +61,12 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             finish()
         }
 
-        App.getComponent()?.injectsAddScheduleActivity(this)
         fab.setOnClickListener(this)
         btn_start_time_schedule.setOnClickListener(this)
         btn_end_time_schedule.setOnClickListener(this)
         btn_week_schedule.setOnClickListener(this)
+
+        scheduleFragmentViewModel = ViewModelProviders.of(this).get(ScheduleFragmentViewModel::class.java)
 
         if (intent.extras?.getInt("REQUEST_CODE") == RequestCode.REQUEST_CHANGE_SCHEDULE_FRAGMENT) {
             daySchedule = intent.extras!!.getInt("day")
@@ -101,6 +107,11 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
         et_auditorium_schedule.addTextChangedListener { auditorium = it.toString() }
 
         checkMandatoryItem()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("daySchedule", daySchedule)
     }
 
     override fun onBackPressed() {
@@ -229,13 +240,17 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
 
     private fun checkCondition(select: String, timeStart: Int) : Boolean {
         var flag = true
-        roomDatabase.getScheduleDao().getAllByDay(daySchedule).observe(this, Observer {
-            var listSchedule: ArrayList<Schedule> = ArrayList(it.sortedWith(compareBy({it.timeStart})))
-            for (i in 0 until listSchedule.size) {
-                if (listSchedule.get(i).timeStart == timeStart) {
-                    if (listSchedule[i].week == "12" && (select == "1" || select == "2")) flag = false
-                    else if (listSchedule[i].week != "12" && select == "12") flag = false
-                    else if (listSchedule[i].week == select) flag = false
+        scheduleFragmentViewModel.getAllListByDay(daySchedule).observe(this, object : Observer<List<Schedule>> {
+            override fun onChanged(t: List<Schedule>?) {
+                if (t != null) {
+                    var listSchedule: ArrayList<Schedule> = ArrayList(t.sortedWith(compareBy({it.timeStart})))
+                    for (i in 0 until listSchedule.size) {
+                        if (listSchedule.get(i).timeStart == timeStart) {
+                            if (listSchedule[i].week == "12" && (select == "1" || select == "2")) flag = false
+                            else if (listSchedule[i].week != "12" && select == "12") flag = false
+                            else if (listSchedule[i].week == select) flag = false
+                        }
+                    }
                 }
             }
         })

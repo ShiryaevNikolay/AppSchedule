@@ -13,10 +13,5 @@ import dagger.Component
 
 @Component(modules = [StorageModule::class])
 interface AppComponent {
-    fun injectsScheduleFragmentViewModel(scheduleFragmentViewModel: ScheduleFragmentViewModel)
-    fun injectsFragmentWeekMainActivity(fragmentWeekMainActivity: FragmentWeekMainActivity)
-    fun injectsScheduleActivity(scheduleActivity: ScheduleActivity)
-    fun injectsAddScheduleActivity(addScheduleActivity: AddScheduleActivity)
-
     fun injectsScheduleRepository(scheduleRepository: ScheduleRepository)
 }

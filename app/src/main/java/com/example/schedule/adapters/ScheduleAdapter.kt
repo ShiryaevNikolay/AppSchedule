@@ -65,7 +65,7 @@ class ScheduleAdapter(
                 }
             }
             holder.itemView.setOnClickListener {
-                onClickItemListener.onClickItem(holder.adapterPosition)
+                onClickItemListener.onClickItem(listSchedule[holder.adapterPosition])
             }
         }
     }
