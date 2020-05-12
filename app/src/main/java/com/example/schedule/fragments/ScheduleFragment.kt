@@ -1,16 +1,16 @@
 package com.example.schedule.fragments
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,18 +18,14 @@ import com.example.schedule.AddScheduleActivity
 import com.example.schedule.R
 import com.example.schedule.adapters.ScheduleAdapter
 import com.example.schedule.database.Schedule
-import com.example.schedule.database.room.AppRoomDatabase
 import com.example.schedule.dialogs.CustomDialog
-import com.example.schedule.interfaces.DialogRemoveListener
-import com.example.schedule.interfaces.ItemTouchHelperListener
-import com.example.schedule.interfaces.OnClickItemListener
-import com.example.schedule.interfaces.ShowOrHideFab
+import com.example.schedule.interfaces.*
 import com.example.schedule.modules.SwipeDragItemHelper
 import com.example.schedule.util.RequestCode
+import com.example.schedule.viewmodels.ScheduleFragmentViewModel
 import kotlinx.android.synthetic.main.fr_schedule.view.*
-import kotlinx.android.synthetic.main.fr_week_main_activity.view.*
 
-class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, DialogRemoveListener, OnClickItemListener {
+class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, DialogRemoveListener, OnClickItemListener, OnClickFabListener {
 
     private var daySchedule: Int = 0
     private lateinit var itemAdapter: ScheduleAdapter
@@ -37,15 +33,16 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
     private var requestCode: Int = 0
     private var listSchedule: ArrayList<Schedule> = ArrayList()
     private var removeSchedule: Schedule? = null
-    private lateinit var roomDatabase: AppRoomDatabase
+    private lateinit var scheduleFragmentViewModel: ScheduleFragmentViewModel
 
-    fun getInstance(context: Context, position: Int, roomDatabase: AppRoomDatabase, requestCode: Int) : ScheduleFragment {
+    fun getInstance(context: Context, position: Int, requestCode: Int) : ScheduleFragment {
         val args = Bundle()
+        args.putInt("daySchedule", position)
+        args.putInt("requestCode", requestCode)
         val fragment = ScheduleFragment()
         fragment.arguments = args
         fragment.requestCode = requestCode
         fragment.daySchedule = position
-        fragment.roomDatabase = roomDatabase
         when (position) {
             0 -> {
                 if (requestCode == RequestCode.REQUEST_MAIN_ACTIVITY) {
@@ -98,6 +95,15 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
         return fragment
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        scheduleFragmentViewModel = ViewModelProviders.of(this).get(ScheduleFragmentViewModel::class.java)
+        if (savedInstanceState != null) {
+            daySchedule = savedInstanceState.getInt("daySchedule")
+            requestCode = savedInstanceState.getInt("requestCode")
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -106,12 +112,20 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
         val view: View = inflater.inflate(R.layout.fr_schedule, container, false)
         view.recyclerView.layoutManager = LinearLayoutManager(activity)
         view.recyclerView.setHasFixedSize(true)
-        roomDatabase.getScheduleDao().getAllByDay(daySchedule).observe(viewLifecycleOwner, Observer {
-            listSchedule = ArrayList(it.sortedWith(compareBy({it.timeStart})))
-            if (listSchedule.count() != 0) sortListWeek()
-            view.ll_no_lesson_fr_schedule?.isVisible = listSchedule.count() == 0
-            itemAdapter = ScheduleAdapter(listSchedule, requestCode, this)
-            view.recyclerView.adapter = itemAdapter
+        view.ll_no_lesson_fr_schedule?.isVisible = listSchedule.count() == 0
+        itemAdapter = ScheduleAdapter(requestCode, this)
+        view.recyclerView.adapter = itemAdapter
+        scheduleFragmentViewModel.getAllListByDay(daySchedule).observe(viewLifecycleOwner, object : Observer<List<Schedule>> {
+            override fun onChanged(t: List<Schedule>?) {
+                if (t != null) {
+                    listSchedule =
+                        ArrayList(t.sortedWith(compareBy({it.timeStart})))
+                    if (listSchedule.count() != 0) sortListWeek()
+                    itemAdapter.setListSchedule(listSchedule)
+                    view.ll_no_lesson_fr_schedule?.isVisible = listSchedule.count() == 0
+                }
+            }
+
         })
         if (requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
             context?.let { SwipeDragItemHelper(this, it) }?.let { ItemTouchHelper(it).attachToRecyclerView(view.recyclerView) }
@@ -121,7 +135,6 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0 && requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
                     showOrHideFab.showOrHideFab(dy)
-
                 }
             }
 
@@ -133,6 +146,57 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
             }
         })
         return view
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("daySchedule", daySchedule)
+        outState.putInt("requestCode", requestCode)
+    }
+
+    override fun startActivityForResult(intent: Intent?, requestCode: Int) {
+        super.startActivityForResult(intent, requestCode)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            var schedule: Schedule? = null
+            if (data != null) {
+                if (requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
+                    schedule = Schedule(
+                        lesson = data.getStringExtra("lesson")!!,
+                        teacher = data.getStringExtra("teacher")!!,
+                        auditorium = data.getStringExtra("auditorium")!!,
+                        clockStart = data.getStringExtra("clockStart")!!,
+                        clockEnd = data.getStringExtra("clockEnd")!!,
+                        timeStart = data.extras?.getInt("timeStart")!!,
+                        timeEnd = data.extras?.getInt("timeEnd")!!,
+                        week = data.getStringExtra("week")!!,
+                        day = data.extras!!.getInt("day")
+                    )
+                    scheduleFragmentViewModel.insert(schedule)
+                } else {
+                    schedule = data.extras?.getLong("itemId")?.let {
+                        Schedule(
+                            id = it,
+                            lesson = data.getStringExtra("lesson")!!,
+                            teacher = data.getStringExtra("teacher")!!,
+                            auditorium = data.getStringExtra("auditorium")!!,
+                            clockStart = data.getStringExtra("clockStart")!!,
+                            clockEnd = data.getStringExtra("clockEnd")!!,
+                            timeStart = data.extras?.getInt("timeStart")!!,
+                            timeEnd = data.extras?.getInt("timeEnd")!!,
+                            week = data.getStringExtra("week")!!,
+                            day = data.extras?.getInt("day")!!
+                        )
+                    }
+                    if (schedule != null) {
+                        scheduleFragmentViewModel.update(schedule)
+                    }
+                }
+            }
+        }
     }
 
     override fun onItemSwipe(position: Int) {
@@ -153,24 +217,23 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
     }
 
     override fun onClickNegativeBtn(position: Int) {
-        roomDatabase.getScheduleDao().delete(removeSchedule!!)
-        itemAdapter.notifyDataSetChanged()
+        scheduleFragmentViewModel.delete(removeSchedule!!)
         removeSchedule = null
         view?.ll_no_lesson_fr_schedule?.isVisible = itemAdapter.itemCount == 0
     }
 
-    override fun onClickItem(position: Int) {
+    override fun onClickItem(schedule: Schedule) {
         val intent = Intent(context, AddScheduleActivity::class.java)
         intent.putExtra("day", daySchedule)
-        intent.putExtra("itemId", listSchedule[position].id)
-        intent.putExtra("lesson", listSchedule[position].lesson)
-        intent.putExtra("teacher", listSchedule[position].teacher)
-        intent.putExtra("auditorium", listSchedule[position].auditorium)
-        intent.putExtra("clockStart", listSchedule[position].clockStart)
-        intent.putExtra("clockEnd", listSchedule[position].clockEnd)
-        intent.putExtra("timeStart", listSchedule[position].timeStart)
-        intent.putExtra("timeEnd", listSchedule[position].timeEnd)
-        intent.putExtra("week", listSchedule[position].week)
+        intent.putExtra("itemId", schedule.id)
+        intent.putExtra("lesson", schedule.lesson)
+        intent.putExtra("teacher", schedule.teacher)
+        intent.putExtra("auditorium", schedule.auditorium)
+        intent.putExtra("clockStart", schedule.clockStart)
+        intent.putExtra("clockEnd", schedule.clockEnd)
+        intent.putExtra("timeStart", schedule.timeStart)
+        intent.putExtra("timeEnd", schedule.timeEnd)
+        intent.putExtra("week", schedule.week)
         intent.putExtra("REQUEST_CODE", RequestCode.REQUEST_CHANGE_SCHEDULE_FRAGMENT)
         startActivityForResult(intent, RequestCode.REQUEST_CHANGE_SCHEDULE_FRAGMENT)
     }
@@ -195,5 +258,11 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
             }
             listSchedule = sortedList
         }
+    }
+
+    override fun onClickFab(daySchedule: Int) {
+        val intent = Intent(activity, AddScheduleActivity::class.java)
+        intent.putExtra("day", daySchedule)
+        startActivityForResult(intent, RequestCode.REQUEST_SCHEDULE_ACTIVITY)
     }
 }

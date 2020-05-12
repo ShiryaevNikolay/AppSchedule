@@ -14,12 +14,12 @@ import com.example.schedule.util.RequestCode
 import kotlinx.android.synthetic.main.item_schedule_rv.view.*
 
 class ScheduleAdapter(
-    private var listSchedule: ArrayList<Schedule>,
     private var fromActivity: Int,
     private var onClickItemListener: OnClickItemListener
 ) : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
     private lateinit var context: Context
+    private var listSchedule: ArrayList<Schedule> = ArrayList<Schedule>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduleViewHolder {
         context = parent.context
@@ -65,9 +65,14 @@ class ScheduleAdapter(
                 }
             }
             holder.itemView.setOnClickListener {
-                onClickItemListener.onClickItem(holder.adapterPosition)
+                onClickItemListener.onClickItem(listSchedule[holder.adapterPosition])
             }
         }
+    }
+
+    fun setListSchedule(listSchedule: ArrayList<Schedule>) {
+        this.listSchedule = listSchedule
+        notifyDataSetChanged()
     }
 
     inner class ScheduleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

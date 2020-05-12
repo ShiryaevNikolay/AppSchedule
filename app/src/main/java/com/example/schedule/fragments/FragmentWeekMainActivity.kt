@@ -25,12 +25,8 @@ import javax.inject.Inject
 
 class FragmentWeekMainActivity : Fragment() {
 
-    @Inject
-    lateinit var roomDatabase: AppRoomDatabase
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.getComponent()!!.injectsFragmentWeekMainActivity(this)
     }
 
     override fun onCreateView(
@@ -43,7 +39,7 @@ class FragmentWeekMainActivity : Fragment() {
         (activity as MainActivity).toolbar.getChildAt(0).setOnClickListener {
             view.tabLayout.isVisible = !view.tabLayout.isVisible
         }
-        initPager(view.viewPager, view.tabLayout, roomDatabase)
+        initPager(view.viewPager, view.tabLayout)
         val changeTitleToolbarInterface: ChangeTitleToolbarInterface = activity as ChangeTitleToolbarInterface
         view.viewPager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -62,11 +58,10 @@ class FragmentWeekMainActivity : Fragment() {
         return view
     }
 
-    private fun initPager(viewPager: ViewPager, tabLayout: TabLayout, roomDatabase: AppRoomDatabase) {
+    private fun initPager(viewPager: ViewPager, tabLayout: TabLayout) {
         val adapter = context?.let { activity?.supportFragmentManager?.let { it1 ->
             TabsPagerFragmentAdapter(it,
                 it1,
-                roomDatabase,
                 RequestCode.REQUEST_MAIN_ACTIVITY
             )
         } }
