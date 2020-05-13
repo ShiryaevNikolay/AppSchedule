@@ -8,12 +8,6 @@ import com.example.schedule.database.Schedule
 
 @Dao
 interface ScheduleDao {
-    @Query("SELECT * FROM schedule")
-    fun getAll() : LiveData<List<Schedule>>
-
-    @Query("SELECT * FROM schedule WHERE id = :id")
-    fun getById(id: Long) : LiveData<Schedule>
-
     @Query("SELECT * FROM schedule WHERE day = :day")
     fun getAllByDay(day: Int) : LiveData<List<Schedule>>
 

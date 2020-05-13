@@ -9,7 +9,7 @@ import com.example.schedule.database.room.ScheduleDao
 import com.example.schedule.util.App
 import javax.inject.Inject
 
-class ScheduleRepository() {
+class ScheduleRepository {
     private var scheduleDao: ScheduleDao
     @Inject
     lateinit var roomDatabase: AppRoomDatabase
@@ -33,10 +33,6 @@ class ScheduleRepository() {
 
     fun getAllListByDay(day: Int) : LiveData<List<Schedule>> {
         return scheduleDao.getAllByDay(day)
-    }
-
-    fun getById(id: Long) : LiveData<Schedule> {
-        return scheduleDao.getById(id)
     }
 
     @SuppressLint("StaticFieldLeak")

@@ -7,19 +7,21 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.schedule.database.Note
 import com.example.schedule.database.Schedule
 import com.example.schedule.util.App
 
-@Database(version = 1, entities = [Schedule::class])
+@Database(version = 1, entities = [Schedule::class, Note::class])
 abstract class AppRoomDatabase : RoomDatabase() {
     public abstract fun getScheduleDao() : ScheduleDao
+    public abstract fun getNoteDao() : NoteDao
 
     companion object {
         private var instance: AppRoomDatabase? = null
         @Synchronized
         fun getInstance(context: Context) : AppRoomDatabase {
             if (instance == null) {
-                instance = Room.databaseBuilder(context, AppRoomDatabase::class.java, "schedule")
+                instance = Room.databaseBuilder(context, AppRoomDatabase::class.java, "database")
                     .fallbackToDestructiveMigration()
                     .build()
             }

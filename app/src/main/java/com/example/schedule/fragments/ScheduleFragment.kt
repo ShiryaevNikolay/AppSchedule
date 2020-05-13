@@ -161,7 +161,7 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            var schedule: Schedule? = null
+            var schedule: Schedule?
             if (data != null) {
                 if (requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
                     schedule = Schedule(

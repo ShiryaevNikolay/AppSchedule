@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(), ChangeTitleToolbarInterface {
                     true
                 }
                 R.id.item_notes -> {
-
+                    startActivity(Intent(this, NoteActivity::class.java))
                     true
                 }
                 else -> false

@@ -31,8 +31,4 @@ class ScheduleFragmentViewModel(application: Application) : AndroidViewModel(app
     fun getAllListByDay(day: Int) : LiveData<List<Schedule>> {
         return scheduleRepository.getAllListByDay(day)
     }
-
-    fun getById(id: Long) : LiveData<Schedule> {
-        return scheduleRepository.getById(id)
-    }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
+    android:id="@+id/card_note"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,7 +17,7 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/tv_lesson_item_rv_note"
+            android:id="@+id/lesson_item_rv_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
@@ -48,7 +49,7 @@
                     android:contentDescription="@string/img_deadline" />
 
                 <TextView
-                    android:id="@+id/tv_time_item_rv_note"
+                    android:id="@+id/time_item_rv_note"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>

@@ -54,5 +54,8 @@
     <string name="no_lesson">No lessons</string>
     <string name="img_no_lesson">No lessons</string>
 
+    <string name="no_notes">No notes</string>
+    <string name="img_no_notes">No notes</string>
+
     <string name="img_deadline">Deadline</string>
 </resources>
