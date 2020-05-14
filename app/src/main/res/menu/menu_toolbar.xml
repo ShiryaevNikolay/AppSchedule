@@ -3,15 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/item_ok"
         android:title=""
         android:icon="@drawable/ic_done"
         app:showAsAction="always"/>
     <item
+        android:id="@+id/item_cancel"
         android:title=""
         android:icon="@drawable/ic_close"
         app:showAsAction="ifRoom"/>
-
     <item
+        android:id="@+id/item_dots"
         android:title=""
         android:icon="@drawable/ic_dots"
         app:showAsAction="ifRoom"/>

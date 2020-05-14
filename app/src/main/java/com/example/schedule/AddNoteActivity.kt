@@ -30,6 +30,8 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
 
         animShowFab = AnimationUtils.loadAnimation(this, R.anim.fab_show)
 
+        setSupportActionBar(toolbar)
+
         toolbar.menu.getItem(0).isVisible = false
         toolbar.menu.getItem(1).isVisible = false
         toolbar.menu.getItem(2).isVisible = false

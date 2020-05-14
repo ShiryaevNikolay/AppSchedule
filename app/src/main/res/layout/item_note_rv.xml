@@ -44,15 +44,17 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:layout_width="17dp"
-                    android:layout_height="17dp"
+                    android:id="@+id/ic_deadline_item_rv_note"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:src="@drawable/ic_calendar_week"
                     android:contentDescription="@string/img_deadline" />
 
                 <TextView
-                    android:id="@+id/time_item_rv_note"
+                    android:id="@+id/deadline_item_rv_note"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"/>
             </LinearLayout>
 
             <CheckBox

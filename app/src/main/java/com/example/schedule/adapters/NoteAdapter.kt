@@ -32,9 +32,10 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
         }
         holder.itemView.note_item_rv_note.text = listNote[position].note
         if (listNote[position].deadline != "") {
-            holder.itemView.time_item_rv_note.text = listNote[position].deadline
+            holder.itemView.deadline_item_rv_note.text = listNote[position].deadline
         } else {
-            holder.itemView.time_item_rv_note.isVisible = false
+            holder.itemView.deadline_item_rv_note.isVisible = false
+            holder.itemView.ic_deadline_item_rv_note.isVisible = false
         }
         var flagCheckBox = false
         for (i in listNote) {

@@ -79,4 +79,8 @@
     <string name="img_no_notes">No notes</string>
 
     <string name="img_deadline">Deadline</string>
+
+    <string name="grid">Grid</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="list">List</string>
 </resources>
