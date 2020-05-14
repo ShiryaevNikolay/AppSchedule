@@ -21,7 +21,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fr_note_activity"
-        android:name="com.example.schedule.fragments.FragmentNoteActivity"
+        android:name="com.example.schedule.fragments.NoteFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"/>

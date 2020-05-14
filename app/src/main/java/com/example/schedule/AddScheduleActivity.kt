@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.TimePickerDialog
 import android.content.Intent
-import android.icu.util.Calendar
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -28,7 +27,9 @@ import com.example.schedule.util.RequestCode
 import com.example.schedule.viewmodels.ScheduleFragmentViewModel
 import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.item_schedule_rv.*
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMenuItemClickListener, DialogRadioButtonListener {
 
@@ -41,7 +42,8 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
     private var daySchedule: Int = 0
     private lateinit var animShowFab: Animation
     private var flagModeFab = false
-    private lateinit var scheduleFragmentViewModel: ScheduleFragmentViewModel
+    private lateinit var scheduleViewModel: ScheduleFragmentViewModel
+    private var listSchedule: ArrayList<Schedule> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +52,8 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
         if (savedInstanceState != null) {
             daySchedule = savedInstanceState.getInt("daySchedule")
         }
+
+        scheduleViewModel = ViewModelProviders.of(this).get(ScheduleFragmentViewModel::class.java)
 
         animShowFab = AnimationUtils.loadAnimation(this, R.anim.fab_show)
 
@@ -66,8 +70,6 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
         btn_start_time_schedule.setOnClickListener(this)
         btn_end_time_schedule.setOnClickListener(this)
         btn_week_schedule.setOnClickListener(this)
-
-        scheduleFragmentViewModel = ViewModelProviders.of(this).get(ScheduleFragmentViewModel::class.java)
 
         if (intent.extras?.getInt("REQUEST_CODE") == RequestCode.REQUEST_CHANGE_SCHEDULE_FRAGMENT) {
             daySchedule = intent.extras!!.getInt("day")
@@ -99,6 +101,14 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
                 }
             }
         }
+
+        scheduleViewModel.getAllListByDay(daySchedule).observe(this, object : Observer<List<Schedule>> {
+            override fun onChanged(t: List<Schedule>?) {
+                if (t != null) {
+                    listSchedule = ArrayList(t.sortedWith(compareBy({it.timeStart})))
+                }
+            }
+        })
 
         et_lesson_schedule.addTextChangedListener {
             lesson = it.toString()
@@ -199,7 +209,6 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
     }
 
     @SuppressLint("SetTextI18n")
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun callTimePicker(clock: Boolean) {
         val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         val minutes = Calendar.getInstance().get(Calendar.MINUTE)
@@ -241,20 +250,13 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
 
     private fun checkCondition(select: String, timeStart: Int) : Boolean {
         var flag = true
-        scheduleFragmentViewModel.getAllListByDay(daySchedule).observe(this, object : Observer<List<Schedule>> {
-            override fun onChanged(t: List<Schedule>?) {
-                if (t != null) {
-                    var listSchedule: ArrayList<Schedule> = ArrayList(t.sortedWith(compareBy({it.timeStart})))
-                    for (i in 0 until listSchedule.size) {
-                        if (listSchedule.get(i).timeStart == timeStart) {
-                            if (listSchedule[i].week == "12" && (select == "1" || select == "2")) flag = false
-                            else if (listSchedule[i].week != "12" && select == "12") flag = false
-                            else if (listSchedule[i].week == select) flag = false
-                        }
-                    }
-                }
+        for (i in 0 until listSchedule.size) {
+            if (listSchedule.get(i).timeStart == timeStart) {
+                if (listSchedule[i].week == "12" && (select == "1" || select == "2")) flag = false
+                else if (listSchedule[i].week != "12" && select == "12") flag = false
+                else if (listSchedule[i].week == select) flag = false
             }
-        })
+        }
         return flag
     }
 }

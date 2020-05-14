@@ -15,9 +15,5 @@ class NoteActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener {
             finish()
         }
-
-        fab.setOnClickListener {
-
-        }
     }
 }

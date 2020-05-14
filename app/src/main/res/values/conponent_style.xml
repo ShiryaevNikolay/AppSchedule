@@ -24,10 +24,7 @@
 
     <style name="TabLayoutLightStyle" parent="Widget.MaterialComponents.TabLayout">
         <item name="android:background">@color/white</item>
-    </style>
-
-    <style name="BottomAppBarLightStyle" parent="Widget.MaterialComponents.BottomAppBar">
-        <item name="backgroundTint">@color/white</item>
+        <item name="textAllCaps">true</item>
     </style>
 
     <style name="TimePickerDialogLightStyle" parent="Theme.MaterialComponents.Light.Dialog.Alert">

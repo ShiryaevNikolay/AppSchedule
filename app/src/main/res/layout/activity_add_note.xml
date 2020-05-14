@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddScheduleActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -16,7 +15,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar">
+        android:layout_below="@id/toolbar">
 
         <LinearLayout
             android:orientation="vertical"
@@ -29,10 +28,10 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/et_lesson">
+                android:hint="@string/et_note">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_lesson_schedule"
+                    android:id="@+id/et_note_schedule"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
@@ -47,23 +46,11 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/et_teacher"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="25dp">
+                android:hint="@string/et_lesson"
+                android:layout_marginTop="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_teacher_schedule"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/et_auditorium">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_auditorium_schedule"
+                    android:id="@+id/et_lesson_note"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -72,61 +59,66 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="10dp">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/ic_clock_time"/>
+                    android:src="@drawable/ic_calendar_week"/>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_start_time_schedule"
+                    android:id="@+id/btn_deadline_note"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/btn_start_time_schedule" />
-
-                <View
-                    android:layout_width="5dp"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/colorAccent"/>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_end_time_schedule"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/btn_end_time_schedule"/>
-            </TableRow>
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_marginTop="20dp">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/ic_calendar_refresh"/>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_week_schedule"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
                     android:text=""
-                    android:hint="@string/btn_hint_week_schedule"/>
+                    android:hint="@string/btn_hint_deadline_note"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/iv_indicator_week_schedule"
-                    android:layout_width="wrap_content"
+                    android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:layout_marginStart="5dp"
-                    app:srcCompat="@drawable/ic_color" />
+                    android:src="@drawable/ic_palette"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_bg_color_note"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text=""
+                    android:hint="@string/btn_hint_color_note"/>
             </TableRow>
-            <TextView
-                android:layout_width="wrap_content"
+
+            <TableRow
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_default_week"
-                android:textSize="12sp"
-                android:layout_marginStart="3dp"/>
+                android:gravity="center_vertical"
+                android:layout_marginTop="20dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_image"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_image_note"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text=""
+                    android:hint="@string/btn_hint_image_note"/>
+            </TableRow>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 
@@ -138,6 +130,6 @@
         app:srcCompat="@drawable/ic_back_fab"
         android:focusable="true"
         android:layout_margin="@dimen/fab_margin"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"/>
 </RelativeLayout>

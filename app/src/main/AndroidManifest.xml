@@ -10,7 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".util.App">
-        <activity android:name=".NoteActivity"/>
+        <activity android:name=".AddNoteActivity"
+            android:parentActivityName=".NoteActivity"/>
+        <activity android:name=".NoteActivity"
+            android:launchMode="singleTop"/>
         <activity android:name=".AddScheduleActivity"
             android:parentActivityName=".ScheduleActivity"/>
         <activity android:name=".ScheduleActivity"

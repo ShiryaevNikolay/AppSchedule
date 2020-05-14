@@ -11,12 +11,26 @@
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
 
-    <string name="tab_title_mon">MON</string>
-    <string name="tab_title_tues">TUES</string>
-    <string name="tab_title_wed">WED</string>
-    <string name="tab_title_thurs">THU</string>
-    <string name="tab_title_fri">FRI</string>
-    <string name="tab_title_sat">SAT</string>
+    <string name="january">Jan</string>
+    <string name="february">Feb</string>
+    <string name="march">Mar</string>
+    <string name="april">Apr</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">Aug</string>
+    <string name="september">Sept</string>
+    <string name="october">Oct</string>
+    <string name="november">Nov</string>
+    <string name="december">Dec</string>
+
+    <string name="tab_title_mon">Mon</string>
+    <string name="tab_title_tues">Tues</string>
+    <string name="tab_title_wed">Wed</string>
+    <string name="tab_title_thurs">Thu</string>
+    <string name="tab_title_fri">Fri</string>
+    <string name="tab_title_sat">Sat</string>
+    <string name="tab_title_sun">Sun</string>
 
     <string name="tab_title_mon_main">M</string>
     <string name="tab_title_tues_main">T</string>
@@ -37,6 +51,13 @@
     <string name="btn_end_time_schedule">End</string>
     <string name="btn_hint_week_schedule">A week</string>
     <string name="btn_default_week">Default: every week</string>
+
+    <string name="btn_hint_image_note">Image</string>
+    <string name="btn_hint_image_plus_note">Image +</string>
+    <string name="btn_hint_color_note">Color</string>
+    <string name="btn_hint_deadline_note">Deadline</string>
+
+    <string name="et_note">Note</string>
 
     <string name="week1">Week 1</string>
     <string name="week2">Week 2</string>

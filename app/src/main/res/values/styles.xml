@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="ThemeLight"/>
@@ -13,10 +13,11 @@
         <item name="bottomNavigationStyle">@style/BottomNavViewLightStyle</item>
         <item name="toolbarStyle">@style/ToolbarLightStyle</item>
         <item name="tabStyle">@style/TabLayoutLightStyle</item>
-        <item name="bottomAppBarStyle">@style/BottomAppBarLightStyle</item>
         <item name="materialButtonStyle">@style/ButtonLightStyle</item>
         <item name="android:timePickerDialogTheme">@style/TimePickerDialogLightStyle</item>
         <item name="android:timePickerStyle">@style/TimePickerDialogLightStyle</item>
+        <item name="android:datePickerDialogTheme">@style/TimePickerDialogLightStyle</item>
+        <item name="android:datePickerStyle">@style/TimePickerDialogLightStyle</item>
         <item name="checkboxStyle">@style/CheckBoxStyle</item>
     </style>
 

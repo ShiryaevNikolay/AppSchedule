@@ -7,10 +7,9 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "note")
 class Note(
     @PrimaryKey(autoGenerate = true)
-    var itemId: Long,
-    var lesson: String,
+    var id: Long = 0,
     var note: String,
-    var time: String,
-    var checkbox: Boolean,
-    var bgColor: Color
+    var lesson: String,
+    var deadline: String,
+    var checkbox: Boolean
 )

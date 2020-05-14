@@ -31,8 +31,8 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
             holder.itemView.lesson_item_rv_note.isVisible = false
         }
         holder.itemView.note_item_rv_note.text = listNote[position].note
-        if (listNote[position].time != "") {
-            holder.itemView.time_item_rv_note.text = listNote[position].time
+        if (listNote[position].deadline != "") {
+            holder.itemView.time_item_rv_note.text = listNote[position].deadline
         } else {
             holder.itemView.time_item_rv_note.isVisible = false
         }
