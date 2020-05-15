@@ -4,16 +4,20 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.R
 import com.example.schedule.database.Note
+import com.example.schedule.interfaces.OnClickItemNoteListener
 import kotlinx.android.synthetic.main.item_note_rv.view.*
 
-class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
+class NoteAdapter(
+    var listNote: ArrayList<Note>,
+    private var onClickItemNoteListener: OnClickItemNoteListener
+) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
     private lateinit var context: Context
-    private var listNote: ArrayList<Note> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         context = parent.context
@@ -25,17 +29,17 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        if (listNote[position].lesson != "") {
-            holder.itemView.lesson_item_rv_note.text = listNote[position].lesson
+        val itemList: Note = listNote[position]
+        holder.itemView.lesson_item_rv_note.text = itemList.lesson
+        holder.itemView.lesson_item_rv_note.isVisible = !(holder.itemView.lesson_item_rv_note.text.toString() == "")
+        holder.itemView.note_item_rv_note.text = itemList.note
+        holder.itemView.deadline_item_rv_note.text = itemList.deadline
+        if (holder.itemView.deadline_item_rv_note.text.toString() == "") {
+            holder.itemView.deadline_item_rv_note.visibility = View.INVISIBLE
+            holder.itemView.ic_deadline_item_rv_note.visibility = View.INVISIBLE
         } else {
-            holder.itemView.lesson_item_rv_note.isVisible = false
-        }
-        holder.itemView.note_item_rv_note.text = listNote[position].note
-        if (listNote[position].deadline != "") {
-            holder.itemView.deadline_item_rv_note.text = listNote[position].deadline
-        } else {
-            holder.itemView.deadline_item_rv_note.isVisible = false
-            holder.itemView.ic_deadline_item_rv_note.isVisible = false
+            holder.itemView.deadline_item_rv_note.visibility = View.VISIBLE
+            holder.itemView.ic_deadline_item_rv_note.visibility = View.VISIBLE
         }
         var flagCheckBox = false
         for (i in listNote) {
@@ -44,11 +48,34 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
                 break
             }
         }
-        holder.itemView.checkbox_item_rv_note.isVisible = flagCheckBox
-        holder.itemView.checkbox_item_rv_note.isChecked = listNote[position].checkbox
+        if (flagCheckBox) holder.itemView.checkbox_item_rv_note.visibility = View.VISIBLE else holder.itemView.checkbox_item_rv_note.visibility = View.INVISIBLE
+        holder.itemView.checkbox_item_rv_note.isChecked = itemList.checkbox
+        holder.itemView.setOnClickListener {
+            if (holder.itemView.checkbox_item_rv_note.isVisible) {
+                if (holder.itemView.checkbox_item_rv_note.isChecked) {
+                    holder.itemView.checkbox_item_rv_note.isChecked = false
+                    onClickItemNoteListener.onLongClick(holder.adapterPosition, false)
+                } else {
+                    holder.itemView.checkbox_item_rv_note.isChecked = true
+                    onClickItemNoteListener.onLongClick(holder.adapterPosition, true)
+                }
+            } else onClickItemNoteListener.onClick(itemList)
+        }
+        holder.itemView.setOnLongClickListener {
+            if (holder.itemView.checkbox_item_rv_note.isChecked) {
+                holder.itemView.checkbox_item_rv_note.isChecked = false
+                holder.itemView.checkbox_item_rv_note.visibility = View.VISIBLE
+                onClickItemNoteListener.onLongClick(holder.adapterPosition, false)
+            } else {
+                holder.itemView.checkbox_item_rv_note.isChecked = true
+                holder.itemView.checkbox_item_rv_note.visibility = View.INVISIBLE
+                onClickItemNoteListener.onLongClick(holder.adapterPosition, true)
+            }
+            return@setOnLongClickListener true
+        }
     }
 
-    fun setListNote(listNote: ArrayList<Note>) {
+    fun setList(listNote: ArrayList<Note>) {
         this.listNote = listNote
         notifyDataSetChanged()
     }

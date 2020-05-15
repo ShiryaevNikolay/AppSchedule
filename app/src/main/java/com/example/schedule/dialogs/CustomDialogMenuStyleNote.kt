@@ -24,6 +24,8 @@ class CustomDialogMenuStyleNote(
         val p: WindowManager.LayoutParams? = dialog?.window?.attributes
         p?.width = ViewGroup.LayoutParams.WRAP_CONTENT
         p?.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
+        p?.x = 25
+        p?.y = 25
         dialog?.window?.attributes = p
         val view: View = inflater.inflate(R.layout.dialog_mune_style_note, null)
         when(selectItem) {

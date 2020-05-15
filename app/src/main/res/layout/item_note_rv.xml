@@ -21,12 +21,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
+            android:textSize="17sp"
             android:layout_marginBottom="10dp"/>
 
         <TextView
             android:id="@+id/note_item_rv_note"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textSize="17sp"/>
 
         <TableRow
             android:layout_width="match_parent"
@@ -35,12 +37,12 @@
             android:layout_marginTop="10dp">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:layout_gravity="start|center_vertical"
-                android:layout_weight="1"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
@@ -54,13 +56,15 @@
                     android:id="@+id/deadline_item_rv_note"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:textSize="13sp"/>
             </LinearLayout>
 
             <CheckBox
                 android:id="@+id/checkbox_item_rv_note"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:clickable="false"/>
         </TableRow>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
