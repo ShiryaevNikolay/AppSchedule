@@ -2,6 +2,7 @@ package com.example.schedule
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.schedule.interfaces.ShowOrHideFab
 import kotlinx.android.synthetic.main.activity_note.*
 
 class NoteActivity : AppCompatActivity() {

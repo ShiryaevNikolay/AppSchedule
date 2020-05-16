@@ -34,5 +34,6 @@
         android:clickable="true"
         app:srcCompat="@drawable/ic_view_grid_plus"
         android:focusable="true"
-        android:layout_margin="@dimen/fab_margin"/>
+        android:layout_margin="@dimen/fab_margin"
+        app:borderWidth="0dp"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,14 +1,21 @@
 package com.example.schedule.fragments
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.content.res.TypedArray
+import android.graphics.Matrix
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -31,15 +38,17 @@ import com.example.schedule.viewmodels.NoteFragmentViewModel
 import kotlinx.android.synthetic.main.activity_note.*
 import kotlinx.android.synthetic.main.fr_note_activity.view.*
 
-class NoteFragment : Fragment(), MenuItem.OnMenuItemClickListener, DialogMenuListener, OnClickItemNoteListener {
+class NoteFragment : Fragment(), MenuItem.OnMenuItemClickListener, DialogMenuListener, OnClickItemNoteListener, ShowOrHideFab {
 
     private var listNote: ArrayList<Note> = ArrayList()
     private var selectStyleListNote: Int = 1
+    private var flagFabMode = false
+    private var bgColorFab: Int = 0
     private lateinit var itemAdapter: NoteAdapter
     private lateinit var noteFragmentViewModel: NoteFragmentViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var animShowFab: Animation
-    private var flagFabMode = false
+    private lateinit var showOrHideFab: ShowOrHideFab
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +63,7 @@ class NoteFragment : Fragment(), MenuItem.OnMenuItemClickListener, DialogMenuLis
     ): View? {
         val view: View = inflater.inflate(R.layout.fr_note_activity, container, false)
         recyclerView = view.recyclerView
+        bgColorFab = (activity as NoteActivity).fab.backgroundTintList!!.defaultColor
         (activity as NoteActivity).toolbar.menu.getItem(2).setOnMenuItemClickListener(this)
         (activity as NoteActivity).fab.setOnClickListener {
             val intent = Intent(context, AddNoteActivity::class.java)
@@ -78,20 +88,18 @@ class NoteFragment : Fragment(), MenuItem.OnMenuItemClickListener, DialogMenuLis
                 }
             }
         })
-//        showOrHideFab = context as ShowOrHideFab
-//        view.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                if (dy > 0) {
-//                    showOrHideFab.showOrHideFab(dy)
-//                }
-//            }
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                    showOrHideFab.showOrHideFab(0)
-//                }
-//                super.onScrollStateChanged(recyclerView, newState)
-//            }
-//        })
+        showOrHideFab = this
+        view.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                showOrHideFab.showOrHideFab(dy)
+            }
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    showOrHideFab.showOrHideFab(0)
+                }
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+        })
         return view
     }
 
@@ -111,6 +119,11 @@ class NoteFragment : Fragment(), MenuItem.OnMenuItemClickListener, DialogMenuLis
                 }
             }
         }
+    }
+
+    override fun showOrHideFab(dy: Int) {
+        if (dy > 5) (activity as NoteActivity).fab.hide()
+        else if (dy < 0) (activity as NoteActivity).fab.show()
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
@@ -148,6 +161,8 @@ class NoteFragment : Fragment(), MenuItem.OnMenuItemClickListener, DialogMenuLis
     }
 
     private fun changeFabMode() {
+        val background = (activity as NoteActivity).fab.background
+        val matrix: Matrix = (activity as NoteActivity).fab.imageMatrix
         var flag = false
         for(i in listNote) {
             if (i.checkbox) {
@@ -156,14 +171,27 @@ class NoteFragment : Fragment(), MenuItem.OnMenuItemClickListener, DialogMenuLis
             }
         }
         if (flag) {
+            if (flagFabMode == false) {
+                context?.let { ContextCompat.getColor(it, R.color.red_900) }?.let {
+                    background.setTint(
+                        it
+                    )
+                }
+                (activity as NoteActivity).fab.background = background
+                (activity as NoteActivity).fab.startAnimation(animShowFab)
+            }
             (activity as NoteActivity).fab.setImageResource(R.drawable.ic_trash)
-            if (flagFabMode == false) (activity as NoteActivity).fab.startAnimation(animShowFab)
             flagFabMode = true
         } else {
+            if (flagFabMode == true) {
+                background.setTint(bgColorFab)
+                (activity as NoteActivity).fab.background = background
+                (activity as NoteActivity).fab.startAnimation(animShowFab)
+            }
             (activity as NoteActivity).fab.setImageResource(R.drawable.ic_view_grid_plus)
-            if (flagFabMode == true) (activity as NoteActivity).fab.startAnimation(animShowFab)
             flagFabMode = false
         }
         (activity as NoteActivity).toolbar.menu.getItem(1).isVisible = flagFabMode
+        (activity as NoteActivity).fab.imageMatrix = matrix
     }
 }
