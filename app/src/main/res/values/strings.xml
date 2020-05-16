@@ -67,6 +67,7 @@
 
     <string name="title_dialog_select_week">Select week</string>
     <string name="title_dialog_remove_schedule">Remove schedule</string>
+    <string name="title_dialog_remove_note">Remove notes</string>
 
     <string name="btn_cancel">Cancel</string>
     <string name="btn_add">Add</string>

@@ -10,6 +10,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import com.example.schedule.util.RequestCode
 import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.activity_add_note.*
 import kotlinx.android.synthetic.main.activity_add_note.fab
@@ -49,6 +50,16 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         et_lesson_note.addTextChangedListener {
             lesson = it.toString()
         }
+
+        if (intent.extras?.getInt("REQUEST_CODE") == RequestCode.REQUEST_CHANGE_NOTE_FRAGMENT) {
+            et_lesson_note.setText(intent.extras!!.getString("lesson").toString())
+            lesson = intent.extras!!.getString("lesson").toString()
+            et_note_schedule.setText(intent.extras!!.getString("note").toString())
+            note = intent.extras!!.getString("note").toString()
+            btn_deadline_note.text = intent.extras!!.getString("deadline").toString()
+            deadline = intent.extras!!.getString("deadline").toString()
+        }
+
         checkMandatoryItem()
     }
 
@@ -117,6 +128,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
 
     private fun sendDataResult() {
         val data = Intent()
+        data.putExtra("itemId", intent.extras?.getLong("itemId"))
         data.putExtra("note", note)
         data.putExtra("lesson", lesson)
         data.putExtra("deadline", deadline)

@@ -206,7 +206,7 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
 
         view?.ll_no_lesson_fr_schedule?.isVisible = itemAdapter.itemCount == 0
 
-        CustomDialog(this, position).show(childFragmentManager, "remove_dialog")
+        context?.getString(R.string.title_dialog_remove_schedule)?.let { CustomDialog(it, this, position).show(childFragmentManager, "remove_dialog") }
     }
 
     override fun onClickPositiveBtn(position: Int) {

@@ -11,6 +11,7 @@ import com.example.schedule.interfaces.DialogRemoveListener
 import kotlinx.android.synthetic.main.dialog_delete.view.*
 
 class CustomDialog(
+    var title: String,
     var dialogRemoveListener: DialogRemoveListener,
     var position: Int
 ) : DialogFragment(), View.OnClickListener {
@@ -22,6 +23,7 @@ class CustomDialog(
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.dialog_delete, null)
+        view.title_dialog.text = title
         view.btn_positive_dialog.setOnClickListener(this)
         view.btn_negative_dialog.setOnClickListener(this)
         dialog?.window?.setBackgroundDrawableResource(R.drawable.dialog_style)
