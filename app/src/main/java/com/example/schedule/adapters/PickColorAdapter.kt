@@ -4,11 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.RelativeLayout
-import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.R
+import com.example.schedule.database.Palette
 import com.example.schedule.interfaces.PickColorListener
 import kotlinx.android.synthetic.main.item_color.view.*
 
@@ -41,7 +39,7 @@ class PickColorAdapter(
                 listColor[i].select = false
             }
             listColor[position].select = true
-            pickColorListener.onPick(listColor[position].color)
+            pickColorListener.onPick(position)
             notifyDataSetChanged()
         }
     }

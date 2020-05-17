@@ -1,6 +1,7 @@
 package com.example.schedule.adapters
 
 import android.content.Context
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +31,15 @@ class NoteAdapter(
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val itemList: Note = listNote[position]
-        holder.itemView.card_note.background.setTint(listNote[position].color)
+        if (listNote[position].color != -1) {
+            holder.itemView.card_note.background.setTint(context.resources.getIntArray(R.array.rainbow)[listNote[position].color])
+        } else {
+            val a: TypedValue = TypedValue()
+            context.theme.resolveAttribute(android.R.attr.windowBackground, a, true)
+            if (a.type >= TypedValue.TYPE_FIRST_COLOR_INT && a.type <= TypedValue.TYPE_LAST_COLOR_INT) {
+                holder.itemView.card_note.background.setTint(a.data)
+            }
+        }
         holder.itemView.lesson_item_rv_note.text = itemList.lesson
         holder.itemView.lesson_item_rv_note.isVisible = !(holder.itemView.lesson_item_rv_note.text.toString() == "")
         holder.itemView.note_item_rv_note.text = itemList.note

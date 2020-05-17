@@ -1,7 +1,6 @@
 package com.example.schedule.dialogs
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.schedule.R
-import com.example.schedule.adapters.Palette
+import com.example.schedule.database.Palette
 import com.example.schedule.adapters.PickColorAdapter
 import com.example.schedule.interfaces.DialogRemoveListener
 import com.example.schedule.interfaces.PickColorListener
@@ -32,7 +31,12 @@ class PickColorDialog(
         val palette: IntArray = context?.resources!!.getIntArray(R.array.rainbow)
         val listColor: ArrayList<Palette> = ArrayList()
         for (i in 0 until palette.size) {
-            listColor.add(Palette(palette[i], false))
+            listColor.add(
+                Palette(
+                    palette[i],
+                    false
+                )
+            )
         }
         view.recyclerView.adapter = PickColorAdapter(this, listColor)
         view.btn_positive_dialog.setOnClickListener(this)

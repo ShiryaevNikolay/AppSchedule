@@ -1,4 +1,4 @@
-package com.example.schedule.adapters
+package com.example.schedule.database
 
 class Palette (
     val color: Int,

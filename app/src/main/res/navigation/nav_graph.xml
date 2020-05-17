@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragmentCalendarMainActivity">
 
+    <fragment
+        android:id="@+id/fragmentCalendarMainActivity"
+        android:name="com.example.schedule.fragments.FragmentCalendarMainActivity"
+        android:label="fr_calendar_main_activity"
+        tools:layout="@layout/fr_calendar_main_activity" />
+    <fragment
+        android:id="@+id/fragmentWeekMainActivity"
+        android:name="com.example.schedule.fragments.FragmentWeekMainActivity"
+        android:label="fr_week_main_activity"
+        tools:layout="@layout/fr_week_main_activity" />
 </navigation>

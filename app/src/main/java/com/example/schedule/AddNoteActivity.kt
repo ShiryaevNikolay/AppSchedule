@@ -27,7 +27,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
     private var lesson: String = ""
     private var deadline: String = ""
     private var defaultColor: Int = 0
-    private var bgColor: Int = 0
+    private var bgColor: Int = -1
     private var flagModeFab = false
     private lateinit var animShowFab: Animation
 
@@ -41,7 +41,6 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         if (a.type >= TypedValue.TYPE_FIRST_COLOR_INT && a.type <= TypedValue.TYPE_LAST_COLOR_INT) {
             defaultColor = a.data
         }
-        bgColor = defaultColor
 
         toolbar.menu.getItem(0).isVisible = false
         toolbar.menu.getItem(1).isVisible = false
@@ -71,8 +70,8 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
             note = intent.extras!!.getString("note").toString()
             btn_deadline_note.text = intent.extras!!.getString("deadline").toString()
             deadline = intent.extras!!.getString("deadline").toString()
-            btn_bg_color_note.background.setTint(intent.extras!!.getInt("bgColor"))
             bgColor = intent.extras!!.getInt("bgColor")
+            btn_bg_color_note.background.setTint(this.resources.getIntArray(R.array.rainbow)[bgColor])
         }
 
         checkMandatoryItem()
@@ -160,12 +159,12 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
     }
 
     override fun onClickPositiveBtn(position: Int) {
-        bgColor = defaultColor
-        btn_bg_color_note.background.setTint(bgColor)
+        bgColor = -1
+        btn_bg_color_note.background.setTint(defaultColor)
     }
 
     override fun onClickNegativeBtn(position: Int) {
         bgColor = position
-        btn_bg_color_note.background.setTint(bgColor)
+        btn_bg_color_note.background.setTint(this.resources.getIntArray(R.array.rainbow)[position])
     }
 }

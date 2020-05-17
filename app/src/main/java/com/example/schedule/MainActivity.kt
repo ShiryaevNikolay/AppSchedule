@@ -3,17 +3,25 @@ package com.example.schedule
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import com.example.schedule.fragments.FragmentCalendarMainActivity
+import com.example.schedule.fragments.FragmentWeekMainActivity
 import com.example.schedule.interfaces.ChangeTitleToolbarInterface
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-class MainActivity : AppCompatActivity(), ChangeTitleToolbarInterface {
+class MainActivity : AppCompatActivity(), ChangeTitleToolbarInterface, MenuItem.OnMenuItemClickListener {
 
-    var currentDayInt: Int = 0
+    private var currentDayInt: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        toolbar.menu.getItem(0).setOnMenuItemClickListener(this)
+        toolbar.menu.getItem(1).setOnMenuItemClickListener(this)
 
         when (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
             Calendar.MONDAY -> {
@@ -70,5 +78,15 @@ class MainActivity : AppCompatActivity(), ChangeTitleToolbarInterface {
             5 -> toolbar.title = applicationContext.resources.getString(R.string.saturday)
             6 -> toolbar.title = applicationContext.resources.getString(R.string.sunday)
         }
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        when(item?.itemId) {
+            R.id.item_calendar -> {
+            }
+            R.id.item_settings -> {
+            }
+        }
+        return true
     }
 }
