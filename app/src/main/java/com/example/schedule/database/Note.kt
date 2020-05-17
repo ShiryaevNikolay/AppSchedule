@@ -11,5 +11,6 @@ class Note(
     var note: String,
     var lesson: String,
     var deadline: String,
-    var checkbox: Boolean
+    var checkbox: Boolean,
+    var color: Int
 )

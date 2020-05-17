@@ -30,6 +30,7 @@ class NoteAdapter(
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val itemList: Note = listNote[position]
+        holder.itemView.card_note.background.setTint(listNote[position].color)
         holder.itemView.lesson_item_rv_note.text = itemList.lesson
         holder.itemView.lesson_item_rv_note.isVisible = !(holder.itemView.lesson_item_rv_note.text.toString() == "")
         holder.itemView.note_item_rv_note.text = itemList.note

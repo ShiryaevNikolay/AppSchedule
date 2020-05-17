@@ -110,13 +110,18 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
             val note: Note?
             if (data != null) {
                 if (requestCode == RequestCode.REQUEST_NOTE_ACTIVITY) {
-                    note = Note(
-                        note = data.getStringExtra("note")!!,
-                        lesson = data.getStringExtra("lesson")!!,
-                        deadline = data.getStringExtra("deadline")!!,
-                        checkbox = false
-                    )
-                    noteFragmentViewModel.insert(note)
+                    note = data.extras?.getInt("bgColor")?.let {
+                        Note(
+                            note = data.getStringExtra("note")!!,
+                            lesson = data.getStringExtra("lesson")!!,
+                            deadline = data.getStringExtra("deadline")!!,
+                            checkbox = false,
+                            color = it
+                        )
+                    }
+                    if (note != null) {
+                        noteFragmentViewModel.insert(note)
+                    }
                 } else {
                     note = data.extras?.getLong("itemId")?.let {
                         Note(
@@ -124,7 +129,8 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
                             note = data.getStringExtra("note")!!,
                             lesson = data.getStringExtra("lesson")!!,
                             deadline = data.getStringExtra("deadline")!!,
-                            checkbox = false
+                            checkbox = false,
+                            color = data.extras!!.getInt("bgColor")
                         )
                     }
                     if (note != null) {
@@ -213,6 +219,7 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
         intent.putExtra("lesson", note.lesson)
         intent.putExtra("note", note.note)
         intent.putExtra("deadline", note.deadline)
+        intent.putExtra("bgColor", note.color)
         startActivityForResult(intent, RequestCode.REQUEST_CHANGE_NOTE_FRAGMENT)
     }
 

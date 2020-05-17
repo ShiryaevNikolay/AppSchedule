@@ -68,10 +68,13 @@
     <string name="title_dialog_select_week">Select week</string>
     <string name="title_dialog_remove_schedule">Remove schedule</string>
     <string name="title_dialog_remove_note">Remove notes</string>
+    <string name="title_dialog_select_color">Select color</string>
 
+    <string name="btn_dropping">Dropping</string>
     <string name="btn_cancel">Cancel</string>
     <string name="btn_add">Add</string>
     <string name="btn_remove">Remove</string>
+    <string name="btn_select">Select</string>
 
     <string name="no_lesson">No lessons</string>
     <string name="img_no_lesson">No lessons</string>

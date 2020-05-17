@@ -4,12 +4,16 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
+import com.example.schedule.dialogs.PickColorDialog
+import com.example.schedule.interfaces.DialogRemoveListener
 import com.example.schedule.util.RequestCode
 import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.activity_add_note.*
@@ -17,11 +21,13 @@ import kotlinx.android.synthetic.main.activity_add_note.fab
 import kotlinx.android.synthetic.main.activity_add_note.toolbar
 import java.util.*
 
-class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMenuItemClickListener {
+class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMenuItemClickListener, DialogRemoveListener {
 
     private var note: String = ""
     private var lesson: String = ""
     private var deadline: String = ""
+    private var defaultColor: Int = 0
+    private var bgColor: Int = 0
     private var flagModeFab = false
     private lateinit var animShowFab: Animation
 
@@ -30,6 +36,12 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         setContentView(R.layout.activity_add_note)
 
         animShowFab = AnimationUtils.loadAnimation(this, R.anim.fab_show)
+        val a: TypedValue = TypedValue()
+        theme.resolveAttribute(android.R.attr.windowBackground, a, true)
+        if (a.type >= TypedValue.TYPE_FIRST_COLOR_INT && a.type <= TypedValue.TYPE_LAST_COLOR_INT) {
+            defaultColor = a.data
+        }
+        bgColor = defaultColor
 
         toolbar.menu.getItem(0).isVisible = false
         toolbar.menu.getItem(1).isVisible = false
@@ -41,6 +53,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         }
 
         btn_deadline_note.setOnClickListener(this)
+        btn_bg_color_note.setOnClickListener(this)
         fab.setOnClickListener(this)
 
         et_note_schedule.addTextChangedListener {
@@ -58,6 +71,8 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
             note = intent.extras!!.getString("note").toString()
             btn_deadline_note.text = intent.extras!!.getString("deadline").toString()
             deadline = intent.extras!!.getString("deadline").toString()
+            btn_bg_color_note.background.setTint(intent.extras!!.getInt("bgColor"))
+            bgColor = intent.extras!!.getInt("bgColor")
         }
 
         checkMandatoryItem()
@@ -67,6 +82,9 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         when(v?.id) {
             R.id.btn_deadline_note -> {
                 callDatePicker()
+            }
+            R.id.btn_bg_color_note -> {
+                openColorPicker()
             }
             R.id.fab -> {
                 if (flagModeFab) {
@@ -126,13 +144,28 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         }
     }
 
+    private fun openColorPicker() {
+        PickColorDialog(bgColor, this).show(supportFragmentManager, "pick_color")
+    }
+
     private fun sendDataResult() {
         val data = Intent()
         data.putExtra("itemId", intent.extras?.getLong("itemId"))
         data.putExtra("note", note)
         data.putExtra("lesson", lesson)
         data.putExtra("deadline", deadline)
+        data.putExtra("bgColor", bgColor)
         setResult(Activity.RESULT_OK, data)
         finish()
+    }
+
+    override fun onClickPositiveBtn(position: Int) {
+        bgColor = defaultColor
+        btn_bg_color_note.background.setTint(bgColor)
+    }
+
+    override fun onClickNegativeBtn(position: Int) {
+        bgColor = position
+        btn_bg_color_note.background.setTint(bgColor)
     }
 }
