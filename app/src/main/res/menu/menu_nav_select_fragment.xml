@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/fragmentCalendarMainActivity"
+        android:icon="@drawable/ic_calendar"
+        android:title="@string/menu_nav_main_month"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/fragmentWeekMainActivity"
+        android:icon="@drawable/ic_calendar_text"
+        android:title="@string/menu_nav_main_day"
+        app:showAsAction="ifRoom"/>
+</menu>

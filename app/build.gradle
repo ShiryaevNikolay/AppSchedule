@@ -58,4 +58,6 @@ dependencies {
     kapt 'android.arch.lifecycle:compiler:1.1.1'
     implementation 'android.arch.lifecycle:common-java8:1.1.1'
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.2'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
 }

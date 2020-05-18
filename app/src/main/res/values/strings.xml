@@ -3,6 +3,9 @@
 
     <string name="note_title_toolbar">Notes</string>
 
+    <string name="menu_nav_main_month">Month</string>
+    <string name="menu_nav_main_day">Day</string>
+
     <string name="monday">Monday</string>
     <string name="tuesday">Tuesday</string>
     <string name="wednesday">Wednesday</string>

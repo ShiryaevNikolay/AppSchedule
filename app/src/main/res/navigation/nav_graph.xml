@@ -1,18 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/fragmentCalendarMainActivity">
+    app:startDestination="@id/fragmentWeekMainActivity"
+    tools:ignore="UnusedNavigation">
 
-    <fragment
-        android:id="@+id/fragmentCalendarMainActivity"
-        android:name="com.example.schedule.fragments.FragmentCalendarMainActivity"
-        android:label="fr_calendar_main_activity"
-        tools:layout="@layout/fr_calendar_main_activity" />
     <fragment
         android:id="@+id/fragmentWeekMainActivity"
         android:name="com.example.schedule.fragments.FragmentWeekMainActivity"
         android:label="fr_week_main_activity"
-        tools:layout="@layout/fr_week_main_activity" />
+        tools:layout="@layout/fr_week_main_activity" >
+        <action
+            android:id="@+id/action_fragmentWeekMainActivity_to_fragmentCalendarMainActivity"
+            app:destination="@id/fragmentCalendarMainActivity"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentCalendarMainActivity"
+        android:name="com.example.schedule.fragments.FragmentCalendarMainActivity"
+        android:label="fr_calendar_main_activity"
+        tools:layout="@layout/fr_calendar_main_activity" >
+        <action
+            android:id="@+id/action_fragmentCalendarMainActivity_to_fragmentWeekMainActivity"
+            app:destination="@id/fragmentWeekMainActivity"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 </navigation>

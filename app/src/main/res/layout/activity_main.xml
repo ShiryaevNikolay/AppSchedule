@@ -14,21 +14,24 @@
         app:subtitle="week 1"
         app:menu="@menu/menu_toolbar_main_activity"/>
 
-    <LinearLayout
-        android:id="@+id/ll_main_activity"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view_select_fragment_main_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/menu_nav_select_fragment"
+        android:layout_below="@+id/toolbar"
+        app:elevation="0dp"
+        android:visibility="gone"/>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fr_main_activity"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph"
         android:layout_above="@+id/nav_view_main_activity"
-        android:layout_below="@+id/toolbar">
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fr_main_activity"
-            android:name="com.example.schedule.fragments.FragmentWeekMainActivity"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-    </LinearLayout>
+        android:layout_below="@+id/nav_view_select_fragment_main_activity"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view_main_activity"

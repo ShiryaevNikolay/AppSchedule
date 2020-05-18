@@ -4,8 +4,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import com.example.schedule.fragments.FragmentCalendarMainActivity
 import com.example.schedule.fragments.FragmentWeekMainActivity
 import com.example.schedule.interfaces.ChangeTitleToolbarInterface
@@ -22,6 +26,10 @@ class MainActivity : AppCompatActivity(), ChangeTitleToolbarInterface, MenuItem.
 
         toolbar.menu.getItem(0).setOnMenuItemClickListener(this)
         toolbar.menu.getItem(1).setOnMenuItemClickListener(this)
+
+        val host: NavHostFragment = supportFragmentManager.findFragmentById(R.id.fr_main_activity) as NavHostFragment
+        val navController = host.navController
+        NavigationUI.setupWithNavController(nav_view_select_fragment_main_activity, navController)
 
         when (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
             Calendar.MONDAY -> {
@@ -66,6 +74,21 @@ class MainActivity : AppCompatActivity(), ChangeTitleToolbarInterface, MenuItem.
                 else -> false
             }
         }
+        nav_view_select_fragment_main_activity.setOnNavigationItemSelectedListener {
+            when(it.itemId) {
+                R.id.fragmentWeekMainActivity -> {
+                    toolbar.menu.getItem(0).setIcon(R.drawable.ic_calendar_text)
+                    navController.navigate(R.id.fragmentWeekMainActivity)
+                    true
+                }
+                R.id.fragmentCalendarMainActivity -> {
+                    toolbar.menu.getItem(0).setIcon(R.drawable.ic_calendar)
+                    navController.navigate(R.id.fragmentCalendarMainActivity)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     override fun changeTitle(position: Int) {
@@ -82,7 +105,8 @@ class MainActivity : AppCompatActivity(), ChangeTitleToolbarInterface, MenuItem.
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when(item?.itemId) {
-            R.id.item_calendar -> {
+            R.id.item_fr_view -> {
+                nav_view_select_fragment_main_activity.isVisible = !nav_view_select_fragment_main_activity.isVisible
             }
             R.id.item_settings -> {
             }
