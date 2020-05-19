@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -97,7 +98,6 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        scheduleFragmentViewModel = ViewModelProviders.of(this).get(ScheduleFragmentViewModel::class.java)
         if (savedInstanceState != null) {
             daySchedule = savedInstanceState.getInt("daySchedule")
             requestCode = savedInstanceState.getInt("requestCode")
@@ -115,12 +115,13 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
         view.ll_no_lesson_fr_schedule?.isVisible = listSchedule.count() == 0
         itemAdapter = ScheduleAdapter(requestCode, this)
         view.recyclerView.adapter = itemAdapter
+        scheduleFragmentViewModel = ViewModelProviders.of(this).get(ScheduleFragmentViewModel::class.java)
         scheduleFragmentViewModel.getAllListByDay(daySchedule).observe(viewLifecycleOwner, object : Observer<List<Schedule>> {
             override fun onChanged(t: List<Schedule>?) {
                 if (t != null) {
                     listSchedule =
                         ArrayList(t.sortedWith(compareBy({it.timeStart})))
-                    if (listSchedule.count() != 0) sortListWeek()
+                    if (listSchedule.count() > 1) listSchedule = sortListWeek()
                     itemAdapter.setListSchedule(listSchedule)
                     view.ll_no_lesson_fr_schedule?.isVisible = listSchedule.count() == 0
                 }
@@ -161,10 +162,9 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            var schedule: Schedule?
             if (data != null) {
                 if (requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
-                    schedule = Schedule(
+                    var schedule: Schedule = Schedule(
                         lesson = data.getStringExtra("lesson")!!,
                         teacher = data.getStringExtra("teacher")!!,
                         auditorium = data.getStringExtra("auditorium")!!,
@@ -177,7 +177,7 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
                     )
                     scheduleFragmentViewModel.insert(schedule)
                 } else {
-                    schedule = data.extras?.getLong("itemId")?.let {
+                    var schedule: Schedule = data.extras?.getLong("itemId")?.let {
                         Schedule(
                             id = it,
                             lesson = data.getStringExtra("lesson")!!,
@@ -190,10 +190,8 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
                             week = data.getStringExtra("week")!!,
                             day = data.extras?.getInt("day")!!
                         )
-                    }
-                    if (schedule != null) {
-                        scheduleFragmentViewModel.update(schedule)
-                    }
+                    }!!
+                    scheduleFragmentViewModel.update(schedule)
                 }
             }
         }
@@ -238,26 +236,27 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
         startActivityForResult(intent, RequestCode.REQUEST_CHANGE_SCHEDULE_FRAGMENT)
     }
 
-    private fun sortListWeek() {
-        if (listSchedule.count() > 1) {
-            val sortedList: ArrayList<Schedule> = ArrayList()
-            var i = 1
-            while (i < listSchedule.size) {
-                if (listSchedule[i-1].timeStart != listSchedule[i].timeStart) {
-                    sortedList.add(listSchedule[i-1])
-                } else if (listSchedule[i-1].week == "1") {
-                    sortedList.add(listSchedule[i-1])
-                    sortedList.add(listSchedule[i])
-                    i += 1
-                } else {
-                    sortedList.add(listSchedule[i])
-                    sortedList.add(listSchedule[i-1])
-                    i += 1
-                }
+    private fun sortListWeek(): ArrayList<Schedule> {
+        val sortedList: ArrayList<Schedule> = ArrayList()
+        var i = 1
+        while (i < listSchedule.size) {
+            if (listSchedule[i-1].timeStart != listSchedule[i].timeStart) {
+                sortedList.add(listSchedule[i-1])
+            } else if (listSchedule[i-1].week == "1") {
+                sortedList.add(listSchedule[i-1])
+                sortedList.add(listSchedule[i])
+                i += 1
+            } else {
+                sortedList.add(listSchedule[i])
+                sortedList.add(listSchedule[i-1])
                 i += 1
             }
-            listSchedule = sortedList
+            i += 1
+            if (i == listSchedule.size) {
+                sortedList.add(listSchedule[i-1])
+            }
         }
+        return sortedList
     }
 
     override fun onClickFab(daySchedule: Int) {

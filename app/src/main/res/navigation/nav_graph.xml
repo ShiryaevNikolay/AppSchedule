@@ -14,11 +14,7 @@
         tools:layout="@layout/fr_week_main_activity" >
         <action
             android:id="@+id/action_fragmentWeekMainActivity_to_fragmentCalendarMainActivity"
-            app:destination="@id/fragmentCalendarMainActivity"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left" />
+            app:destination="@id/fragmentCalendarMainActivity" />
     </fragment>
     <fragment
         android:id="@+id/fragmentCalendarMainActivity"
@@ -27,10 +23,6 @@
         tools:layout="@layout/fr_calendar_main_activity" >
         <action
             android:id="@+id/action_fragmentCalendarMainActivity_to_fragmentWeekMainActivity"
-            app:destination="@id/fragmentWeekMainActivity"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/fragmentWeekMainActivity" />
     </fragment>
 </navigation>

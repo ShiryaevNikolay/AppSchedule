@@ -26,9 +26,11 @@ class FragmentWeekMainActivity : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.fr_week_main_activity, container, false)
         view.tabLayout.isVisible = false
+        (activity as MainActivity).nav_view_select_fragment_main_activity.isVisible = false
         (activity as MainActivity).toolbar.getChildAt(0).setOnClickListener {
             view.tabLayout.isVisible = !view.tabLayout.isVisible
         }
+        (activity as MainActivity).toolbar.menu.getItem(0).setIcon(R.drawable.ic_calendar_text)
         initPager(view.viewPager, view.tabLayout)
         view.viewPager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
