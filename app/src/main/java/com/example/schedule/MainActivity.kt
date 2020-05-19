@@ -79,11 +79,13 @@ class MainActivity : AppCompatActivity(), ChangeTitleToolbarInterface, MenuItem.
                 R.id.fragmentWeekMainActivity -> {
                     toolbar.menu.getItem(0).setIcon(R.drawable.ic_calendar_text)
                     navController.navigate(R.id.fragmentWeekMainActivity)
+//                    nav_view_select_fragment_main_activity.isVisible = false
                     true
                 }
                 R.id.fragmentCalendarMainActivity -> {
                     toolbar.menu.getItem(0).setIcon(R.drawable.ic_calendar)
                     navController.navigate(R.id.fragmentCalendarMainActivity)
+//                    nav_view_select_fragment_main_activity.isVisible = false
                     true
                 }
                 else -> false

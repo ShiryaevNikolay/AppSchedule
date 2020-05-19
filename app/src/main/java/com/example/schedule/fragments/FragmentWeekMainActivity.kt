@@ -55,12 +55,7 @@ class FragmentWeekMainActivity : Fragment() {
     }
 
     private fun initPager(viewPager: ViewPager, tabLayout: TabLayout) {
-        val adapter = context?.let { activity?.supportFragmentManager?.let { it1 ->
-            TabsPagerFragmentAdapter(it,
-                it1,
-                RequestCode.REQUEST_MAIN_ACTIVITY
-            )
-        } }
+        val adapter = context?.let { TabsPagerFragmentAdapter(it, childFragmentManager, RequestCode.REQUEST_MAIN_ACTIVITY) }
         viewPager.adapter = adapter
         when (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
             Calendar.MONDAY -> viewPager.currentItem = 0
