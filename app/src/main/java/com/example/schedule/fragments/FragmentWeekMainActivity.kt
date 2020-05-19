@@ -6,22 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.room.Insert
 import androidx.viewpager.widget.ViewPager
 import com.example.schedule.MainActivity
 import com.example.schedule.R
 import com.example.schedule.adapters.TabsPagerFragmentAdapter
-import com.example.schedule.database.room.AppRoomDatabase
-import com.example.schedule.interfaces.ChangeTitleToolbarInterface
-import com.example.schedule.util.App
 import com.example.schedule.util.RequestCode
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fr_week_main_activity.*
 import kotlinx.android.synthetic.main.fr_week_main_activity.view.*
 import kotlinx.android.synthetic.main.fr_week_main_activity.view.tabLayout
 import java.util.*
-import javax.inject.Inject
 
 class FragmentWeekMainActivity : Fragment() {
 
@@ -36,7 +30,6 @@ class FragmentWeekMainActivity : Fragment() {
             view.tabLayout.isVisible = !view.tabLayout.isVisible
         }
         initPager(view.viewPager, view.tabLayout)
-        val changeTitleToolbarInterface: ChangeTitleToolbarInterface = activity as ChangeTitleToolbarInterface
         view.viewPager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
@@ -47,7 +40,7 @@ class FragmentWeekMainActivity : Fragment() {
             ) {
             }
             override fun onPageSelected(position: Int) {
-                changeTitleToolbarInterface.changeTitle(position)
+                changeTitle(position)
             }
 
         })
@@ -58,16 +51,49 @@ class FragmentWeekMainActivity : Fragment() {
         val adapter = context?.let { TabsPagerFragmentAdapter(it, childFragmentManager, RequestCode.REQUEST_MAIN_ACTIVITY) }
         viewPager.adapter = adapter
         when (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
-            Calendar.MONDAY -> viewPager.currentItem = 0
-            Calendar.TUESDAY -> viewPager.currentItem = 1
-            Calendar.WEDNESDAY -> viewPager.currentItem = 2
-            Calendar.THURSDAY -> viewPager.currentItem = 3
-            Calendar.FRIDAY -> viewPager.currentItem = 4
-            Calendar.SATURDAY -> viewPager.currentItem = 5
-            Calendar.SUNDAY -> viewPager.currentItem = 6
+            Calendar.MONDAY -> {
+                viewPager.currentItem = 0
+                (activity as MainActivity).toolbar.title = context?.resources?.getString(R.string.monday)
+            }
+            Calendar.TUESDAY -> {
+                viewPager.currentItem = 1
+                (activity as MainActivity).toolbar.title = context?.resources?.getString(R.string.tuesday)
+            }
+            Calendar.WEDNESDAY -> {
+                viewPager.currentItem = 2
+                (activity as MainActivity).toolbar.title = context?.resources?.getString(R.string.wednesday)
+            }
+            Calendar.THURSDAY -> {
+                viewPager.currentItem = 3
+                (activity as MainActivity).toolbar.title = context?.resources?.getString(R.string.thursday)
+            }
+            Calendar.FRIDAY -> {
+                viewPager.currentItem = 4
+                (activity as MainActivity).toolbar.title = context?.resources?.getString(R.string.friday)
+            }
+            Calendar.SATURDAY -> {
+                viewPager.currentItem = 5
+                (activity as MainActivity).toolbar.title = context?.resources?.getString(R.string.saturday)
+            }
+            Calendar.SUNDAY -> {
+                viewPager.currentItem = 6
+                (activity as MainActivity).toolbar.title = context?.resources?.getString(R.string.sunday)
+            }
         }
         tabLayout.setupWithViewPager(viewPager)
         tabLayout.setScrollPosition(viewPager.currentItem, 0f, true)
         viewPager.currentItem = tabLayout.selectedTabPosition
+    }
+
+    fun changeTitle(position: Int) {
+        when (position) {
+            0 -> (activity as MainActivity).toolbar.title = context?.resources?.getString(R.string.monday)
+            1 -> (activity as MainActivity).toolbar.title = context?.resources?.getString(R.string.tuesday)
+            2 -> (activity as MainActivity).toolbar.title = context?.resources?.getString(R.string.wednesday)
+            3 -> (activity as MainActivity).toolbar.title = context?.resources?.getString(R.string.thursday)
+            4 -> (activity as MainActivity).toolbar.title = context?.resources?.getString(R.string.friday)
+            5 -> (activity as MainActivity).toolbar.title = context?.resources?.getString(R.string.saturday)
+            6 -> (activity as MainActivity).toolbar.title = context?.resources?.getString(R.string.sunday)
+        }
     }
 }
