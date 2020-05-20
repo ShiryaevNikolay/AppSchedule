@@ -14,18 +14,31 @@
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
 
-    <string name="january">Jan</string>
-    <string name="february">Feb</string>
-    <string name="march">Mar</string>
-    <string name="april">Apr</string>
+    <string name="jan">Jan</string>
+    <string name="feb">Feb</string>
+    <string name="mar">Mar</string>
+    <string name="apr">Apr</string>
+    <string name="may_abbreviated">May</string>
+    <string name="june_abbreviated">June</string>
+    <string name="july_abbreviated">July</string>
+    <string name="aug">Aug</string>
+    <string name="sept">Sept</string>
+    <string name="oct">Oct</string>
+    <string name="nov">Nov</string>
+    <string name="dec">Dec</string>
+
+    <string name="january">January</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">April</string>
     <string name="may">May</string>
     <string name="june">June</string>
     <string name="july">July</string>
-    <string name="august">Aug</string>
-    <string name="september">Sept</string>
-    <string name="october">Oct</string>
-    <string name="november">Nov</string>
-    <string name="december">Dec</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
 
     <string name="tab_title_mon">Mon</string>
     <string name="tab_title_tues">Tues</string>

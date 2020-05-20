@@ -10,12 +10,10 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.example.schedule.dialogs.PickColorDialog
 import com.example.schedule.interfaces.DialogRemoveListener
 import com.example.schedule.util.RequestCode
-import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.activity_add_note.*
 import kotlinx.android.synthetic.main.activity_add_note.fab
 import kotlinx.android.synthetic.main.activity_add_note.toolbar
@@ -108,18 +106,18 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         val dialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             var fullDateFix: String = if (dayOfMonth < 10) "0$dayOfMonth, " else "$dayOfMonth, "
             when(month) {
-                0 -> fullDateFix += this.resources.getString(R.string.january)
-                1 -> fullDateFix += this.resources.getString(R.string.february)
-                2 -> fullDateFix += this.resources.getString(R.string.march)
-                3 -> fullDateFix += this.resources.getString(R.string.april)
-                4 -> fullDateFix += this.resources.getString(R.string.may)
-                5 -> fullDateFix += this.resources.getString(R.string.june)
-                6 -> fullDateFix += this.resources.getString(R.string.july)
-                7 -> fullDateFix += this.resources.getString(R.string.august)
-                8 -> fullDateFix += this.resources.getString(R.string.september)
-                9 -> fullDateFix += this.resources.getString(R.string.october)
-                10 -> fullDateFix += this.resources.getString(R.string.november)
-                11 -> fullDateFix += this.resources.getString(R.string.december)
+                0 -> fullDateFix += this.resources.getString(R.string.jan)
+                1 -> fullDateFix += this.resources.getString(R.string.feb)
+                2 -> fullDateFix += this.resources.getString(R.string.mar)
+                3 -> fullDateFix += this.resources.getString(R.string.apr)
+                4 -> fullDateFix += this.resources.getString(R.string.may_abbreviated)
+                5 -> fullDateFix += this.resources.getString(R.string.june_abbreviated)
+                6 -> fullDateFix += this.resources.getString(R.string.july_abbreviated)
+                7 -> fullDateFix += this.resources.getString(R.string.aug)
+                8 -> fullDateFix += this.resources.getString(R.string.sept)
+                9 -> fullDateFix += this.resources.getString(R.string.oct)
+                10 -> fullDateFix += this.resources.getString(R.string.nov)
+                11 -> fullDateFix += this.resources.getString(R.string.dec)
             }
             fullDateFix += ", $year"
             btn_deadline_note.text = fullDateFix
