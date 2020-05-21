@@ -56,6 +56,9 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (savedInstanceState != null) {
+            selectStyleListNote = savedInstanceState.getInt("selectStyleListNote")
+        }
         noteFragmentViewModel = ViewModelProviders.of(this).get(NoteFragmentViewModel::class.java)
         animShowFab = AnimationUtils.loadAnimation(context, R.anim.fab_show)
     }
@@ -102,6 +105,11 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
             }
         })
         return view
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("selectStyleListNote", selectStyleListNote)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

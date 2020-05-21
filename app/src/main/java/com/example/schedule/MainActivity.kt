@@ -43,6 +43,8 @@ class MainActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
                 nav_view_select_fragment_main_activity.isVisible = !nav_view_select_fragment_main_activity.isVisible
             }
             R.id.item_settings -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
+                finish()
             }
         }
         return true

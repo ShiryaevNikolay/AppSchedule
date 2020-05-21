@@ -78,7 +78,7 @@
     <string name="week1">Week 1</string>
     <string name="week2">Week 2</string>
     <string name="every_week">Every week</string>
-    
+
     <string name="there_are_lessons_at_this_time">There are lessons at this time</string>
 
     <string name="title_dialog_select_week">Select week</string>
@@ -103,4 +103,8 @@
     <string name="grid">Grid</string>
     <string name="dashboard">Dashboard</string>
     <string name="list">List</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Sync Preferences -->
+    <string name="theme_mode_title">Dark theme</string>
 </resources>
