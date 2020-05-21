@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="amber_900">#FF6F00</color>
+    <color name="blue_gray_900">#263238</color>
+    <color name="brown_900">#3E2723</color>
+    <color name="deep_orange_900">#BF360C</color>
+    <color name="orange_900">#E65100</color>
+    <color name="yellow_900">#F57F17</color>
+    <color name="lime_900">#827717</color>
+    <color name="light_green_900">#33691E</color>
+    <color name="green_900">#1B5E20</color>
+    <color name="teal_900">#004D40</color>
+    <color name="cyan_900">#006064</color>
+    <color name="light_blue_900">#01579B</color>
+    <color name="blue_900">#0D47A1</color>
+    <color name="indigo_900">#1A237E</color>
+    <color name="deep_purple_900">#311B92</color>
+    <color name="purple_900">#4A148C</color>
+    <color name="pink_900">#880E4F</color>
+
+    <array name="rainbow_dark">
+        <item>@color/amber_900</item>
+        <item>@color/blue_gray_900</item>
+        <item>@color/brown_900</item>
+        <item>@color/deep_orange_900</item>
+        <item>@color/orange_900</item>
+        <item>@color/yellow_900</item>
+        <item>@color/lime_900</item>
+        <item>@color/light_green_900</item>
+        <item>@color/green_900</item>
+        <item>@color/teal_900</item>
+        <item>@color/cyan_900</item>
+        <item>@color/light_blue_900</item>
+        <item>@color/blue_900</item>
+        <item>@color/indigo_900</item>
+        <item>@color/deep_purple_900</item>
+        <item>@color/purple_900</item>
+        <item>@color/pink_900</item>
+    </array>
+</resources>

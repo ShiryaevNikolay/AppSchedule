@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.R
 import com.example.schedule.database.Note
@@ -32,13 +34,20 @@ class NoteAdapter(
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val itemList: Note = listNote[position]
         if (listNote[position].color != -1) {
-            holder.itemView.card_note.background.setTint(context.resources.getIntArray(R.array.rainbow)[listNote[position].color])
+            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("theme_mode", false))
+                holder.itemView.card_note.background.setTint(context.resources.getIntArray(R.array.rainbow_dark)[listNote[position].color])
+            else
+                holder.itemView.card_note.background.setTint(context.resources.getIntArray(R.array.rainbow)[listNote[position].color])
         } else {
-            val a: TypedValue = TypedValue()
-            context.theme.resolveAttribute(android.R.attr.windowBackground, a, true)
-            if (a.type >= TypedValue.TYPE_FIRST_COLOR_INT && a.type <= TypedValue.TYPE_LAST_COLOR_INT) {
-                holder.itemView.card_note.background.setTint(a.data)
-            }
+//            val a: TypedValue = TypedValue()
+//            context.theme.resolveAttribute(android.R.attr.windowBackground, a, true)
+//            if (a.type >= TypedValue.TYPE_FIRST_COLOR_INT && a.type <= TypedValue.TYPE_LAST_COLOR_INT) {
+//                holder.itemView.card_note.background.setTint(a.data)
+//            }
+            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("theme_mode", false))
+                holder.itemView.card_note.background.setTint(ContextCompat.getColor(context, R.color.card_black))
+            else
+                holder.itemView.card_note.background.setTint(ContextCompat.getColor(context, R.color.card_white))
         }
         holder.itemView.lesson_item_rv_note.text = itemList.lesson
         holder.itemView.lesson_item_rv_note.isVisible = !(holder.itemView.lesson_item_rv_note.text.toString() == "")

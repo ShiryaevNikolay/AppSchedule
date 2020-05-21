@@ -75,7 +75,10 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
             btn_deadline_note.text = intent.extras!!.getString("deadline").toString()
             deadline = intent.extras!!.getString("deadline").toString()
             bgColor = intent.extras!!.getInt("bgColor")
-            btn_bg_color_note.background.setTint(this.resources.getIntArray(R.array.rainbow)[bgColor])
+            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("theme_mode", false))
+                btn_bg_color_note.background.setTint(this.resources.getIntArray(R.array.rainbow_dark)[bgColor])
+            else
+                btn_bg_color_note.background.setTint(this.resources.getIntArray(R.array.rainbow)[bgColor])
         }
 
         checkMandatoryItem()
@@ -169,6 +172,9 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
 
     override fun onClickNegativeBtn(position: Int) {
         bgColor = position
-        btn_bg_color_note.background.setTint(this.resources.getIntArray(R.array.rainbow)[position])
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("theme_mode", false))
+            btn_bg_color_note.background.setTint(this.resources.getIntArray(R.array.rainbow_dark)[bgColor])
+        else
+            btn_bg_color_note.background.setTint(this.resources.getIntArray(R.array.rainbow)[bgColor])
     }
 }

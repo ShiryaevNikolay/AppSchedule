@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.schedule.R
 import com.example.schedule.database.Palette
@@ -28,7 +29,11 @@ class PickColorDialog(
         val view: View = inflater.inflate(R.layout.dialog_color_pick, null)
         view.recyclerView.setHasFixedSize(true)
         view.recyclerView.layoutManager = GridLayoutManager(context, 5)
-        val palette: IntArray = context?.resources!!.getIntArray(R.array.rainbow)
+        var palette: IntArray?
+        if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("theme_mode", false))
+            palette = context?.resources!!.getIntArray(R.array.rainbow_dark)
+        else
+            palette = context?.resources!!.getIntArray(R.array.rainbow)
         val listColor: ArrayList<Palette> = ArrayList()
         for (i in 0 until palette.size) {
             listColor.add(
