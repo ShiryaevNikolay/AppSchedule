@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 import com.example.schedule.MainActivity
 import com.example.schedule.R
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -26,6 +27,10 @@ class FragmentCalendarMainActivity : Fragment() {
         (activity as MainActivity).toolbar.menu.getItem(0).setIcon(R.drawable.ic_calendar)
         setTitleToolbar(view.calendarView.currentDate.month)
         (activity as MainActivity).toolbar.subtitle = view.calendarView.currentDate.year.toString()
+        if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("theme_mode", false))
+            view.calendarView.setDateTextAppearance(R.style.CustomTextAppearanceDateDark)
+        else
+            view.calendarView.setDateTextAppearance(R.style.CustomTextAppearanceDateLight)
         view.calendarView.topbarVisible = false
         view.calendarView.selectedDate = CalendarDay.today()
         view.calendarView.setOnMonthChangedListener { _, date ->

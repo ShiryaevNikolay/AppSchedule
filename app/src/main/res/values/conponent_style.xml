@@ -37,4 +37,16 @@
     <style name="CheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:button">@drawable/selector_checkbox</item>
     </style>
+
+    <style name="CustomTextAppearanceDateLight" parent="TextAppearance.MaterialCalendarWidget.Date">
+        <item name="textAllCaps">true</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textColor">@color/mcv_text_date_light</item>
+    </style>
+
+    <style name="CustomTextAppearanceDateDark" parent="CustomTextAppearanceDateLight">
+        <item name="android:textColor">@color/mcv_text_date_dark</item>
+    </style>
 </resources>

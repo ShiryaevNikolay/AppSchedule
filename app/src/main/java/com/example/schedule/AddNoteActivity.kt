@@ -10,6 +10,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.preference.PreferenceManager
 import com.example.schedule.dialogs.PickColorDialog
@@ -45,6 +46,10 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         if (a.type >= TypedValue.TYPE_FIRST_COLOR_INT && a.type <= TypedValue.TYPE_LAST_COLOR_INT) {
             defaultColor = a.data
         }
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("theme_mode", false))
+            btn_bg_color_note.background.setTint(ContextCompat.getColor(this, R.color.card_black))
+        else
+            btn_bg_color_note.background.setTint(ContextCompat.getColor(this, R.color.card_white))
 
         toolbar.menu.getItem(0).isVisible = false
         toolbar.menu.getItem(1).isVisible = false
@@ -75,10 +80,17 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
             btn_deadline_note.text = intent.extras!!.getString("deadline").toString()
             deadline = intent.extras!!.getString("deadline").toString()
             bgColor = intent.extras!!.getInt("bgColor")
-            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("theme_mode", false))
-                btn_bg_color_note.background.setTint(this.resources.getIntArray(R.array.rainbow_dark)[bgColor])
-            else
-                btn_bg_color_note.background.setTint(this.resources.getIntArray(R.array.rainbow)[bgColor])
+            if (bgColor != -1) {
+                if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("theme_mode", false))
+                    btn_bg_color_note.background.setTint(this.resources.getIntArray(R.array.rainbow_dark)[bgColor])
+                else
+                    btn_bg_color_note.background.setTint(this.resources.getIntArray(R.array.rainbow)[bgColor])
+            } else {
+                if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("theme_mode", false))
+                    btn_bg_color_note.background.setTint(ContextCompat.getColor(this, R.color.card_black))
+                else
+                    btn_bg_color_note.background.setTint(ContextCompat.getColor(this, R.color.card_white))
+            }
         }
 
         checkMandatoryItem()
@@ -167,7 +179,10 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
 
     override fun onClickPositiveBtn(position: Int) {
         bgColor = -1
-        btn_bg_color_note.background.setTint(defaultColor)
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("theme_mode", false))
+            btn_bg_color_note.background.setTint(ContextCompat.getColor(this, R.color.card_black))
+        else
+            btn_bg_color_note.background.setTint(ContextCompat.getColor(this, R.color.card_white))
     }
 
     override fun onClickNegativeBtn(position: Int) {

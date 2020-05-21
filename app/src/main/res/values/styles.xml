@@ -33,6 +33,10 @@
         <item name="toolbarStyle">@style/ToolbarDarkStyle</item>
         <item name="tabStyle">@style/TabLayoutDarkStyle</item>
         <item name="materialButtonStyle">@style/ButtonDarkStyle</item>
+        <item name="android:timePickerDialogTheme">@style/TimePickerDialogDarkStyle</item>
+        <item name="android:timePickerStyle">@style/TimePickerDialogDarkStyle</item>
+        <item name="android:datePickerDialogTheme">@style/TimePickerDialogDarkStyle</item>
+        <item name="android:datePickerStyle">@style/TimePickerDialogDarkStyle</item>
         <item name="checkboxStyle">@style/CheckBoxStyle</item>
     </style>
 </resources>

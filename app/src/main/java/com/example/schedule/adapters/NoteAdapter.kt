@@ -39,11 +39,6 @@ class NoteAdapter(
             else
                 holder.itemView.card_note.background.setTint(context.resources.getIntArray(R.array.rainbow)[listNote[position].color])
         } else {
-//            val a: TypedValue = TypedValue()
-//            context.theme.resolveAttribute(android.R.attr.windowBackground, a, true)
-//            if (a.type >= TypedValue.TYPE_FIRST_COLOR_INT && a.type <= TypedValue.TYPE_LAST_COLOR_INT) {
-//                holder.itemView.card_note.background.setTint(a.data)
-//            }
             if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("theme_mode", false))
                 holder.itemView.card_note.background.setTint(ContextCompat.getColor(context, R.color.card_black))
             else

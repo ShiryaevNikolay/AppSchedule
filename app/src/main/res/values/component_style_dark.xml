@@ -23,4 +23,11 @@
         <item name="tabSelectedTextColor">?android:attr/colorAccent</item>
         <item name="textAllCaps">true</item>
     </style>
+
+    <style name="TimePickerDialogDarkStyle" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="colorPrimary">?android:attr/windowBackground</item>
+        <item name="android:headerBackground">@color/blue_gray_700</item>
+        <item name="colorAccent">?android:attr/colorAccent</item>
+        <item name="materialButtonStyle">@style/ButtonLightStyle</item>
+    </style>
 </resources>

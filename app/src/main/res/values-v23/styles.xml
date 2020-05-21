@@ -2,10 +2,17 @@
 <resources>
 
     <style name="AppTheme" parent="ThemeLight.V23"/>
+    <style name="AppTheme.Dark" parent="ThemeDark.V23"/>
 
     <style name="ThemeLight.V23" parent="ThemeLight">
         <!-- Customize your theme here. -->
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:statusBarColor">?android:attr/windowBackground</item>
+    </style>
+
+    <style name="ThemeDark.V23" parent="ThemeDark">
+        <!-- Customize your theme here. -->
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">?android:attr/windowBackground</item>
     </style>
 </resources>
