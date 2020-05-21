@@ -32,7 +32,7 @@
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:paddingHorizontal="10dp"
-                android:paddingVertical="5dp">
+                android:paddingVertical="7dp">
 
                 <TextView
                     android:id="@+id/clock_start_item_rv_schedule"
@@ -41,7 +41,8 @@
                     android:text=""
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white"
+                    android:textStyle="bold"/>
 
                 <FrameLayout
                     android:id="@+id/period_time_item_rv_schedule"
@@ -50,8 +51,8 @@
                     android:layout_weight="1">
 
                     <View
-                        android:layout_width="3dp"
-                        android:layout_height="1dp"
+                        android:layout_width="4dp"
+                        android:layout_height="2dp"
                         android:layout_gravity="center"
                         android:layout_marginStart="5dp"
                         android:layout_marginEnd="5dp"
@@ -65,7 +66,8 @@
                     android:text=""
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white"
+                    android:textStyle="bold"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -83,7 +85,8 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:gravity="top"
-                android:textAllCaps="true"/>
+                android:textAllCaps="true"
+                android:textColor="?android:attr/textColorPrimary"/>
 
             <TextView
                 android:id="@+id/teacher_item_rv_schedule"

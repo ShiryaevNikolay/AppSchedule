@@ -13,5 +13,5 @@
         android:layout_height="wrap_content"
         app:mcv_showOtherDates="all"
         app:mcv_selectionColor="?android:attr/colorAccent"
-        app:mcv_dateTextAppearance="@style/CustomTextAppearanceDateLight"/>
+        app:mcv_dateTextAppearance="@style/CustomTextAppearanceDateLight" />
 </RelativeLayout>

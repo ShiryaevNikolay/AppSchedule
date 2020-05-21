@@ -16,6 +16,7 @@
         <item name="tabStyle">@style/TabLayoutLightStyle</item>
         <item name="materialButtonStyle">@style/ButtonLightStyle</item>
         <item name="checkboxStyle">@style/CheckBoxStyle</item>
+        <item name="fontFamily">@font/rubik</item>
     </style>
 
     <style name="ThemeDark" parent="Theme.MaterialComponents.NoActionBar">
@@ -30,5 +31,6 @@
         <item name="tabStyle">@style/TabLayoutDarkStyle</item>
         <item name="materialButtonStyle">@style/ButtonDarkStyle</item>
         <item name="checkboxStyle">@style/CheckBoxStyle</item>
+        <item name="fontFamily">@font/rubik</item>
     </style>
 </resources>
