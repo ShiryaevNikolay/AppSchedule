@@ -54,7 +54,7 @@
                         android:id="@+id/ic_deadline_item_rv_note"
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:src="@drawable/ic_calendar_week"
+                        android:src="@drawable/ic_calendar_week_card"
                         android:contentDescription="@string/img_deadline" />
 
                     <TextView

@@ -49,4 +49,9 @@
     <style name="CustomTextAppearanceDateDark" parent="CustomTextAppearanceDateLight">
         <item name="android:textColor">@color/mcv_text_date_dark</item>
     </style>
+    
+    <style name="SwitchStyle" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="thumbTint">@color/selector_switch_thumb</item>
+        <item name="trackTint">@color/selector_switch_track</item>
+    </style>
 </resources>

@@ -17,6 +17,7 @@
         <item name="materialButtonStyle">@style/ButtonLightStyle</item>
         <item name="checkboxStyle">@style/CheckBoxStyle</item>
         <item name="fontFamily">@font/rubik</item>
+        <item name="switchStyle">@style/SwitchStyle</item>
     </style>
 
     <style name="ThemeDark" parent="Theme.MaterialComponents.NoActionBar">
@@ -32,5 +33,6 @@
         <item name="materialButtonStyle">@style/ButtonDarkStyle</item>
         <item name="checkboxStyle">@style/CheckBoxStyle</item>
         <item name="fontFamily">@font/rubik</item>
+        <item name="switchStyle">@style/SwitchStyle</item>
     </style>
 </resources>
