@@ -5,12 +5,12 @@
     <style name="AppTheme.Dark" parent="ThemeDark.V27"/>
 
     <style name="ThemeLight.V27" parent="ThemeLight.V23">
-        <item name="android:navigationBarColor">?android:attr/windowBackground</item>
+        <item name="android:navigationBarColor">@color/white</item>
         <item name="android:windowLightNavigationBar">true</item>
     </style>
 
     <style name="ThemeDark.V27" parent="ThemeDark.V23">
-        <item name="android:navigationBarColor">?android:attr/windowBackground</item>
+        <item name="android:navigationBarColor">@color/gray_900</item>
         <item name="android:windowLightNavigationBar">false</item>
     </style>
 </resources>
