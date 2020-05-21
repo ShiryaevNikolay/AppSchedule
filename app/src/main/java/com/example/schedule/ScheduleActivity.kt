@@ -3,6 +3,7 @@ package com.example.schedule
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.preference.PreferenceManager
 import com.example.schedule.adapters.TabsPagerFragmentAdapter
 import com.example.schedule.interfaces.OnClickFabListener
 import com.example.schedule.interfaces.ShowOrHideFab
@@ -19,6 +20,11 @@ class ScheduleActivity : AppCompatActivity(), ShowOrHideFab {
     private lateinit var onClickFabListener: OnClickFabListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("theme_mode", false))
+            setTheme(R.style.AppTheme_Dark)
+        else
+            setTheme(R.style.AppTheme)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule)
 

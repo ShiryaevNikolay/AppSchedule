@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="BottomNavViewLightStyle" parent="Widget.MaterialComponents.BottomNavigationView">
-        <item name="android:background">@color/white</item>
-        <item name="itemIconTint">@color/gray_900</item>
-        <item name="itemTextColor">@color/gray_900</item>
+        <item name="android:background">?android:attr/windowBackground</item>
+        <item name="itemIconTint">?android:attr/textColorPrimary</item>
+        <item name="itemTextColor">?android:attr/textColorSecondary</item>
         <item name="itemHorizontalTranslationEnabled">false</item>
 <!--        <item name="labelVisibilityMode">unlabeled</item>-->
     </style>
@@ -19,16 +19,16 @@
     </style>
 
     <style name="ToolbarLightStyle" parent="Widget.AppCompat.Toolbar">
-        <item name="android:background">@color/white</item>
+        <item name="android:background">?android:attr/windowBackground</item>
     </style>
 
     <style name="TabLayoutLightStyle" parent="Widget.MaterialComponents.TabLayout">
-        <item name="android:background">@color/white</item>
+        <item name="android:background">?android:attr/windowBackground</item>
         <item name="textAllCaps">true</item>
     </style>
 
     <style name="TimePickerDialogLightStyle" parent="Theme.MaterialComponents.Light.Dialog.Alert">
-        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimary">?android:attr/windowBackground</item>
         <item name="android:headerBackground">@color/blue_gray_700</item>
         <item name="colorAccent">@color/blue_gray_700</item>
         <item name="materialButtonStyle">@style/ButtonLightStyle</item>

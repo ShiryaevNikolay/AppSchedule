@@ -11,6 +11,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.preference.PreferenceManager
 import com.example.schedule.dialogs.PickColorDialog
 import com.example.schedule.interfaces.DialogRemoveListener
 import com.example.schedule.util.RequestCode
@@ -30,6 +31,11 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
     private lateinit var animShowFab: Animation
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("theme_mode", false))
+            setTheme(R.style.AppTheme_Dark)
+        else
+            setTheme(R.style.AppTheme)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_note)
 

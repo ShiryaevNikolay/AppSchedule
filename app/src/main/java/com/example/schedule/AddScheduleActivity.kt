@@ -18,6 +18,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.preference.PreferenceManager
 import com.example.schedule.database.Schedule
 import com.example.schedule.database.room.AppRoomDatabase
 import com.example.schedule.dialogs.RadioDialog
@@ -46,6 +47,11 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
     private var listSchedule: ArrayList<Schedule> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("theme_mode", false))
+            setTheme(R.style.AppTheme_Dark)
+        else
+            setTheme(R.style.AppTheme)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_item)
 

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BottomNavViewDarkStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">?android:attr/windowBackground</item>
+        <item name="itemIconTint">?android:attr/textColorPrimary</item>
+        <item name="itemTextColor">?android:attr/textColorSecondary</item>
+        <item name="itemHorizontalTranslationEnabled">false</item>
+        <!--        <item name="labelVisibilityMode">unlabeled</item>-->
+    </style>
+
+    <style name="ButtonDarkStyle" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/blue_gray_100</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+    <style name="ToolbarDarkStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">?android:attr/windowBackground</item>
+    </style>
+
+    <style name="TabLayoutDarkStyle" parent="Widget.MaterialComponents.TabLayout">
+        <item name="android:background">@color/gray_900</item>
+        <item name="tabTextColor">?android:attr/textColorSecondary</item>
+        <item name="tabSelectedTextColor">?android:attr/colorAccent</item>
+        <item name="textAllCaps">true</item>
+    </style>
+</resources>
