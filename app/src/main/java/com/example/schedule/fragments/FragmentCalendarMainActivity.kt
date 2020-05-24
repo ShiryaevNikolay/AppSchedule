@@ -47,7 +47,6 @@ class FragmentCalendarMainActivity : Fragment() {
             view.calendarView.setDateTextAppearance(R.style.CustomTextAppearanceDateLight)
         view.calendarView.topbarVisible = false
         view.calendarView.selectedDate = CalendarDay.today()
-        view.calendarView.currentDate = CalendarDay.today()
         view.calendarView.setOnMonthChangedListener { _, date ->
             setTitleToolbar(date.month)
             (activity as MainActivity).toolbar.subtitle = date.year.toString()
@@ -63,7 +62,7 @@ class FragmentCalendarMainActivity : Fragment() {
             Observer { t ->
                 if (t != null) {
                     listNote = ArrayList(t)
-                    setListCurrentDate(view.calendarView.currentDate.day, view.calendarView.currentDate.month, view.calendarView.currentDate.year)
+                    setListCurrentDate(view.calendarView.selectedDate!!.day, view.calendarView.selectedDate!!.month, view.calendarView.selectedDate!!.year)
                 }
             })
         return view
