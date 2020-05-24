@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".fragments.FragmentCalendarMainActivity"
-    android:paddingHorizontal="5dp">
+    tools:context=".fragments.FragmentCalendarMainActivity">
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -13,5 +12,12 @@
         android:layout_height="wrap_content"
         app:mcv_showOtherDates="all"
         app:mcv_selectionColor="@color/light_blue_500"
-        app:mcv_dateTextAppearance="@style/CustomTextAppearanceDateLight" />
+        app:mcv_dateTextAppearance="@style/CustomTextAppearanceDateLight"
+        android:layout_marginHorizontal="5dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/calendarView"/>
 </RelativeLayout>

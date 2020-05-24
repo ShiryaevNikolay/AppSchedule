@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.dialog_color_pick.view.*
 
 class PickColorDialog(
     var color: Int,
-    var dialogListener: DialogRemoveListener
+    private var dialogListener: DialogRemoveListener
 ) : DialogFragment(), View.OnClickListener, PickColorListener {
 
     @SuppressLint("InflateParams")
@@ -29,16 +29,16 @@ class PickColorDialog(
         val view: View = inflater.inflate(R.layout.dialog_color_pick, null)
         view.recyclerView.setHasFixedSize(true)
         view.recyclerView.layoutManager = GridLayoutManager(context, 5)
-        var palette: IntArray?
-        if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("theme_mode", false))
-            palette = context?.resources!!.getIntArray(R.array.rainbow_dark)
+        val palette: IntArray?
+        palette = if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("theme_mode", false))
+            context?.resources!!.getIntArray(R.array.rainbow_dark)
         else
-            palette = context?.resources!!.getIntArray(R.array.rainbow)
+            context?.resources!!.getIntArray(R.array.rainbow)
         val listColor: ArrayList<Palette> = ArrayList()
-        for (i in 0 until palette.size) {
+        for (element in palette) {
             listColor.add(
                 Palette(
-                    palette[i],
+                    element,
                     false
                 )
             )

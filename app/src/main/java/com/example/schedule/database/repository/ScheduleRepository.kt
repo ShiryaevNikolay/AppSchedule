@@ -36,7 +36,7 @@ class ScheduleRepository {
     }
 
     @SuppressLint("StaticFieldLeak")
-    inner class InsertScheduleAsyncTask(var scheduleDao: ScheduleDao) : AsyncTask<Schedule, Void, Void>() {
+    inner class InsertScheduleAsyncTask(private var scheduleDao: ScheduleDao) : AsyncTask<Schedule, Void, Void>() {
         override fun doInBackground(vararg params: Schedule?): Void? {
             params[0]?.let { scheduleDao.insert(it) }
             return null
@@ -44,7 +44,7 @@ class ScheduleRepository {
     }
 
     @SuppressLint("StaticFieldLeak")
-    inner class UpdateScheduleAsyncTask(var scheduleDao: ScheduleDao) : AsyncTask<Schedule, Void, Void>() {
+    inner class UpdateScheduleAsyncTask(private var scheduleDao: ScheduleDao) : AsyncTask<Schedule, Void, Void>() {
         override fun doInBackground(vararg params: Schedule?): Void? {
             params[0]?.let { scheduleDao.update(it) }
             return null
@@ -52,7 +52,7 @@ class ScheduleRepository {
     }
 
     @SuppressLint("StaticFieldLeak")
-    inner class DeleteScheduleAsyncTask(val scheduleDao: ScheduleDao) : AsyncTask<Schedule, Void, Void>() {
+    inner class DeleteScheduleAsyncTask(private val scheduleDao: ScheduleDao) : AsyncTask<Schedule, Void, Void>() {
         override fun doInBackground(vararg params: Schedule?): Void? {
             params[0]?.let { scheduleDao.delete(it) }
             return null

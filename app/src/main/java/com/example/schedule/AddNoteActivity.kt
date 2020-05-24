@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
@@ -26,7 +25,6 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
     private var note: String = ""
     private var lesson: String = ""
     private var deadline: String = ""
-    private var defaultColor: Int = 0
     private var bgColor: Int = -1
     private var flagModeFab = false
     private lateinit var animShowFab: Animation
@@ -41,11 +39,6 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         setContentView(R.layout.activity_add_note)
 
         animShowFab = AnimationUtils.loadAnimation(this, R.anim.fab_show)
-        val a: TypedValue = TypedValue()
-        theme.resolveAttribute(android.R.attr.windowBackground, a, true)
-        if (a.type >= TypedValue.TYPE_FIRST_COLOR_INT && a.type <= TypedValue.TYPE_LAST_COLOR_INT) {
-            defaultColor = a.data
-        }
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("theme_mode", false))
             btn_bg_color_note.background.setTint(ContextCompat.getColor(this, R.color.card_black))
         else
@@ -152,12 +145,12 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         if (note != "") {
             toolbar.menu.getItem(0).isVisible = true
             fab.setImageResource(R.drawable.ic_done_fab)
-            if (flagModeFab == false) fab.startAnimation(animShowFab)
+            if (!flagModeFab) fab.startAnimation(animShowFab)
             flagModeFab = true
         } else {
             toolbar.menu.getItem(0).isVisible = false
             fab.setImageResource(R.drawable.ic_back_fab)
-            if (flagModeFab == true) fab.startAnimation(animShowFab)
+            if (flagModeFab) fab.startAnimation(animShowFab)
             flagModeFab = false
         }
     }

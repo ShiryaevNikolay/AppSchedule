@@ -1,9 +1,7 @@
 package com.example.schedule.database
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlin.properties.Delegates
 
 @Entity(tableName = "schedule")
 class Schedule(

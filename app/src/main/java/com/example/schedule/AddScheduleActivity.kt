@@ -20,16 +20,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceManager
 import com.example.schedule.database.Schedule
-import com.example.schedule.database.room.AppRoomDatabase
 import com.example.schedule.dialogs.RadioDialog
 import com.example.schedule.interfaces.DialogRadioButtonListener
-import com.example.schedule.util.App
 import com.example.schedule.util.RequestCode
 import com.example.schedule.viewmodels.ScheduleFragmentViewModel
 import kotlinx.android.synthetic.main.activity_add_item.*
-import kotlinx.android.synthetic.main.item_schedule_rv.*
 import java.util.*
-import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMenuItemClickListener, DialogRadioButtonListener {
@@ -85,8 +81,8 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             teacher = intent.getStringExtra("teacher")
             et_auditorium_schedule.setText(intent.getStringExtra("auditorium"))
             auditorium = intent.getStringExtra("auditorium")
-            btn_start_time_schedule.setText(intent.getStringExtra("clockStart"))
-            btn_end_time_schedule.setText(intent.getStringExtra("clockEnd"))
+            btn_start_time_schedule.text = intent.getStringExtra("clockStart")
+            btn_end_time_schedule.text = intent.getStringExtra("clockEnd")
             timeStart = intent.extras!!.getInt("timeStart")
             timeEnd = intent.extras!!.getInt("timeEnd")
             when(intent.getStringExtra("week")) {
@@ -108,13 +104,12 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             }
         }
 
-        scheduleViewModel.getAllListByDay(daySchedule).observe(this, object : Observer<List<Schedule>> {
-            override fun onChanged(t: List<Schedule>?) {
+        scheduleViewModel.getAllListByDay(daySchedule).observe(this,
+            Observer { t ->
                 if (t != null) {
-                    listSchedule = ArrayList(t.sortedWith(compareBy({it.timeStart})))
+                    listSchedule = ArrayList(t.sortedWith(compareBy {it.timeStart}))
                 }
-            }
-        })
+            })
 
         et_lesson_schedule.addTextChangedListener {
             lesson = it.toString()
@@ -146,7 +141,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.fab -> {
-                if (flagModeFab == false) {
+                if (!flagModeFab) {
                     setResult(Activity.RESULT_CANCELED)
                     finish()
                 } else {
@@ -204,12 +199,12 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
         if (lesson != "" && btn_start_time_schedule.text != "") {
             toolbar.menu.getItem(0).isVisible = true
             fab.setImageResource(R.drawable.ic_done_fab)
-            if (flagModeFab == false) fab.startAnimation(animShowFab)
+            if (!flagModeFab) fab.startAnimation(animShowFab)
             flagModeFab = true
         } else {
             toolbar.menu.getItem(0).isVisible = false
             fab.setImageResource(R.drawable.ic_back_fab)
-            if (flagModeFab == true) fab.startAnimation(animShowFab)
+            if (flagModeFab) fab.startAnimation(animShowFab)
             flagModeFab = false
         }
     }
@@ -257,7 +252,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
     private fun checkCondition(select: String, timeStart: Int) : Boolean {
         var flag = true
         for (i in 0 until listSchedule.size) {
-            if (listSchedule.get(i).timeStart == timeStart) {
+            if (listSchedule[i].timeStart == timeStart) {
                 if (listSchedule[i].week == "12" && (select == "1" || select == "2")) flag = false
                 else if (listSchedule[i].week != "12" && select == "12") flag = false
                 else if (listSchedule[i].week == select) flag = false

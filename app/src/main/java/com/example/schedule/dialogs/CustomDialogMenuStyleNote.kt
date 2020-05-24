@@ -6,8 +6,6 @@ import android.view.*
 import androidx.fragment.app.DialogFragment
 import com.example.schedule.R
 import com.example.schedule.interfaces.DialogMenuListener
-import com.example.schedule.interfaces.DialogRadioButtonListener
-import com.example.schedule.interfaces.DialogRemoveListener
 import kotlinx.android.synthetic.main.dialog_mune_style_note.view.*
 
 class CustomDialogMenuStyleNote(

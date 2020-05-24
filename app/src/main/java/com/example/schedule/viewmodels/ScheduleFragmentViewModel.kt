@@ -5,16 +5,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.schedule.database.Schedule
 import com.example.schedule.database.repository.ScheduleRepository
-import com.example.schedule.database.room.AppRoomDatabase
-import com.example.schedule.util.App
-import javax.inject.Inject
 
 class ScheduleFragmentViewModel(application: Application) : AndroidViewModel(application) {
-    private var scheduleRepository: ScheduleRepository
-
-    init {
-        scheduleRepository = ScheduleRepository()
-    }
+    private var scheduleRepository: ScheduleRepository = ScheduleRepository()
 
     fun insert(schedule: Schedule) {
         scheduleRepository.insert(schedule)

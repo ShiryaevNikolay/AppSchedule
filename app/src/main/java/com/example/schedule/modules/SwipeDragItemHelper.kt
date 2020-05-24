@@ -2,8 +2,6 @@ package com.example.schedule.modules
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.RectF
 import android.graphics.drawable.GradientDrawable
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -11,10 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.R
 import com.example.schedule.interfaces.ItemTouchHelperListener
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
-import kotlinx.android.synthetic.main.item_schedule_rv.view.*
 
 class SwipeDragItemHelper(
-    var itemTouchHelperListener: ItemTouchHelperListener,
+    private var itemTouchHelperListener: ItemTouchHelperListener,
     var context: Context
 ) : ItemTouchHelper.Callback() {
     override fun getMovementFlags(
@@ -53,8 +50,8 @@ class SwipeDragItemHelper(
         background.draw(c)
 
         RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-            .addSwipeLeftLabel(context.resources.getString(R.string.btn_remove).toString())
-            .addSwipeRightLabel(context.resources.getString(R.string.btn_remove).toString())
+            .addSwipeLeftLabel(context.resources.getString(R.string.btn_remove))
+            .addSwipeRightLabel(context.resources.getString(R.string.btn_remove))
             .setSwipeLeftLabelColor(ContextCompat.getColor(context, R.color.white))
             .setSwipeRightLabelColor(ContextCompat.getColor(context, R.color.white))
             .addActionIcon(R.drawable.ic_trash)

@@ -7,14 +7,13 @@ import androidx.appcompat.widget.AppCompatImageView
 
 
 class SquareImageView : AppCompatImageView {
-    constructor(context: Context?) : super(context) {}
-    constructor(context: Context?, @Nullable attrs: AttributeSet?) : super(context, attrs) {}
+    constructor(context: Context?) : super(context)
+    constructor(context: Context?, @Nullable attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, @Nullable attrs: AttributeSet?, defStyleAttr: Int) : super(
         context,
         attrs,
         defStyleAttr
-    ) {
-    }
+    )
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val widthMode = MeasureSpec.getMode(widthMeasureSpec)

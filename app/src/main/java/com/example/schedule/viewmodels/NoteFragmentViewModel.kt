@@ -7,11 +7,7 @@ import com.example.schedule.database.Note
 import com.example.schedule.database.repository.NoteRepository
 
 class NoteFragmentViewModel(application: Application) : AndroidViewModel(application) {
-    private var noteRepository: NoteRepository
-
-    init {
-        noteRepository = NoteRepository()
-    }
+    private var noteRepository: NoteRepository = NoteRepository()
 
     fun insert(note: Note) {
         noteRepository.insert(note)

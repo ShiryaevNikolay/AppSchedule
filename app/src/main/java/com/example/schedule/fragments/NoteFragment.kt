@@ -1,14 +1,9 @@
 package com.example.schedule.fragments
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.content.res.TypedArray
 import android.graphics.Matrix
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -83,15 +78,14 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
         view.ll_no_note_fr_schedule?.isVisible = listNote.count() == 0
         itemAdapter = NoteAdapter(listNote, this)
         view.recyclerView.adapter = itemAdapter
-        noteFragmentViewModel.getAll().observe(viewLifecycleOwner, object : Observer<List<Note>> {
-            override fun onChanged(t: List<Note>?) {
+        noteFragmentViewModel.getAll().observe(viewLifecycleOwner,
+            Observer { t ->
                 if (t != null) {
                     listNote = ArrayList(t)
                     itemAdapter.setList(listNote)
                     view.ll_no_note_fr_schedule?.isVisible = listNote.count() == 0
                 }
-            }
-        })
+            })
         showOrHideFab = this
         view.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -248,7 +242,7 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
             }
         }
         if (flag) {
-            if (flagFabMode == false) {
+            if (!flagFabMode) {
                 context?.let { ContextCompat.getColor(it, R.color.red_900) }?.let {
                     background.setTint(
                         it
@@ -260,7 +254,7 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
             (activity as NoteActivity).fab.setImageResource(R.drawable.ic_trash)
             flagFabMode = true
         } else {
-            if (flagFabMode == true) {
+            if (flagFabMode) {
                 background.setTint(bgColorFab)
                 (activity as NoteActivity).fab.background = background
                 (activity as NoteActivity).fab.startAnimation(animShowFab)

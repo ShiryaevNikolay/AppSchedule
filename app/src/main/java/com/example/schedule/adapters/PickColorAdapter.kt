@@ -11,8 +11,8 @@ import com.example.schedule.interfaces.PickColorListener
 import kotlinx.android.synthetic.main.item_color.view.*
 
 class PickColorAdapter(
-    var pickColorListener: PickColorListener,
-    var listColor: ArrayList<Palette>
+    private var pickColorListener: PickColorListener,
+    private var listColor: ArrayList<Palette>
 ) : RecyclerView.Adapter<PickColorAdapter.PickColorViewHolder>() {
 
     private lateinit var context: Context

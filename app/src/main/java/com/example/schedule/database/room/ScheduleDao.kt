@@ -1,8 +1,6 @@
 package com.example.schedule.database.room
 
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.OnLifecycleEvent
 import androidx.room.*
 import com.example.schedule.database.Schedule
 

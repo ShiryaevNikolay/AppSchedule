@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.dialog_delete.view.*
 
 class CustomDialog(
     var title: String,
-    var dialogRemoveListener: DialogRemoveListener,
+    private var dialogRemoveListener: DialogRemoveListener,
     var position: Int
 ) : DialogFragment(), View.OnClickListener {
 

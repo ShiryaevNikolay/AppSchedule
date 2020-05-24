@@ -7,11 +7,8 @@ import androidx.preference.PreferenceManager
 import com.example.schedule.adapters.TabsPagerFragmentAdapter
 import com.example.schedule.interfaces.OnClickFabListener
 import com.example.schedule.interfaces.ShowOrHideFab
-import com.example.schedule.util.App
 import com.example.schedule.util.RequestCode
-import com.example.schedule.viewmodels.ScheduleFragmentViewModel
 import kotlinx.android.synthetic.main.activity_schedule.*
-import java.util.*
 
 class ScheduleActivity : AppCompatActivity(), ShowOrHideFab {
 

@@ -19,7 +19,7 @@ class ScheduleAdapter(
 ) : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
     private lateinit var context: Context
-    private var listSchedule: ArrayList<Schedule> = ArrayList<Schedule>()
+    private var listSchedule: ArrayList<Schedule> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduleViewHolder {
         context = parent.context

@@ -7,11 +7,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +24,7 @@ import com.example.schedule.util.RequestCode
 import com.example.schedule.viewmodels.ScheduleFragmentViewModel
 import kotlinx.android.synthetic.main.fr_schedule.view.*
 
-class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, DialogRemoveListener, OnClickItemListener, OnClickFabListener {
+class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperListener, DialogRemoveListener, OnClickItemListener, OnClickFabListener {
 
     private var daySchedule: Int = 0
     private lateinit var itemAdapter: ScheduleAdapter
@@ -116,18 +114,16 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
         itemAdapter = ScheduleAdapter(requestCode, this)
         view.recyclerView.adapter = itemAdapter
         scheduleFragmentViewModel = ViewModelProviders.of(this).get(ScheduleFragmentViewModel::class.java)
-        scheduleFragmentViewModel.getAllListByDay(daySchedule).observe(viewLifecycleOwner, object : Observer<List<Schedule>> {
-            override fun onChanged(t: List<Schedule>?) {
+        scheduleFragmentViewModel.getAllListByDay(daySchedule).observe(viewLifecycleOwner,
+            Observer { t ->
                 if (t != null) {
                     listSchedule =
-                        ArrayList(t.sortedWith(compareBy({it.timeStart})))
+                        ArrayList(t.sortedWith(compareBy {it.timeStart}))
                     if (listSchedule.count() > 1) listSchedule = sortListWeek()
                     itemAdapter.setListSchedule(listSchedule)
                     view.ll_no_lesson_fr_schedule?.isVisible = listSchedule.count() == 0
                 }
-            }
-
-        })
+            })
         if (requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
             context?.let { SwipeDragItemHelper(this, it) }?.let { ItemTouchHelper(it).attachToRecyclerView(view.recyclerView) }
             showOrHideFab = context as ShowOrHideFab
@@ -160,7 +156,7 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
         if (resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 if (requestCode == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
-                    var schedule: Schedule = Schedule(
+                    val schedule = Schedule(
                         lesson = data.getStringExtra("lesson")!!,
                         teacher = data.getStringExtra("teacher")!!,
                         auditorium = data.getStringExtra("auditorium")!!,
@@ -173,7 +169,7 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
                     )
                     scheduleFragmentViewModel.insert(schedule)
                 } else {
-                    var schedule: Schedule = data.extras?.getLong("itemId")?.let {
+                    val schedule = data.extras?.getLong("itemId")?.let {
                         Schedule(
                             id = it,
                             lesson = data.getStringExtra("lesson")!!,
@@ -236,16 +232,20 @@ class ScheduleFragment() : AbstractTabFragment(), ItemTouchHelperListener, Dialo
         val sortedList: ArrayList<Schedule> = ArrayList()
         var i = 1
         while (i < listSchedule.size) {
-            if (listSchedule[i-1].timeStart != listSchedule[i].timeStart) {
-                sortedList.add(listSchedule[i-1])
-            } else if (listSchedule[i-1].week == "1") {
-                sortedList.add(listSchedule[i-1])
-                sortedList.add(listSchedule[i])
-                i += 1
-            } else {
-                sortedList.add(listSchedule[i])
-                sortedList.add(listSchedule[i-1])
-                i += 1
+            when {
+                listSchedule[i-1].timeStart != listSchedule[i].timeStart -> {
+                    sortedList.add(listSchedule[i-1])
+                }
+                listSchedule[i-1].week == "1" -> {
+                    sortedList.add(listSchedule[i-1])
+                    sortedList.add(listSchedule[i])
+                    i += 1
+                }
+                else -> {
+                    sortedList.add(listSchedule[i])
+                    sortedList.add(listSchedule[i-1])
+                    i += 1
+                }
             }
             i += 1
             if (i == listSchedule.size) {

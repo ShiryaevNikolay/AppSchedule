@@ -10,13 +10,11 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.R
 import com.example.schedule.database.Note
-import com.example.schedule.interfaces.OnClickItemNoteListener
 import kotlinx.android.synthetic.main.item_note_rv.view.*
 
-class NoteAdapter(
-    private var listNote: ArrayList<Note>,
-    private var onClickItemNoteListener: OnClickItemNoteListener
-) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
+class NoteCalendarAdapter(
+    private var listNote: ArrayList<Note>
+) : RecyclerView.Adapter<NoteCalendarAdapter.NoteViewHolder>() {
 
     private lateinit var context: Context
 
@@ -62,29 +60,6 @@ class NoteAdapter(
         }
         if (flagCheckBox) holder.itemView.checkbox_item_rv_note.visibility = View.VISIBLE else holder.itemView.checkbox_item_rv_note.visibility = View.INVISIBLE
         holder.itemView.checkbox_item_rv_note.isChecked = itemList.checkbox
-        holder.itemView.setOnClickListener {
-            if (holder.itemView.checkbox_item_rv_note.isVisible) {
-                if (holder.itemView.checkbox_item_rv_note.isChecked) {
-                    holder.itemView.checkbox_item_rv_note.isChecked = false
-                    onClickItemNoteListener.onLongClick(holder.adapterPosition, false)
-                } else {
-                    holder.itemView.checkbox_item_rv_note.isChecked = true
-                    onClickItemNoteListener.onLongClick(holder.adapterPosition, true)
-                }
-            } else onClickItemNoteListener.onClick(itemList)
-        }
-        holder.itemView.setOnLongClickListener {
-            if (holder.itemView.checkbox_item_rv_note.isChecked) {
-                holder.itemView.checkbox_item_rv_note.isChecked = false
-                holder.itemView.checkbox_item_rv_note.visibility = View.VISIBLE
-                onClickItemNoteListener.onLongClick(holder.adapterPosition, false)
-            } else {
-                holder.itemView.checkbox_item_rv_note.isChecked = true
-                holder.itemView.checkbox_item_rv_note.visibility = View.INVISIBLE
-                onClickItemNoteListener.onLongClick(holder.adapterPosition, true)
-            }
-            return@setOnLongClickListener true
-        }
     }
 
     fun setList(listNote: ArrayList<Note>) {

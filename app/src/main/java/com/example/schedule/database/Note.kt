@@ -1,6 +1,5 @@
 package com.example.schedule.database
 
-import android.graphics.Color
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
