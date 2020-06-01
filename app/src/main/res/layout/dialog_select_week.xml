@@ -11,9 +11,10 @@
         android:layout_alignParentTop="true"
         android:text="@string/title_dialog_select_week"
         android:textSize="20sp"
+        android:textColor="?android:attr/textColorPrimary"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_marginHorizontal="20dp" />
 
     <RadioGroup
         android:id="@+id/radio_group"

@@ -12,9 +12,10 @@
         android:layout_height="wrap_content"
         android:text="@string/title_dialog_select_color"
         android:textSize="20sp"
+        android:textColor="?android:attr/textColorPrimary"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_marginHorizontal="20dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

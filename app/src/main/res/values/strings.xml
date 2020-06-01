@@ -107,4 +107,7 @@
 
     <!-- Sync Preferences -->
     <string name="theme_mode_title">Dark theme</string>
+    <string name="number_of_week">Number of repeating weeks</string>
+    <string name="this_week">Current week</string>
+    <string name="names_week">Names</string>
 </resources>

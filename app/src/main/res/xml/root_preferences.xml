@@ -1,5 +1,26 @@
-<PreferenceScreen
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory>
+        <ListPreference
+            app:icon="@drawable/ic_calendar_refresh"
+            app:defaultValue="1"
+            app:entries="@array/number_of_week_entries"
+            app:entryValues="@array/number_of_week_entries"
+            app:key="number_of_week"
+            app:title="@string/number_of_week"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:defaultValue="1"
+            app:entries="@array/week_entries"
+            app:entryValues="@array/number_of_week_entries"
+            app:key="this_week"
+            app:title="@string/this_week"
+            app:useSimpleSummaryProvider="true"/>
+
+        <Preference
+            app:key="names_week"
+            app:title="@string/names_week"/>
+    </PreferenceCategory>
     <PreferenceCategory>
         <SwitchPreferenceCompat
             app:key="theme_mode"

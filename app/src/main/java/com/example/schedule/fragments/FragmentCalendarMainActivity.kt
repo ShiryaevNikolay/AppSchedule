@@ -14,6 +14,7 @@ import com.example.schedule.MainActivity
 import com.example.schedule.R
 import com.example.schedule.adapters.NoteCalendarAdapter
 import com.example.schedule.database.Note
+import com.example.schedule.modules.EventDecorator
 import com.example.schedule.viewmodels.NoteFragmentViewModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlinx.android.synthetic.main.activity_main.*
@@ -62,6 +63,7 @@ class FragmentCalendarMainActivity : Fragment() {
             Observer { t ->
                 if (t != null) {
                     listNote = ArrayList(t)
+                    view.calendarView.addDecorators(EventDecorator(activity as MainActivity))
                     setListCurrentDate(view.calendarView.selectedDate!!.day, view.calendarView.selectedDate!!.month, view.calendarView.selectedDate!!.year)
                 }
             })
@@ -102,8 +104,8 @@ class FragmentCalendarMainActivity : Fragment() {
         return when(month) {
             1 -> this.resources.getString(R.string.jan)
             2 -> this.resources.getString(R.string.feb)
-            3 -> this.resources.getString(R.string.mar)
-            4 -> this.resources.getString(R.string.apr)
+            3 -> this.resources.getString(R.string.apr)
+            4 -> this.resources.getString(R.string.mar)
             5 -> this.resources.getString(R.string.may_abbreviated)
             6 -> this.resources.getString(R.string.june_abbreviated)
             7 -> this.resources.getString(R.string.july_abbreviated)

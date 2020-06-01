@@ -11,6 +11,7 @@
         android:layout_alignParentTop="true"
         android:text="@string/title_dialog_remove_schedule"
         android:textSize="20sp"
+        android:textColor="?android:attr/textColorPrimary"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:layout_centerHorizontal="true" />

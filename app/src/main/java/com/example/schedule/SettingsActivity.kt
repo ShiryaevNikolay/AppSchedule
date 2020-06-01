@@ -3,11 +3,16 @@ package com.example.schedule
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.preference.PreferenceManager
-import com.example.schedule.fragments.SettingsFragment
+import com.example.schedule.interfaces.CurrentFragmentListener
 import kotlinx.android.synthetic.main.settings_activity.*
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity(), CurrentFragmentListener {
+    private var currentFragment: Int = 0
+    private lateinit var host: NavHostFragment
+    lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("theme_mode", false))
@@ -17,19 +22,25 @@ class SettingsActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
+        host = supportFragmentManager.findFragmentById(R.id.settings) as NavHostFragment
+        navController = host.navController
         toolbar.setNavigationOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.settings, SettingsFragment())
-            .commit()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+    override fun currentFragment(fragment: Int) {
+        currentFragment = fragment
+    }
+
     override fun onBackPressed() {
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
+        if (currentFragment == 0) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        } else {
+            navController.navigate(R.id.action_changeManeWeekSettingFragment_to_settingsFragment)
+        }
     }
 }
