@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -120,6 +121,7 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperListener, DialogR
                     listSchedule =
                         ArrayList(t.sortedWith(compareBy {it.timeStart}))
                     if (listSchedule.count() > 1) listSchedule = sortListWeek()
+                    if (requestCode == RequestCode.REQUEST_MAIN_ACTIVITY) listSchedule = listOnlyCurrentWeek()
                     itemAdapter.setListSchedule(listSchedule)
                     view.ll_no_lesson_fr_schedule?.isVisible = listSchedule.count() == 0
                 }
@@ -253,6 +255,24 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperListener, DialogR
             }
         }
         return sortedList
+    }
+
+    private fun listOnlyCurrentWeek(): ArrayList<Schedule> {
+        val list: ArrayList<Schedule> = ArrayList()
+        if (PreferenceManager.getDefaultSharedPreferences(context).getString("number_of_week", "1") == "2") {
+            for (i in listSchedule) {
+                if (i.week == PreferenceManager.getDefaultSharedPreferences(context).getString("this_week", "12") || i.week == "12") {
+                    list.add(i)
+                }
+            }
+        } else {
+            for (i in listSchedule) {
+                if (i.week == "12") {
+                    list.add(i)
+                }
+            }
+        }
+        return list
     }
 
     override fun onClickFab(daySchedule: Int) {

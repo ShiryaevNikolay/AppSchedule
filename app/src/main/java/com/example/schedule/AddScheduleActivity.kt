@@ -88,12 +88,12 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             when(intent.getStringExtra("week")) {
                 "1" -> {
                     week = "1"
-                    btn_week_schedule.text = this.resources.getString(R.string.week1)
+                    btn_week_schedule.text = PreferenceManager.getDefaultSharedPreferences(this).getString("week1", this.resources?.getString(R.string.week1))
                     iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.cyan_600))
                 }
                 "2" -> {
                     week = "2"
-                    btn_week_schedule.text = this.resources.getString(R.string.week2)
+                    btn_week_schedule.text = PreferenceManager.getDefaultSharedPreferences(this).getString("week2", this.resources?.getString(R.string.week2))
                     iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.indigo_600))
                 }
                 "12" -> {
@@ -166,12 +166,12 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             when (select) {
                 "1" -> {
                     week = "1"
-                    btn_week_schedule.text = this.resources.getString(R.string.week1)
+                    btn_week_schedule.text = PreferenceManager.getDefaultSharedPreferences(this).getString("week1", this.resources?.getString(R.string.week1))
                     iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.cyan_600))
                 }
                 "2" -> {
                     week = "2"
-                    btn_week_schedule.text = this.resources.getString(R.string.week2)
+                    btn_week_schedule.text = PreferenceManager.getDefaultSharedPreferences(this).getString("week2", this.resources?.getString(R.string.week2))
                     iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.indigo_600))
                 }
                 "12" -> {

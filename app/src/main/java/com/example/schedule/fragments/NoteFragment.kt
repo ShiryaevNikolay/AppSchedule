@@ -2,6 +2,7 @@ package com.example.schedule.fragments
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Matrix
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -69,6 +71,7 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
         (activity as NoteActivity).toolbar.menu.getItem(1).setOnMenuItemClickListener(this)
         (activity as NoteActivity).toolbar.menu.getItem(2).setOnMenuItemClickListener(this)
         (activity as NoteActivity).fab.setOnClickListener(this)
+        selectStyleListNote = PreferenceManager.getDefaultSharedPreferences(context).getInt("selectStyleListNote", 1)
         when(selectStyleListNote) {
             0 -> view.recyclerView.layoutManager = GridLayoutManager(activity, 2)
             1 -> view.recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
@@ -141,6 +144,13 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val ed: SharedPreferences.Editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+        ed.putInt("selectStyleListNote", selectStyleListNote)
+        ed.apply()
     }
 
     override fun onClick(v: View?) {

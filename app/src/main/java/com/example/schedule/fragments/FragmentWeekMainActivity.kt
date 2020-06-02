@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.preference.PreferenceManager
 import androidx.viewpager.widget.ViewPager
 import com.example.schedule.MainActivity
 import com.example.schedule.R
@@ -27,6 +28,15 @@ class FragmentWeekMainActivity : Fragment() {
         val view: View = inflater.inflate(R.layout.fr_week_main_activity, container, false)
         view.tabLayout.isVisible = false
         (activity as MainActivity).nav_view_select_fragment_main_activity.isVisible = false
+        if (PreferenceManager.getDefaultSharedPreferences(context).getString("number_of_week", "1") == "2") {
+            if (PreferenceManager.getDefaultSharedPreferences(context).getString("this_week", "1") == "1") {
+                (activity as MainActivity).toolbar.subtitle = PreferenceManager.getDefaultSharedPreferences(context).getString("week1", context?.resources?.getString(R.string.week1))
+            } else if (PreferenceManager.getDefaultSharedPreferences(context).getString("this_week", "1") == "2") {
+                (activity as MainActivity).toolbar.subtitle = PreferenceManager.getDefaultSharedPreferences(context).getString("week2", context?.resources?.getString(R.string.week2))
+            }
+        } else {
+            (activity as MainActivity).toolbar.getChildAt(1).isVisible = false
+        }
         (activity as MainActivity).toolbar.getChildAt(0).setOnClickListener {
             view.tabLayout.isVisible = !view.tabLayout.isVisible
         }

@@ -17,7 +17,6 @@ import com.example.schedule.database.Note
 import com.example.schedule.modules.EventDecorator
 import com.example.schedule.viewmodels.NoteFragmentViewModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fr_calendar_main_activity.view.*
 import java.util.*
@@ -42,6 +41,7 @@ class FragmentCalendarMainActivity : Fragment() {
         (activity as MainActivity).nav_view_select_fragment_main_activity.isVisible = false
         (activity as MainActivity).toolbar.menu.getItem(0).setIcon(R.drawable.ic_calendar)
         setTitleToolbar(view.calendarView.currentDate.month)
+        (activity as MainActivity).toolbar.getChildAt(1).isVisible = true
         (activity as MainActivity).toolbar.subtitle = view.calendarView.currentDate.year.toString()
         if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("theme_mode", false))
             view.calendarView.setDateTextAppearance(R.style.CustomTextAppearanceDateDark)

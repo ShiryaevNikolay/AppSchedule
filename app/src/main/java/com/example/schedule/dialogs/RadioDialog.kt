@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.preference.PreferenceManager
 import com.example.schedule.R
 import com.example.schedule.interfaces.DialogRadioButtonListener
 import kotlinx.android.synthetic.main.dialog_select_week.view.*
@@ -17,6 +18,8 @@ class RadioDialog(private val dialogRadioButtonListener: DialogRadioButtonListen
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.dialog_select_week, container)
+        view.radioButtonWeek1.text = PreferenceManager.getDefaultSharedPreferences(context).getString("week1", context?.resources?.getString(R.string.week1))
+        view.radioButtonWeek2.text = PreferenceManager.getDefaultSharedPreferences(context).getString("week2", context?.resources?.getString(R.string.week2))
         dialog?.window?.setBackgroundDrawableResource(R.drawable.dialog_style)
         when (week) {
             "1" -> view.radioButtonWeek1.isChecked = true

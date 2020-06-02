@@ -1,10 +1,7 @@
 package com.example.schedule.fragments
 
 import android.os.Bundle
-import androidx.preference.ListPreference
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreferenceCompat
+import androidx.preference.*
 import com.example.schedule.R
 import com.example.schedule.SettingsActivity
 import com.example.schedule.interfaces.CurrentFragmentListener
@@ -20,6 +17,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
         findPreference<ListPreference>("this_week")?.isVisible = findPreference<ListPreference>("number_of_week")?.value != "1"
         findPreference<Preference>("names_week")?.isVisible = findPreference<ListPreference>("number_of_week")?.value != "1"
+        findPreference<ListPreference>("this_week")?.entries?.set(0, PreferenceManager.getDefaultSharedPreferences(context).getString("week1", context?.resources?.getString(R.string.week1)))
+        findPreference<ListPreference>("this_week")?.entries?.set(1, PreferenceManager.getDefaultSharedPreferences(context).getString("week2", context?.resources?.getString(R.string.week2)))
         findPreference<Preference>("names_week")?.summary = "${findPreference<ListPreference>("this_week")?.entries?.get(0)}, ${findPreference<ListPreference>("this_week")?.entries?.get(1)}"
         findPreference<ListPreference>("number_of_week")?.setOnPreferenceChangeListener { _, newValue ->
             findPreference<ListPreference>("this_week")?.isVisible = newValue != "1"
