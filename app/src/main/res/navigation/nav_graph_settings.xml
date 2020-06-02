@@ -13,7 +13,7 @@
     </fragment>
     <fragment
         android:id="@+id/changeManeWeekSettingFragment"
-        android:name="com.example.schedule.fragments.ChangeManeWeekSettingFragment"
+        android:name="com.example.schedule.fragments.ChangeNameWeekSettingFragment"
         android:label="ChangeManeWeekSettingFragment" >
         <action
             android:id="@+id/action_changeManeWeekSettingFragment_to_settingsFragment"

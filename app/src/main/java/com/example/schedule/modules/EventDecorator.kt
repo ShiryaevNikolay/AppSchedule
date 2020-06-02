@@ -10,10 +10,9 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade
 import com.prolificinteractive.materialcalendarview.spans.DotSpan
 
 class EventDecorator(
-    private val context: Context
+    private val context: Context,
+    private var listNote: ArrayList<Note>
 ) : DayViewDecorator {
-
-    private var listNote: ArrayList<Note> = ArrayList()
 
     override fun shouldDecorate(day: CalendarDay?): Boolean {
         var flag = false

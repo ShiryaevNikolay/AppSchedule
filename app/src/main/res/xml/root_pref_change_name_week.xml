@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <Preference android:key="week1"/>
-    <Preference android:key="week2"/>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <EditTextPreference
+        app:iconSpaceReserved="false"
+        android:key="week1"
+        android:dialogTitle="@string/name"/>
+    <EditTextPreference
+        app:iconSpaceReserved="false"
+        android:key="week2"
+        android:dialogTitle="@string/name"/>
 </PreferenceScreen>
