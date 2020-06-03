@@ -104,6 +104,9 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             }
         }
 
+        tr_select_week.isVisible = PreferenceManager.getDefaultSharedPreferences(this).getString("number_of_week", "1") != "1"
+        subtext_tr_select_week.isVisible = PreferenceManager.getDefaultSharedPreferences(this).getString("number_of_week", "1") != "1"
+
         scheduleViewModel.getAllListByDay(daySchedule).observe(this,
             Observer { t ->
                 if (t != null) {

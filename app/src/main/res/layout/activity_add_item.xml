@@ -97,6 +97,7 @@
                     android:hint="@string/btn_end_time_schedule"/>
             </TableRow>
             <TableRow
+                android:id="@+id/tr_select_week"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -122,6 +123,7 @@
                     app:srcCompat="@drawable/ic_color" />
             </TableRow>
             <TextView
+                android:id="@+id/subtext_tr_select_week"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/btn_default_week"
