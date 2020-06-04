@@ -16,16 +16,20 @@ import com.example.schedule.adapters.NoteCalendarAdapter
 import com.example.schedule.database.Note
 import com.example.schedule.modules.EventDecorator
 import com.example.schedule.viewmodels.NoteFragmentViewModel
+import com.google.android.material.button.MaterialButton
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.CalendarMode
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fr_calendar_main_activity.view.*
 import java.util.*
 
 class FragmentCalendarMainActivity : Fragment() {
 
+    private var flagModeCalendar = false
     private var listNote: ArrayList<Note> = ArrayList()
     private lateinit var itemAdapter: NoteCalendarAdapter
     private lateinit var noteFragmentViewModel: NoteFragmentViewModel
+    private lateinit var btnChangeModeCalendar: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +73,23 @@ class FragmentCalendarMainActivity : Fragment() {
                     setListCurrentDate(view.calendarView.selectedDate!!.day, view.calendarView.selectedDate!!.month, view.calendarView.selectedDate!!.year)
                 }
             })
+        btnChangeModeCalendar = view.btn_change_mode_calendar
+        view.btn_change_mode_calendar.setOnClickListener {
+            if (flagModeCalendar) {
+                view.btn_change_mode_calendar.setIconResource(R.drawable.chevron_up)
+                view.calendarView.newState()
+                    .setShowWeekDays(true)
+                    .setCalendarDisplayMode(CalendarMode.MONTHS)
+                    .commit()
+            } else {
+                view.btn_change_mode_calendar.setIconResource(R.drawable.chevron_down)
+                view.calendarView.newState()
+                    .setShowWeekDays(true)
+                    .setCalendarDisplayMode(CalendarMode.WEEKS)
+                    .commit()
+            }
+            flagModeCalendar = !flagModeCalendar
+        }
         return view
     }
 
@@ -99,6 +120,7 @@ class FragmentCalendarMainActivity : Fragment() {
                 listCurrentDate.add(i)
             }
         }
+        btnChangeModeCalendar.isVisible = !listCurrentDate.isEmpty()
         itemAdapter.setList(listCurrentDate)
     }
 
