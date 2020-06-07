@@ -120,7 +120,7 @@ class FragmentCalendarMainActivity : Fragment() {
                 listCurrentDate.add(i)
             }
         }
-        btnChangeModeCalendar.isVisible = !listCurrentDate.isEmpty()
+        btnChangeModeCalendar.isVisible = listCurrentDate.isNotEmpty()
         itemAdapter.setList(listCurrentDate)
     }
 

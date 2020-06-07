@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Расписание</string>
+
+    <string name="note_title_toolbar">Заметки</string>
+
+    <string name="menu_nav_main_month">Месяц</string>
+    <string name="menu_nav_main_day">День</string>
+
+    <string name="monday">Понедельник</string>
+    <string name="tuesday">Вторник</string>
+    <string name="wednesday">Среда</string>
+    <string name="thursday">Четверг</string>
+    <string name="friday">Пятница</string>
+    <string name="saturday">Суббота</string>
+    <string name="sunday">Воскресенье</string>
+
+    <string name="jan">Янв</string>
+    <string name="feb">Февр</string>
+    <string name="mar">Март</string>
+    <string name="apr">Апр</string>
+    <string name="may_abbreviated">Май</string>
+    <string name="june_abbreviated">Июнь</string>
+    <string name="july_abbreviated">Июль</string>
+    <string name="aug">Авг</string>
+    <string name="sept">Сент</string>
+    <string name="oct">Окт</string>
+    <string name="nov">Нояб</string>
+    <string name="dec">Дек</string>
+
+    <string name="january">Январь</string>
+    <string name="february">Февраль</string>
+    <string name="march">Март</string>
+    <string name="april">Апрель</string>
+    <string name="may">Май</string>
+    <string name="june">Июнь</string>
+    <string name="july">Июль</string>
+    <string name="august">Август</string>
+    <string name="september">Сентябрь</string>
+    <string name="october">Октябрь</string>
+    <string name="november">Ноябрь</string>
+    <string name="december">Декабрь</string>
+
+    <string name="tab_title_mon">Пн</string>
+    <string name="tab_title_tues">Вт</string>
+    <string name="tab_title_wed">Ср</string>
+    <string name="tab_title_thurs">Чт</string>
+    <string name="tab_title_fri">Пт</string>
+    <string name="tab_title_sat">Сб</string>
+    <string name="tab_title_sun">Вс</string>
+
+    <string name="tab_title_mon_main">Пн</string>
+    <string name="tab_title_tues_main">Вт</string>
+    <string name="tab_title_wed_main">Ср</string>
+    <string name="tab_title_thurs_main">Чт</string>
+    <string name="tab_title_fri_main">Пт</string>
+    <string name="tab_title_sat_main">Сб</string>
+    <string name="tab_title_sun_main">Вс</string>
+
+    <string name="menu_bottom_nav_homework">Заметки</string>
+    <string name="menu_bottom_nav_schedule">Расписание</string>
+
+    <string name="et_lesson">Занятие</string>
+    <string name="et_teacher">Преподаватель</string>
+    <string name="et_auditorium">Аудитория</string>
+    <string name="et_required_field">*Обязательное поле</string>
+    <string name="btn_start_time_schedule">Начало</string>
+    <string name="btn_end_time_schedule">Конец</string>
+    <string name="btn_hint_week_schedule">Неделя</string>
+    <string name="btn_default_week">По-умолчанию: каждую неделю</string>
+
+    <string name="btn_hint_image_note">Картинка</string>
+    <string name="btn_hint_image_plus_note">Картинка +</string>
+    <string name="btn_hint_color_note">Цвет</string>
+    <string name="btn_hint_deadline_note">Дата выполнения</string>
+
+    <string name="et_note">Заметка</string>
+
+    <string name="week1">Неделя 1</string>
+    <string name="week2">Неделя 2</string>
+    <string name="every_week">Каждую неделю</string>
+
+    <string name="there_are_lessons_at_this_time">В это вреям есть занятие</string>
+
+    <string name="title_dialog_select_week">Выберите неделю</string>
+    <string name="title_dialog_remove_schedule">Удалить расписание</string>
+    <string name="title_dialog_remove_note">Удалить заметки</string>
+    <string name="title_dialog_select_color">Выберите цвет</string>
+
+    <string name="btn_dropping">Сбросить</string>
+    <string name="btn_cancel">Отмена</string>
+    <string name="btn_add">Добавить</string>
+    <string name="btn_remove">Удалить</string>
+    <string name="btn_select">Выбрать</string>
+
+    <string name="no_lesson">Занятий нет</string>
+    <string name="img_no_lesson">Занятий нет</string>
+
+    <string name="no_notes">Заметок нет</string>
+    <string name="img_no_notes">Заметок нет</string>
+
+    <string name="img_deadline">дата выполнения</string>
+    <string name="img_change_mode_calendar">изменить режим календаря</string>
+
+    <string name="grid">Сетка</string>
+    <string name="dashboard">Панели</string>
+    <string name="list">Список</string>
+    <string name="title_activity_settings">Настройки</string>
+
+    <!-- Sync Preferences -->
+    <string name="theme_mode_title">Темная тема</string>
+    <string name="number_of_week">Количество повторяющихся недель</string>
+    <string name="this_week">Текущая неделя</string>
+    <string name="names_week">Названия</string>
+    <string name="name">Название</string>
+</resources>
