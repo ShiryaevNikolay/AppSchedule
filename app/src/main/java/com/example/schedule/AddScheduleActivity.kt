@@ -20,7 +20,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceManager
 import com.example.schedule.database.Schedule
+import com.example.schedule.dialogs.CertificationRadioDialog
 import com.example.schedule.dialogs.RadioDialog
+import com.example.schedule.interfaces.DialogMenuListener
 import com.example.schedule.interfaces.DialogRadioButtonListener
 import com.example.schedule.util.RequestCode
 import com.example.schedule.viewmodels.ScheduleFragmentViewModel
@@ -28,7 +30,7 @@ import kotlinx.android.synthetic.main.activity_add_item.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMenuItemClickListener, DialogRadioButtonListener {
+class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMenuItemClickListener, DialogRadioButtonListener, DialogMenuListener {
 
     private var lesson: String? = ""
     private var teacher: String? = ""
@@ -37,6 +39,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
     private var timeEnd = -1
     private var week: String = "12"
     private var daySchedule: Int = 0
+    private var typeOfExam: Int = 0
     private lateinit var animShowFab: Animation
     private var flagModeFab = false
     private lateinit var scheduleViewModel: ScheduleFragmentViewModel
@@ -72,6 +75,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
         btn_start_time_schedule.setOnClickListener(this)
         btn_end_time_schedule.setOnClickListener(this)
         btn_week_schedule.setOnClickListener(this)
+        btn_certification_schedule.setOnClickListener(this)
 
         if (intent.extras?.getInt("REQUEST_CODE") == RequestCode.REQUEST_CHANGE_SCHEDULE_FRAGMENT) {
             daySchedule = intent.extras!!.getInt("day")
@@ -101,6 +105,13 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
                     btn_week_schedule.text = this.resources.getString(R.string.every_week)
                     iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.gray_600))
                 }
+            }
+            typeOfExam = intent.getIntExtra("exam", 0)
+            when (typeOfExam) {
+                0 -> btn_certification_schedule.text = ""
+                1 -> btn_certification_schedule.text = this.resources.getString(R.string.exam)
+                2 -> btn_certification_schedule.text = this.resources.getString(R.string.test)
+                3 -> btn_certification_schedule.text = this.resources.getString(R.string.test_with_an_assessment)
             }
         }
 
@@ -160,6 +171,9 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             R.id.btn_week_schedule -> {
                 week.let { RadioDialog(this, it).show(supportFragmentManager, "selectWeek") }
             }
+            R.id.btn_certification_schedule -> {
+                CertificationRadioDialog(this, typeOfExam).show(supportFragmentManager, "selectCertification")
+            }
         }
     }
 
@@ -195,6 +209,16 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             btn_week_schedule.text = this.resources.getString(R.string.every_week)
         } else {
             Toast.makeText(this, this.resources.getString(R.string.there_are_lessons_at_this_time), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onClick(position: Int) {
+        typeOfExam = position
+        when (position) {
+            0 -> btn_certification_schedule.text = ""
+            1 -> btn_certification_schedule.text = this.resources.getString(R.string.exam)
+            2 -> btn_certification_schedule.text = this.resources.getString(R.string.test)
+            3 -> btn_certification_schedule.text = this.resources.getString(R.string.test_with_an_assessment)
         }
     }
 
@@ -248,6 +272,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
         data.putExtra("teacher", teacher)
         data.putExtra("auditorium", auditorium)
         data.putExtra("week", week)
+        data.putExtra("exam", typeOfExam)
         setResult(Activity.RESULT_OK, data)
         finish()
     }

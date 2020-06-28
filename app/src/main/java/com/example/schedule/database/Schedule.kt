@@ -15,5 +15,6 @@ class Schedule(
     var timeStart: Int,
     var timeEnd: Int,
     var week: String,
-    var day: Int
+    var day: Int,
+    var exam: Int = 0
 )

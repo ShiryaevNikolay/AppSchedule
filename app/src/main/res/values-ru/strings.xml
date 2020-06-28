@@ -113,4 +113,9 @@
     <string name="this_week">Текущая неделя</string>
     <string name="names_week">Названия</string>
     <string name="name">Название</string>
+
+    <string name="type_of_assessment">Тип аттестации</string>
+    <string name="exam">Экзамен</string>
+    <string name="test">Зачёт</string>
+    <string name="test_with_an_assessment">Зачёт с оценкой</string>
 </resources>

@@ -44,10 +44,6 @@ class ScheduleAdapter(
         if (listSchedule[position].teacher == "")
             holder.itemView.teacher_item_rv_schedule.isVisible = false
         else holder.itemView.teacher_item_rv_schedule.text = listSchedule[position].teacher
-        // В layout записываем auditorium
-        if (listSchedule[position].auditorium == "")
-            holder.itemView.auditorium_item_rv_schedule.isVisible = false
-        else holder.itemView.auditorium_item_rv_schedule.text = listSchedule[position].auditorium
         // Цвет индикатора недели
         if (fromActivity == RequestCode.REQUEST_SCHEDULE_ACTIVITY) {
             when (listSchedule[position].week) {
@@ -66,6 +62,32 @@ class ScheduleAdapter(
             }
             holder.itemView.setOnClickListener {
                 onClickItemListener.onClickItem(listSchedule[holder.adapterPosition])
+            }
+        }
+        if (listSchedule[position].exam == 0 && listSchedule[position].auditorium == "") {
+            holder.itemView.tr_auditorium_exam.isVisible = false
+        } else {
+            holder.itemView.tr_auditorium_exam.isVisible = true
+            // В layout записываем auditorium
+            holder.itemView.auditorium_item_rv_schedule.text = listSchedule[position].auditorium
+            // Тип сдачи (экзаме, зачёт...)
+            when (listSchedule[position].exam) {
+                0 -> {
+                    holder.itemView.exam_item_rv_schedule.isVisible = false
+                    holder.itemView.exam_item_rv_schedule.text = ""
+                }
+                1 -> {
+                    holder.itemView.exam_item_rv_schedule.isVisible = true
+                    holder.itemView.exam_item_rv_schedule.text = context.resources.getString(R.string.exam)
+                }
+                2 -> {
+                    holder.itemView.exam_item_rv_schedule.isVisible = true
+                    holder.itemView.exam_item_rv_schedule.text = context.resources.getString(R.string.test)
+                }
+                3 -> {
+                    holder.itemView.exam_item_rv_schedule.isVisible = true
+                    holder.itemView.exam_item_rv_schedule.text = context.resources.getString(R.string.test_with_an_assessment)
+                }
             }
         }
     }

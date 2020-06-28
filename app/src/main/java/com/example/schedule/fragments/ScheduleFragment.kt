@@ -167,7 +167,8 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperListener, DialogR
                         timeStart = data.extras?.getInt("timeStart")!!,
                         timeEnd = data.extras?.getInt("timeEnd")!!,
                         week = data.getStringExtra("week")!!,
-                        day = data.extras!!.getInt("day")
+                        day = data.extras!!.getInt("day"),
+                        exam = data.extras!!.getInt("exam")
                     )
                     scheduleFragmentViewModel.insert(schedule)
                 } else {
@@ -182,7 +183,8 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperListener, DialogR
                             timeStart = data.extras?.getInt("timeStart")!!,
                             timeEnd = data.extras?.getInt("timeEnd")!!,
                             week = data.getStringExtra("week")!!,
-                            day = data.extras?.getInt("day")!!
+                            day = data.extras?.getInt("day")!!,
+                            exam = data.extras!!.getInt("exam")
                         )
                     }!!
                     scheduleFragmentViewModel.update(schedule)
@@ -226,6 +228,7 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperListener, DialogR
         intent.putExtra("timeStart", schedule.timeStart)
         intent.putExtra("timeEnd", schedule.timeEnd)
         intent.putExtra("week", schedule.week)
+        intent.putExtra("exam", schedule.exam)
         intent.putExtra("REQUEST_CODE", RequestCode.REQUEST_CHANGE_SCHEDULE_FRAGMENT)
         startActivityForResult(intent, RequestCode.REQUEST_CHANGE_SCHEDULE_FRAGMENT)
     }

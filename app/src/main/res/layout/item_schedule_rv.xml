@@ -96,12 +96,23 @@
                 android:gravity="center_vertical"
                 android:layout_marginTop="5dp"/>
 
-            <TextView
-                android:id="@+id/auditorium_item_rv_schedule"
+            <TableRow
+                android:id="@+id/tr_auditorium_exam"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:gravity="bottom"/>
+                android:gravity="bottom">
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/auditorium_item_rv_schedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+                <TextView
+                    android:id="@+id/exam_item_rv_schedule"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </TableRow>
         </LinearLayout>
     </LinearLayout>
 

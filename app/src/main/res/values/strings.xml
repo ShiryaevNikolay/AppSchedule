@@ -112,4 +112,9 @@
     <string name="this_week">Current week</string>
     <string name="names_week">Names</string>
     <string name="name">Name</string>
+
+    <string name="type_of_assessment">Type of exam</string>
+    <string name="exam">Exam</string>
+    <string name="test">Test</string>
+    <string name="test_with_an_assessment">Test with an assessment</string>
 </resources>
