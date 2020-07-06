@@ -55,6 +55,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
 
         btn_deadline_note.setOnClickListener(this)
         btn_bg_color_note.setOnClickListener(this)
+        btn_image_note.setOnClickListener(this)
         fab.setOnClickListener(this)
 
         et_note_schedule.addTextChangedListener {
@@ -96,6 +97,9 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
             }
             R.id.btn_bg_color_note -> {
                 openColorPicker()
+            }
+            R.id.btn_image_note -> {
+
             }
             R.id.fab -> {
                 if (flagModeFab) {
