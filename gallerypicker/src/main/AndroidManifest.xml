@@ -1,0 +1,8 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.gallerypicker">
+
+    <application
+        android:theme="@style/AppTheme">
+        <activity android:name=".view.PickerActivity"/>
+    </application>
+</manifest>
