@@ -7,10 +7,10 @@ import androidx.appcompat.widget.AppCompatImageView
 
 
 class SquareImageView : AppCompatImageView {
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, @Nullable attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context?) : super(context!!)
+    constructor(context: Context?, @Nullable attrs: AttributeSet?) : super(context!!, attrs)
     constructor(context: Context?, @Nullable attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
+        context!!,
         attrs,
         defStyleAttr
     )
