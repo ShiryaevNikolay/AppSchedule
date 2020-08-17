@@ -1,17 +1,25 @@
 package com.example.schedule
 
+import android.Manifest
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.preference.PreferenceManager
+import com.example.gallerypicker.model.GalleryData
+import com.example.gallerypicker.model.interactor.GalleryPicker
+import com.example.gallerypicker.utils.MLog
+import com.example.gallerypicker.view.PickerActivity
 import com.example.schedule.dialogs.PickColorDialog
 import com.example.schedule.interfaces.DialogRemoveListener
 import com.example.schedule.util.RequestCode
@@ -28,6 +36,8 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
     private var bgColor: Int = -1
     private var flagModeFab = false
     private lateinit var animShowFab: Animation
+    private val PERMISSIONS_READ_WRITE = 123
+    val REQUEST_RESULT_CODE = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("theme_mode", false))
@@ -90,6 +100,17 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         checkMandatoryItem()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == REQUEST_RESULT_CODE && data != null) {
+            val mediaList = data.getParcelableArrayListExtra<GalleryData>("MEDIA")
+            if (mediaList != null) {
+                MLog.e("SELECTED MEDIA", mediaList.size.toString())
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onClick(v: View?) {
         when(v?.id) {
             R.id.btn_deadline_note -> {
@@ -99,7 +120,12 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
                 openColorPicker()
             }
             R.id.btn_image_note -> {
-
+                if (isReadWritePermitted()) getGalleryResults() else checkReadWritePermission()
+                val i = Intent(this@AddNoteActivity, PickerActivity::class.java)
+                i.putExtra("IMAGES_LIMIT", 4)
+                i.putExtra("VIDEOS_LIMIT", 1)
+                i.putExtra("REQUEST_RESULT_CODE", REQUEST_RESULT_CODE)
+                startActivityForResult(i, 101)
             }
             R.id.fab -> {
                 if (flagModeFab) {
@@ -189,4 +215,24 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         else
             btn_bg_color_note.background.setTint(this.resources.getIntArray(R.array.rainbow)[bgColor])
     }
+
+    fun getGalleryResults() {
+        val images = GalleryPicker(this).getImages()
+        val videos = GalleryPicker(this).getVideos()
+        text.text = "IMAGES COUNT: ${images.size}\nVIDEOS COUNT: ${videos.size}"
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun checkReadWritePermission(): Boolean {
+        requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), PERMISSIONS_READ_WRITE)
+        return true
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            PERMISSIONS_READ_WRITE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) getGalleryResults()
+        }
+    }
+
+    private fun isReadWritePermitted(): Boolean = (checkCallingOrSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && checkCallingOrSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 }
