@@ -27,6 +27,7 @@ import com.example.gallerypicker.utils.keypad.HideKeypad
 import com.example.gallerypicker.view.adapters.AlbumAdapter
 import com.example.gallerypicker.view.adapters.VideoGridAdapter
 import kotlinx.android.synthetic.main.fr_media.*
+import kotlinx.android.synthetic.main.fr_media.view.*
 import org.jetbrains.anko.doAsync
 import java.io.File
 
@@ -54,7 +55,7 @@ class VideosFragment : Fragment(), ImagePickerContract {
 
         imageGrid.setPopUpTypeface(FontsManager(ctx).getTypeface(FontsConstants.MULI_SEMIBOLD))
 
-        albumselection.text = "All Videos"
+        albumselection.text = context?.resources?.getString(R.string.title_all_videos)!!
 
         if (isReadWritePermitted()) initGalleryViews() else allowAccessFrame.visibility = View.VISIBLE
 
@@ -63,7 +64,7 @@ class VideosFragment : Fragment(), ImagePickerContract {
         }
 
         if (activity != null) HideKeypad().hideKeyboard(activity!!)
-        backFrame.setOnClickListener { activity?.onBackPressed() }
+        view.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
 
         galleryIllusTitle.typeface = FontsManager(ctx).getTypeface(FontsConstants.MULI_SEMIBOLD)
         galleryIllusContent.typeface = FontsManager(ctx).getTypeface(FontsConstants.MULI_REGULAR)
@@ -88,7 +89,7 @@ class VideosFragment : Fragment(), ImagePickerContract {
                     for (album in albums) {
                         albumList.add(album)
                     }
-                    albumList.add(0, GalleryAlbums(0, "All Videos", albumPhotos = photoList))
+                    albumList.add(0, GalleryAlbums(0, context?.resources?.getString(R.string.title_all_videos)!!, albumPhotos = photoList))
                     photoList.sortWith(compareByDescending { File(it.photoUri).lastModified() })
 
                     for (id in photoids) {

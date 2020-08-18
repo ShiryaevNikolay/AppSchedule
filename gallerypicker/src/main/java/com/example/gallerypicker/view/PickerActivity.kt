@@ -13,6 +13,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.preference.PreferenceManager
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.gallerypicker.R
 import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.fr_media.*
 import kotlinx.android.synthetic.main.fr_picker.*
 import java.io.File
 import java.io.FileOutputStream
@@ -39,6 +41,11 @@ class PickerActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("theme_mode", false))
+            setTheme(R.style.AppTheme_Dark)
+        else
+            setTheme(R.style.AppTheme)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fr_picker)
 

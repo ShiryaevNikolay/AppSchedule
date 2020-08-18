@@ -2,6 +2,7 @@ package com.example.gallerypicker.view
 
 import android.Manifest
 import android.annotation.TargetApi
+import android.content.ContentProvider
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -27,6 +28,7 @@ import com.example.gallerypicker.utils.keypad.HideKeypad
 import com.example.gallerypicker.view.adapters.AlbumAdapter
 import com.example.gallerypicker.view.adapters.ImageGridAdapter
 import kotlinx.android.synthetic.main.fr_media.*
+import kotlinx.android.synthetic.main.fr_media.view.*
 import org.jetbrains.anko.doAsync
 import java.io.File
 
@@ -56,7 +58,7 @@ class PhotosFragment : Fragment(), ImagePickerContract {
         }
 
         if (activity != null) HideKeypad().hideKeyboard(activity!!)
-        backFrame.setOnClickListener { activity?.onBackPressed() }
+        view.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
 
         imageGrid.setPopUpTypeface(FontsManager(ctx).getTypeface(FontsConstants.MULI_SEMIBOLD))
         galleryIllusTitle.typeface = FontsManager(ctx).getTypeface(FontsConstants.MULI_SEMIBOLD)
@@ -89,7 +91,7 @@ class PhotosFragment : Fragment(), ImagePickerContract {
                     for (album in albums) {
                         albumList.add(album)
                     }
-                    albumList.add(0, GalleryAlbums(0, "All Photos", albumPhotos = photoList))
+                    albumList.add(0, GalleryAlbums(0, context?.resources?.getString(R.string.title_all_photos)!!, albumPhotos = photoList))
                     photoList.sortWith(compareByDescending { File(it.photoUri).lastModified() })
 
                     for (id in photoids) {

@@ -11,6 +11,15 @@
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/white</item>
         <item name="colorAccent">@color/blue_gray_700</item>
+        <item name="bottomNavigationStyle">@style/BottomNavViewLightStyle</item>
+        <item name="toolbarStyle">@style/ToolbarLightStyle</item>
+        <item name="tabStyle">@style/TabLayoutLightStyle</item>
+        <item name="materialButtonStyle">@style/ButtonLightStyle</item>
+        <item name="checkboxStyle">@style/CheckBoxStyle</item>
+        <item name="switchStyle">@style/SwitchStyle</item>
+        <item name="buttonBarButtonStyle">@style/ButtonLightStyle</item>
+        <item name="materialCardViewStyle">@style/CardLightStyle</item>
+        <item name="floatingActionButtonStyle">@style/FabLightStyle</item>
     </style>
 
     <style name="ThemeDark" parent="Theme.AppCompat.NoActionBar">
@@ -20,5 +29,14 @@
         <item name="colorPrimary">@color/gray_900</item>
         <item name="colorPrimaryDark">@color/gray_900</item>
         <item name="colorAccent">@color/blue_gray_100</item>
+        <item name="bottomNavigationStyle">@style/BottomNavViewDarkStyle</item>
+        <item name="toolbarStyle">@style/ToolbarDarkStyle</item>
+        <item name="tabStyle">@style/TabLayoutDarkStyle</item>
+        <item name="materialButtonStyle">@style/ButtonDarkStyle</item>
+        <item name="checkboxStyle">@style/CheckBoxStyle</item>
+        <item name="switchStyle">@style/SwitchStyle</item>
+        <item name="buttonBarButtonStyle">@style/ButtonDarkStyle</item>
+        <item name="materialCardViewStyle">@style/CardDarkStyle</item>
+        <item name="floatingActionButtonStyle">@style/FabDarkStyle</item>
     </style>
 </resources>

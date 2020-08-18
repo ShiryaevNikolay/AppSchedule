@@ -1,37 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    tools:context=".view.PickerActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:gravity="center"
+        app:navigationIcon="@drawable/ic_back">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_height="match_parent"
             android:elevation="4dp">
-
-            <FrameLayout
-                android:id="@+id/backFrame"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp">
-
-                <ImageView
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:layout_gravity="center"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:foregroundGravity="center"
-                    android:src="@drawable/ic_back" />
-            </FrameLayout>
 
             <TextView
                 android:id="@+id/albumselection"
@@ -39,11 +27,11 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_5sdp"
-                android:layout_toEndOf="@+id/backFrame"
-                android:text="All Photos"
-                android:textColor="#000000"
+                android:text="@string/title_all_photos"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="@dimen/_14sdp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="SpUsage" />
 
             <FrameLayout
                 android:id="@+id/dropdownframe"
@@ -60,20 +48,17 @@
                     android:src="@drawable/ic_dropdown" />
             </FrameLayout>
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/done"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:paddingEnd="15dp"
-                android:paddingStart="15dp"
-                android:text="DONE"
-                android:textColor="?colorPrimary"
-                android:textSize="@dimen/_14sdp"
-                android:textStyle="bold" />
+                android:layout_marginHorizontal="5dp"
+                android:text="@string/title_done"
+                android:textStyle="bold"/>
         </RelativeLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <com.example.gallerypicker.utils.scroll.FastScrollRecyclerView
         android:id="@+id/imageGrid"
@@ -85,7 +70,6 @@
         android:overScrollMode="never"
         app:fastScrollPopupBackgroundSize="@dimen/_30sdp"
         app:fastScrollPopupBgColor="#2962ff"
-        app:fastScrollPopupTextColor="#ffffff"
         app:fastScrollPopupTextSize="@dimen/_12sdp"
         app:fastScrollThumbColor="#2962ff" />
 
@@ -99,7 +83,7 @@
         android:id="@+id/allowAccessFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff"
+        android:background="?android:attr/windowBackground"
         android:clickable="true"
         android:focusable="true">
 
@@ -117,8 +101,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="Uh oh!"
-                android:textColor="#000000"
+                android:text="@string/warning"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="16sp" />
 
             <TextView
@@ -128,8 +112,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="You haven’t published any posts yet. Start creating awesome content."
-                android:textColor="#000000"
+                android:text="@string/info"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="14sp" />
 
             <TextView
@@ -142,8 +126,8 @@
                 android:paddingEnd="20dp"
                 android:paddingStart="20dp"
                 android:paddingTop="5dp"
-                android:text="Allow Access"
-                android:textColor="#ffffff"
+                android:text="@string/btn_text"
+                android:textColor="?android:attr/windowBackground"
                 android:textSize="16sp" />
 
         </LinearLayout>
