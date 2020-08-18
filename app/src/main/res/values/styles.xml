@@ -39,5 +39,6 @@
         <item name="switchStyle">@style/SwitchStyle</item>
         <item name="buttonBarButtonStyle">@style/ButtonDarkStyle</item>
         <item name="materialCardViewStyle">@style/CardDarkStyle</item>
+        <item name="floatingActionButtonStyle">@style/FabDarkStyle</item>
     </style>
 </resources>

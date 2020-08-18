@@ -43,4 +43,9 @@
     <style name="CardDarkStyle" parent="Widget.MaterialComponents.CardView">
         <item name="cardBackgroundColor">@color/card_black</item>
     </style>
+
+    <style name="FabDarkStyle" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">?android:attr/colorAccent</item>
+        <item name="tint">?android:attr/windowBackground</item>
+    </style>
 </resources>
