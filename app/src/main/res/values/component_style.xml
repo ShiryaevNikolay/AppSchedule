@@ -12,6 +12,7 @@
         <item name="android:textColor">@color/blue_gray_700</item>
         <item name="cornerRadius">8dp</item>
         <item name="rippleColor">@color/blue_gray_200</item>
+        <item name="iconTint">@color/blue_gray_700</item>
     </style>
 
     <style name="ButtonNegativeStyle" parent="ButtonLightStyle">
@@ -59,5 +60,10 @@
 
     <style name="CardLightStyle" parent="Widget.MaterialComponents.CardView">
         <item name="cardBackgroundColor">@color/white</item>
+    </style>
+
+    <style name="FabLightStyle" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">?android:attr/colorAccent</item>
+        <item name="tint">?android:attr/windowBackground</item>
     </style>
 </resources>

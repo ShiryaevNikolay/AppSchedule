@@ -12,6 +12,7 @@
         <item name="android:textColor">@color/blue_gray_100</item>
         <item name="cornerRadius">8dp</item>
         <item name="rippleColor">@color/gray_700</item>
+        <item name="iconTint">@color/blue_gray_100</item>
     </style>
 
     <style name="ToolbarDarkStyle" parent="Widget.AppCompat.Toolbar">

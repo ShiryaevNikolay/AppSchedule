@@ -20,6 +20,7 @@
         <item name="switchStyle">@style/SwitchStyle</item>
         <item name="buttonBarButtonStyle">@style/ButtonLightStyle</item>
         <item name="materialCardViewStyle">@style/CardLightStyle</item>
+        <item name="floatingActionButtonStyle">@style/FabLightStyle</item>
     </style>
 
     <style name="ThemeDark" parent="Theme.MaterialComponents.NoActionBar">
