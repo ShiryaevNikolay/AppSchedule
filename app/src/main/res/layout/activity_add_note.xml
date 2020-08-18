@@ -25,35 +25,25 @@
             android:paddingRight="10dp"
             android:paddingBottom="10dp">
 
-            <com.google.android.material.textfield.TextInputLayout
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_note_schedule"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/et_note"/>
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/et_note">
+                android:text="@string/et_required_field"
+                android:textSize="12sp"
+                android:layout_marginStart="3dp"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_note_schedule"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/et_required_field"
-                    android:textSize="12sp"
-                    android:layout_marginStart="3dp"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_lesson_note"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:hint="@string/et_lesson"
-                android:layout_marginTop="10dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_lesson_note"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="10dp"/>
 
             <TableRow
                 android:layout_width="match_parent"

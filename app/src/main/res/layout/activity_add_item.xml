@@ -26,47 +26,31 @@
             android:paddingRight="10dp"
             android:paddingBottom="10dp">
 
-            <com.google.android.material.textfield.TextInputLayout
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_lesson_schedule"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/et_lesson"/>
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/et_lesson">
+                android:text="@string/et_required_field"
+                android:textSize="12sp"
+                android:layout_marginStart="3dp"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_lesson_schedule"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/et_required_field"
-                    android:textSize="12sp"
-                    android:layout_marginStart="3dp"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_teacher_schedule"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:hint="@string/et_teacher"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="25dp">
+                android:layout_marginBottom="25dp"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_teacher_schedule"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_auditorium_schedule"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/et_auditorium">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_auditorium_schedule"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="match_parent"
+                android:hint="@string/et_auditorium"/>
 
             <TableRow
                 android:layout_width="match_parent"

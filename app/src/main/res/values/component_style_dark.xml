@@ -5,16 +5,18 @@
         <item name="itemIconTint">?android:attr/textColorPrimary</item>
         <item name="itemTextColor">?android:attr/textColorSecondary</item>
         <item name="itemHorizontalTranslationEnabled">false</item>
-        <!--        <item name="labelVisibilityMode">unlabeled</item>-->
+        <item name="itemRippleColor">@color/gray_800</item>
     </style>
 
     <style name="ButtonDarkStyle" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:textColor">@color/blue_gray_100</item>
         <item name="cornerRadius">8dp</item>
+        <item name="rippleColor">@color/gray_700</item>
     </style>
 
     <style name="ToolbarDarkStyle" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">?android:attr/windowBackground</item>
+        <item name="titleTextColor">@color/light_blue_500</item>
     </style>
 
     <style name="TabLayoutDarkStyle" parent="Widget.MaterialComponents.TabLayout">
@@ -22,6 +24,9 @@
         <item name="tabTextColor">?android:attr/textColorSecondary</item>
         <item name="tabSelectedTextColor">?android:attr/colorAccent</item>
         <item name="textAllCaps">true</item>
+        <item name="tabRippleColor">@color/gray_700</item>
+        <item name="tabIndicatorColor">@color/blue_gray_400</item>
+        <item name="tabIndicatorGravity">bottom</item>
     </style>
 
     <style name="TimePickerDialogDarkStyle" parent="Theme.MaterialComponents.Light.Dialog.Alert">
