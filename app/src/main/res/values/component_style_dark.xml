@@ -33,6 +33,9 @@
         <item name="colorPrimary">?android:attr/windowBackground</item>
         <item name="android:headerBackground">@color/blue_gray_700</item>
         <item name="colorAccent">?android:attr/colorAccent</item>
-        <item name="materialButtonStyle">@style/ButtonLightStyle</item>
+    </style>
+
+    <style name="CustomTextAppearanceDateDark" parent="CustomTextAppearanceDateLight">
+        <item name="android:textColor">@color/mcv_text_date_dark</item>
     </style>
 </resources>
