@@ -38,4 +38,8 @@
     <style name="CustomTextAppearanceDateDark" parent="CustomTextAppearanceDateLight">
         <item name="android:textColor">@color/mcv_text_date_dark</item>
     </style>
+
+    <style name="CardDarkStyle" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/card_black</item>
+    </style>
 </resources>

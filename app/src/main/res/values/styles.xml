@@ -19,6 +19,7 @@
         <item name="fontFamily">@font/rubik</item>
         <item name="switchStyle">@style/SwitchStyle</item>
         <item name="buttonBarButtonStyle">@style/ButtonLightStyle</item>
+        <item name="materialCardViewStyle">@style/CardLightStyle</item>
     </style>
 
     <style name="ThemeDark" parent="Theme.MaterialComponents.NoActionBar">
@@ -36,5 +37,6 @@
         <item name="fontFamily">@font/rubik</item>
         <item name="switchStyle">@style/SwitchStyle</item>
         <item name="buttonBarButtonStyle">@style/ButtonDarkStyle</item>
+        <item name="materialCardViewStyle">@style/CardDarkStyle</item>
     </style>
 </resources>

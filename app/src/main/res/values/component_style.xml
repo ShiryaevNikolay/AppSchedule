@@ -56,4 +56,8 @@
         <item name="thumbTint">@color/selector_switch_thumb</item>
         <item name="trackTint">@color/selector_switch_track</item>
     </style>
+
+    <style name="CardLightStyle" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/white</item>
+    </style>
 </resources>
