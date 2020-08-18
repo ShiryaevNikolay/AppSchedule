@@ -105,6 +105,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         if (resultCode == REQUEST_RESULT_CODE && data != null) {
             val mediaList = data.getParcelableArrayListExtra<GalleryData>("MEDIA")
             if (mediaList != null) {
+                text.text = mediaList.toString()
                 MLog.e("SELECTED MEDIA", mediaList.size.toString())
             }
         }
@@ -122,7 +123,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
             R.id.btn_image_note -> {
                 if (isReadWritePermitted()) getGalleryResults() else checkReadWritePermission()
                 val i = Intent(this@AddNoteActivity, PickerActivity::class.java)
-                i.putExtra("IMAGES_LIMIT", 4)
+                i.putExtra("IMAGES_LIMIT", 10)
                 i.putExtra("VIDEOS_LIMIT", 1)
                 i.putExtra("REQUEST_RESULT_CODE", REQUEST_RESULT_CODE)
                 startActivityForResult(i, 101)
