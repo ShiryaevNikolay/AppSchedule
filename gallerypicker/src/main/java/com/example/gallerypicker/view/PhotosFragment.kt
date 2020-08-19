@@ -2,7 +2,6 @@ package com.example.gallerypicker.view
 
 import android.Manifest
 import android.annotation.TargetApi
-import android.content.ContentProvider
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -37,7 +36,7 @@ class PhotosFragment : Fragment(), ImagePickerContract {
     var albumList: ArrayList<GalleryAlbums> = ArrayList()
     lateinit var glm: GridLayoutManager
     var photoids: ArrayList<Int> = ArrayList()
-    val imagePickerPresenter: PhotosPresenterImpl = PhotosPresenterImpl(this)
+    private val imagePickerPresenter: PhotosPresenterImpl = PhotosPresenterImpl(this)
     lateinit var listener: OnPhoneImagesObtained
     private val PERMISSIONS_READ_WRITE = 123
 
@@ -73,7 +72,7 @@ class PhotosFragment : Fragment(), ImagePickerContract {
         if (isReadWritePermitted()) initGalleryViews() else allowAccessFrame.visibility = View.VISIBLE
     }
 
-    fun initGalleryViews() {
+    private fun initGalleryViews() {
         allowAccessFrame.visibility = View.GONE
         glm = GridLayoutManager(ctx, 4)
         imageGrid.itemAnimator = null

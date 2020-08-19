@@ -16,10 +16,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.gallerypicker.model.GalleryData
 import com.example.gallerypicker.model.interactor.GalleryPicker
 import com.example.gallerypicker.utils.MLog
 import com.example.gallerypicker.view.PickerActivity
+import com.example.schedule.adapters.ImagesAdapter
 import com.example.schedule.dialogs.PickColorDialog
 import com.example.schedule.interfaces.DialogRemoveListener
 import com.example.schedule.util.RequestCode
@@ -68,6 +71,9 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         btn_image_note.setOnClickListener(this)
         fab.setOnClickListener(this)
 
+        recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+        recyclerView.setHasFixedSize(true)
+
         et_note_schedule.addTextChangedListener {
             note = it.toString()
             checkMandatoryItem()
@@ -105,6 +111,14 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         if (resultCode == REQUEST_RESULT_CODE && data != null) {
             val mediaList = data.getParcelableArrayListExtra<GalleryData>("MEDIA")
             if (mediaList != null) {
+                recyclerView.adapter = ImagesAdapter(mediaList)
+                if (mediaList.size > 0) {
+                    btn_image_note.text = this.resources.getString(R.string.btn_hint_image_note)
+                    btn_image_note.icon = ContextCompat.getDrawable(this, R.drawable.ic_add)
+                } else {
+                    btn_image_note.text = null
+                    btn_image_note.icon = null
+                }
                 text.text = mediaList.toString()
                 MLog.e("SELECTED MEDIA", mediaList.size.toString())
             }

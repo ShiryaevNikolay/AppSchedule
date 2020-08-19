@@ -13,6 +13,7 @@
         <item name="cornerRadius">8dp</item>
         <item name="rippleColor">@color/blue_gray_200</item>
         <item name="iconTint">@color/blue_gray_700</item>
+        <item name="iconGravity">textStart</item>
     </style>
 
     <style name="ButtonNegativeStyle" parent="ButtonLightStyle">
