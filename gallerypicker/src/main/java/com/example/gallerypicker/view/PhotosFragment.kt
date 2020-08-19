@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.view.ViewOutlineProvider
 import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -63,6 +64,8 @@ class PhotosFragment : Fragment(), ImagePickerContract {
         galleryIllusTitle.typeface = FontsManager(ctx).getTypeface(FontsConstants.MULI_SEMIBOLD)
         galleryIllusContent.typeface = FontsManager(ctx).getTypeface(FontsConstants.MULI_REGULAR)
         allowAccessButton.typeface = FontsManager(ctx).getTypeface(FontsConstants.MULI_SEMIBOLD)
+
+        albumsrecyclerview.isVisible = false
     }
 
     fun initViews() {
@@ -148,11 +151,13 @@ class PhotosFragment : Fragment(), ImagePickerContract {
             } catch (e: Exception) {
             }
             done.visibility = View.GONE
+            albumsrecyclerview.isVisible = true
         } else {
             albumsrecyclerview.adapter = AlbumAdapter(ArrayList(), this)
             dropdown.setImageResource(R.drawable.ic_dropdown)
             done.isEnabled = true
             done.visibility = View.VISIBLE
+            albumsrecyclerview.isVisible = false
         }
     }
 
@@ -186,5 +191,5 @@ class PhotosFragment : Fragment(), ImagePickerContract {
         }
     }
 
-    private fun isReadWritePermitted(): Boolean = (context?.checkCallingOrSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && context?.checkCallingOrSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+    private fun isReadWritePermitted(): Boolean = (context?.checkCallingOrSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && context?.checkCallingOrSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 }

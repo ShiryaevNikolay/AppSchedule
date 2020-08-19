@@ -16,7 +16,6 @@ import com.example.gallerypicker.model.GalleryAlbums
 import com.example.gallerypicker.utils.font.FontsConstants
 import com.example.gallerypicker.utils.font.FontsManager
 import com.example.gallerypicker.view.PhotosFragment
-import com.example.gallerypicker.view.VideosFragment
 import kotlinx.android.synthetic.main.album_item.view.*
 import kotlinx.android.synthetic.main.fr_media.*
 import org.jetbrains.anko.doAsync
@@ -55,18 +54,9 @@ class AlbumAdapter() : RecyclerView.Adapter<AlbumAdapter.MyViewHolder>() {
         }
 
         holder.albumFrame.setOnClickListener {
-            when (currentFragment) {
-                is PhotosFragment -> {
-                    (currentFragment as PhotosFragment).updateTitle(malbumList[holder.adapterPosition])
-                    (currentFragment as PhotosFragment).imageGrid.adapter = ImageGridAdapter((currentFragment as PhotosFragment).photoList, malbumList[holder.adapterPosition].id)
-                    (currentFragment as PhotosFragment).toggleDropdown()
-                }
-                is VideosFragment -> {
-                    (currentFragment as VideosFragment).updateTitle(malbumList[holder.adapterPosition])
-                    (currentFragment as VideosFragment).imageGrid.adapter = VideoGridAdapter((currentFragment as VideosFragment).photoList, malbumList[holder.adapterPosition].id)
-                    (currentFragment as VideosFragment).toggleDropdown()
-                }
-            }
+            (currentFragment as PhotosFragment).updateTitle(malbumList[holder.adapterPosition])
+            (currentFragment as PhotosFragment).imageGrid.adapter = ImageGridAdapter((currentFragment as PhotosFragment).photoList, malbumList[holder.adapterPosition].id)
+            (currentFragment as PhotosFragment).toggleDropdown()
         }
 
         holder.albumtitle.typeface = FontsManager(ctx).getTypeface(FontsConstants.MULI_REGULAR)

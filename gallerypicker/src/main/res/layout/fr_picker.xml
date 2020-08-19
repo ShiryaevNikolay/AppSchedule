@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,20 +12,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.example.gallerypicker.utils.AnimationlessViewpager
-            android:id="@+id/viewpager"
+        <fragment
+            android:id="@+id/frLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:overScrollMode="never"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabIndicatorHeight="0dp"
-            android:elevation="8dp"/>
+            android:name="com.example.gallerypicker.view.PhotosFragment"
+            tools:layout="@layout/fr_media" />
     </LinearLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -39,10 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
-            android:layout_marginEnd="@dimen/_16sdp"
-            android:layout_marginStart="@dimen/_16sdp"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:layout_marginBottom="@dimen/_50sdp"
+            android:layout_margin="@dimen/_16sdp"
             android:src="@drawable/ic_camera" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

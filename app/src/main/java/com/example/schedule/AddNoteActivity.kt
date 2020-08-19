@@ -231,10 +231,9 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
             btn_bg_color_note.background.setTint(this.resources.getIntArray(R.array.rainbow)[bgColor])
     }
 
-    fun getGalleryResults() {
+    private fun getGalleryResults() {
         val images = GalleryPicker(this).getImages()
-        val videos = GalleryPicker(this).getVideos()
-        text.text = "IMAGES COUNT: ${images.size}\nVIDEOS COUNT: ${videos.size}"
+        text.text = "IMAGES COUNT: ${images.size}"
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -249,5 +248,5 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         }
     }
 
-    private fun isReadWritePermitted(): Boolean = (checkCallingOrSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && checkCallingOrSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+    private fun isReadWritePermitted(): Boolean = (checkCallingOrSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && checkCallingOrSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 }

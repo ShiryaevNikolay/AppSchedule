@@ -73,6 +73,11 @@ class ImagesAdapter(
             holder.itemView.durationFrame.visibility = View.VISIBLE
             holder.itemView.durationLabel.text = DateUtil().millisToTime(listImages[holder.adapterPosition].duration.toLong())
         } else holder.itemView.durationFrame.visibility = View.GONE
+
+        holder.itemView.deleteBtn.setOnClickListener {
+            listImages.removeAt(holder.adapterPosition)
+            notifyItemRemoved(holder.adapterPosition)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -82,6 +87,10 @@ class ImagesAdapter(
     fun setList(listImages: ArrayList<GalleryData>) {
         this.listImages = listImages
         notifyDataSetChanged()
+    }
+
+    fun getList() : ArrayList<GalleryData> {
+        return listImages
     }
 
     class ImagesViewHolder(view: View) : RecyclerView.ViewHolder(view)

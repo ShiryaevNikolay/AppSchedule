@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.provider.MediaStore
 import android.util.Log
 import com.example.gallerypicker.model.GalleryImage
-import com.example.gallerypicker.model.GalleryVideo
 import java.io.File
 
 class GalleryPicker(var ctx: Context) {
@@ -72,85 +71,6 @@ class GalleryPicker(var ctx: Context) {
             Log.e("IMAGES", e.toString())
         } finally {
             return images
-        }
-    }
-
-    fun getVideos(): ArrayList<GalleryVideo> {
-        val videos: ArrayList<GalleryVideo> = ArrayList()
-        try {
-            if (isReadWritePermitted()) {
-                val videoProjection = arrayOf(MediaStore.Images.Media._ID,
-                    MediaStore.Video.Media.DATA,
-                    MediaStore.Video.Media.DATE_ADDED,
-                    MediaStore.Video.Media.DATE_MODIFIED,
-                    MediaStore.Video.Media.DISPLAY_NAME,
-                    MediaStore.Video.Media.HEIGHT,
-                    MediaStore.Video.Media.MIME_TYPE,
-                    MediaStore.Video.Media.SIZE,
-                    MediaStore.Video.Media.TITLE,
-                    MediaStore.Video.Media.WIDTH,
-                    MediaStore.Video.Media.ALBUM,
-                    MediaStore.Video.Media.ARTIST,
-                    MediaStore.Video.Media.BOOKMARK,
-                    MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
-                    MediaStore.Video.Media.BUCKET_ID,
-                    MediaStore.Video.Media.CATEGORY,
-                    MediaStore.Video.Media.DATE_TAKEN,
-                    MediaStore.Video.Media.DESCRIPTION,
-                    MediaStore.Video.Media.DURATION,
-                    MediaStore.Video.Media.IS_PRIVATE,
-                    MediaStore.Video.Media.LANGUAGE,
-                    MediaStore.Video.Media.LATITUDE,
-                    MediaStore.Video.Media.LONGITUDE,
-                    MediaStore.Video.Media.MINI_THUMB_MAGIC,
-                    MediaStore.Video.Media.RESOLUTION,
-                    MediaStore.Video.Media.TAGS)
-
-                val videoQueryUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-
-                val videocursor = ctx.contentResolver.query(videoQueryUri, videoProjection, null, null, null)
-
-                if (videocursor != null && videocursor.count > 0) {
-                    if (videocursor.moveToFirst()) {
-                        do {
-                            val video = GalleryVideo()
-                            video.ID = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media._ID))
-                            video.DATA = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.DATA))
-                            video.DATE_ADDED = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.DATE_ADDED))
-                            video.DATE_MODIFIED = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.DATE_MODIFIED))
-                            video.DISPLAY_NAME = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME))
-                            video.HEIGHT = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.HEIGHT))
-                            video.MIME_TYPE = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.MIME_TYPE))
-                            video.SIZE = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.SIZE))
-                            video.TITLE = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.TITLE))
-                            video.WIDTH = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.WIDTH))
-                            video.ALBUM = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.ALBUM))
-                            video.ARTIST = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.ARTIST))
-                            video.BOOKMARK = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.BOOKMARK))
-                            video.BUCKET_DISPLAY_NAME = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.BUCKET_DISPLAY_NAME))
-                            video.BUCKET_ID = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.BUCKET_ID))
-                            video.CATEGORY = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.CATEGORY))
-                            video.DATE_TAKEN = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.DATE_TAKEN))
-                            video.DESCRIPTION = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.DESCRIPTION))
-                            video.DURATION = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.DURATION))
-                            video.IS_PRIVATE = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.IS_PRIVATE))
-                            video.LANGUAGE = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.LANGUAGE))
-                            video.LATITUDE = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.LATITUDE))
-                            video.LONGITUDE = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.LONGITUDE))
-                            video.MINI_THUMB_MAGIC = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.MINI_THUMB_MAGIC))
-                            video.RESOLUTION = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.RESOLUTION))
-                            video.TAGS = videocursor.getString(videocursor.getColumnIndex(MediaStore.Video.Media.TAGS))
-                            video.ALBUM_NAME = File(video.DATA).parentFile.name
-                            videos.add(video)
-                        } while (videocursor.moveToNext())
-                    }
-                    videocursor.close()
-                }
-            }
-        } catch (e: Exception) {
-            Log.e("VIDEOS", e.toString())
-        } finally {
-            return videos
         }
     }
 
