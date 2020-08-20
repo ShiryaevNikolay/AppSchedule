@@ -7,8 +7,6 @@ class RequestCode {
         const val REQUEST_CHANGE_SCHEDULE_FRAGMENT = 2
         const val REQUEST_NOTE_ACTIVITY = 3
         const val REQUEST_CHANGE_NOTE_FRAGMENT = 4
-
-        const val APP_PREFERENCE = "preference_values"
-        const val APP_PREFERENCE_KEy = "preference_values_key"
+        const val REQUEST_PICK_IMAGES = 5
     }
 }

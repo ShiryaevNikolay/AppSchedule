@@ -1,6 +1,7 @@
 package com.example.schedule.adapters
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +9,17 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
+import com.example.gallerypicker.utils.RunOnUiThread
 import com.example.schedule.R
 import com.example.schedule.database.Note
 import kotlinx.android.synthetic.main.item_note_rv.view.*
+import org.jetbrains.anko.doAsync
 
 class NoteCalendarAdapter(
     private var listNote: ArrayList<Note>
@@ -40,6 +49,45 @@ class NoteCalendarAdapter(
             else
                 holder.itemView.card_note.background.setTint(ContextCompat.getColor(context, R.color.card_white))
         }
+
+        if (listNote[position].imagePathUri == "") {
+            holder.itemView.imageView.isVisible = false
+            holder.itemView.imageView.setImageDrawable(null)
+        } else {
+            holder.itemView.imageView.isVisible = true
+            val path = listNote[position].imagePathUri.split("$", ignoreCase = true)
+
+            doAsync {
+                RunOnUiThread(context).safely {
+                    try {
+                        val requestListener: RequestListener<Drawable> = object :
+                            RequestListener<Drawable> {
+                            override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                                holder.itemView.imageView.alpha = 0.3f
+                                holder.itemView.imageView.isEnabled = false
+                                return false
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: com.bumptech.glide.load.DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                return false
+                            }
+
+                        }
+                        Glide.with(context).load(path[0]).apply(
+                            RequestOptions().centerCrop().override(100)).transition(
+                            DrawableTransitionOptions.withCrossFade()).listener(requestListener).into(holder.itemView.imageView)
+                    } catch (e: Exception) {
+                    }
+                }
+            }
+        }
+
         holder.itemView.lesson_item_rv_note.text = itemList.lesson
         holder.itemView.lesson_item_rv_note.isVisible = holder.itemView.lesson_item_rv_note.text.toString() != ""
         holder.itemView.note_item_rv_note.text = itemList.note
@@ -67,5 +115,5 @@ class NoteCalendarAdapter(
         notifyDataSetChanged()
     }
 
-    inner class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }

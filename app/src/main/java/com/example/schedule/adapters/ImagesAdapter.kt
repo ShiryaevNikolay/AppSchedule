@@ -6,6 +6,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.GlideException
@@ -21,9 +22,9 @@ import kotlinx.android.synthetic.main.item_images.view.*
 import org.jetbrains.anko.doAsync
 
 class ImagesAdapter(
-    private var listImages: ArrayList<GalleryData>
+    private var mContext: Context
 ) : RecyclerView.Adapter<ImagesAdapter.ImagesViewHolder>() {
-    private lateinit var mContext: Context
+    private var arrayPathImage: ArrayList<String> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagesViewHolder {
         mContext = parent.context
@@ -53,7 +54,7 @@ class ImagesAdapter(
                         }
 
                     }
-                    Glide.with(mContext).load(listImages[holder.adapterPosition].photoUri).apply(
+                    Glide.with(mContext).load(arrayPathImage[holder.adapterPosition]).apply(
                         RequestOptions().centerCrop().override(100)).transition(
                         DrawableTransitionOptions.withCrossFade()).listener(requestListener).into(holder.itemView.image)
                 } catch (e: Exception) {
@@ -61,36 +62,35 @@ class ImagesAdapter(
             }
         }
 
-        if (listImages[holder.adapterPosition].isEnabled) {
-            holder.itemView.frame.alpha = 1.0f
-            holder.itemView.image.isEnabled = true
-        } else {
-            holder.itemView.frame.alpha = 0.3f
-            holder.itemView.image.isEnabled = false
-        }
-
-        if (listImages[holder.adapterPosition].mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
-            holder.itemView.durationFrame.visibility = View.VISIBLE
-            holder.itemView.durationLabel.text = DateUtil().millisToTime(listImages[holder.adapterPosition].duration.toLong())
-        } else holder.itemView.durationFrame.visibility = View.GONE
-
         holder.itemView.deleteBtn.setOnClickListener {
-            listImages.removeAt(holder.adapterPosition)
+            arrayPathImage.removeAt(holder.adapterPosition)
+            Toast.makeText(mContext, "$arrayPathImage", Toast.LENGTH_LONG).show()
             notifyItemRemoved(holder.adapterPosition)
         }
     }
 
     override fun getItemCount(): Int {
-        return listImages.size
+        return arrayPathImage.size-1
     }
 
     fun setList(listImages: ArrayList<GalleryData>) {
-        this.listImages = listImages
+        var pathUri = ""
+        for (i in listImages) {
+            pathUri += i.photoUri + "$"
+        }
+        arrayPathImage.clear()
+        arrayPathImage = ArrayList(pathUri.split("$", ignoreCase = true))
         notifyDataSetChanged()
     }
 
-    fun getList() : ArrayList<GalleryData> {
-        return listImages
+    fun getList() : ArrayList<String> {
+        return arrayPathImage
+    }
+
+    fun setArrayPath(paths: String) {
+        arrayPathImage.clear()
+        arrayPathImage = ArrayList(paths.split("$", ignoreCase = true))
+        notifyDataSetChanged()
     }
 
     class ImagesViewHolder(view: View) : RecyclerView.ViewHolder(view)

@@ -1,6 +1,7 @@
 package com.example.schedule
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -11,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -40,6 +42,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
     private var flagModeFab = false
     private lateinit var animShowFab: Animation
     private val PERMISSIONS_READ_WRITE = 123
+    private lateinit var imageAdapter: ImagesAdapter
     val REQUEST_RESULT_CODE = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,6 +76,8 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
 
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         recyclerView.setHasFixedSize(true)
+        imageAdapter = ImagesAdapter(this)
+        recyclerView.adapter = imageAdapter
 
         et_note_schedule.addTextChangedListener {
             note = it.toString()
@@ -83,12 +88,12 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         }
 
         if (intent.extras?.getInt("REQUEST_CODE") == RequestCode.REQUEST_CHANGE_NOTE_FRAGMENT) {
-            et_lesson_note.setText(intent.extras!!.getString("lesson").toString())
-            lesson = intent.extras!!.getString("lesson").toString()
-            et_note_schedule.setText(intent.extras!!.getString("note").toString())
-            note = intent.extras!!.getString("note").toString()
-            btn_deadline_note.text = intent.extras!!.getString("deadline").toString()
-            deadline = intent.extras!!.getString("deadline").toString()
+            et_lesson_note.setText(intent.getStringExtra("lesson"))
+            lesson = intent.getStringExtra("lesson")!!
+            et_note_schedule.setText(intent.getStringExtra("note"))
+            note = intent.getStringExtra("note")!!
+            btn_deadline_note.text = intent.getStringExtra("deadline")
+            deadline = intent.getStringExtra("deadline")!!
             bgColor = intent.extras!!.getInt("bgColor")
             if (bgColor != -1) {
                 if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("theme_mode", false))
@@ -101,6 +106,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
                 else
                     btn_bg_color_note.background.setTint(ContextCompat.getColor(this, R.color.card_white))
             }
+            intent.getStringExtra("pathUri")?.let { imageAdapter.setArrayPath(it) }
         }
 
         checkMandatoryItem()
@@ -111,14 +117,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         if (resultCode == REQUEST_RESULT_CODE && data != null) {
             val mediaList = data.getParcelableArrayListExtra<GalleryData>("MEDIA")
             if (mediaList != null) {
-                recyclerView.adapter = ImagesAdapter(mediaList)
-                if (mediaList.size > 0) {
-                    btn_image_note.text = this.resources.getString(R.string.btn_hint_image_note)
-                    btn_image_note.icon = ContextCompat.getDrawable(this, R.drawable.ic_add)
-                } else {
-                    btn_image_note.text = null
-                    btn_image_note.icon = null
-                }
+                imageAdapter.setList(mediaList)
                 text.text = mediaList.toString()
                 MLog.e("SELECTED MEDIA", mediaList.size.toString())
             }
@@ -138,9 +137,8 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
                 if (isReadWritePermitted()) getGalleryResults() else checkReadWritePermission()
                 val i = Intent(this@AddNoteActivity, PickerActivity::class.java)
                 i.putExtra("IMAGES_LIMIT", 10)
-                i.putExtra("VIDEOS_LIMIT", 1)
                 i.putExtra("REQUEST_RESULT_CODE", REQUEST_RESULT_CODE)
-                startActivityForResult(i, 101)
+                startActivityForResult(i, RequestCode.REQUEST_PICK_IMAGES)
             }
             R.id.fab -> {
                 if (flagModeFab) {
@@ -162,7 +160,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         val dayCurrent = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         val monthCurrent = Calendar.getInstance().get(Calendar.MONTH)
         val yearCurrent = Calendar.getInstance().get(Calendar.YEAR)
-        val dialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+        val dialog = DatePickerDialog(this, { _, year, month, dayOfMonth ->
             var fullDateFix: String = if (dayOfMonth < 10) "0$dayOfMonth, " else "$dayOfMonth, "
             when(month) {
                 0 -> fullDateFix += this.resources.getString(R.string.jan)
@@ -211,8 +209,20 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         data.putExtra("lesson", lesson)
         data.putExtra("deadline", deadline)
         data.putExtra("bgColor", bgColor)
+        data.putExtra("pathUri", getPathImagesToString())
         setResult(Activity.RESULT_OK, data)
         finish()
+    }
+
+    private fun getPathImagesToString() : String {
+        val listItems = imageAdapter.getList()
+        var pathUri = ""
+        for (i in listItems) {
+            if (i != "") {
+                pathUri += "$i$"
+            }
+        }
+        return pathUri
     }
 
     override fun onClickPositiveBtn(position: Int) {
@@ -231,6 +241,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
             btn_bg_color_note.background.setTint(this.resources.getIntArray(R.array.rainbow)[bgColor])
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getGalleryResults() {
         val images = GalleryPicker(this).getImages()
         text.text = "IMAGES COUNT: ${images.size}"

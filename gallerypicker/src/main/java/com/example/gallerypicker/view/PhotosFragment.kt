@@ -57,7 +57,7 @@ class PhotosFragment : Fragment(), ImagePickerContract {
             if (isReadWritePermitted()) initGalleryViews() else checkReadWritePermission()
         }
 
-        if (activity != null) HideKeypad().hideKeyboard(activity!!)
+        if (activity != null) HideKeypad().hideKeyboard(requireActivity())
         view.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
 
         imageGrid.setPopUpTypeface(FontsManager(ctx).getTypeface(FontsConstants.MULI_SEMIBOLD))

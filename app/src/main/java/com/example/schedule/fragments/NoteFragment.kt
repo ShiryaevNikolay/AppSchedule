@@ -14,7 +14,6 @@ import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -82,7 +81,7 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
         itemAdapter = NoteAdapter(listNote, this)
         view.recyclerView.adapter = itemAdapter
         noteFragmentViewModel.getAll().observe(viewLifecycleOwner,
-            Observer { t ->
+            { t ->
                 if (t != null) {
                     listNote = ArrayList(t)
                     itemAdapter.setList(listNote)
@@ -121,7 +120,8 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
                             lesson = data.getStringExtra("lesson")!!,
                             deadline = data.getStringExtra("deadline")!!,
                             checkbox = false,
-                            color = it
+                            color = it,
+                            imagePathUri = data.getStringExtra("pathUri")!!
                         )
                     }
                     if (note != null) {
@@ -135,7 +135,8 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
                             lesson = data.getStringExtra("lesson")!!,
                             deadline = data.getStringExtra("deadline")!!,
                             checkbox = false,
-                            color = data.extras!!.getInt("bgColor")
+                            color = data.extras!!.getInt("bgColor"),
+                            imagePathUri = data.getStringExtra("pathUri")!!
                         )
                     }
                     if (note != null) {
@@ -232,6 +233,7 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
         intent.putExtra("note", note.note)
         intent.putExtra("deadline", note.deadline)
         intent.putExtra("bgColor", note.color)
+        intent.putExtra("pathUri", note.imagePathUri)
         startActivityForResult(intent, RequestCode.REQUEST_CHANGE_NOTE_FRAGMENT)
     }
 
