@@ -36,7 +36,7 @@ class NoteRepository {
     }
 
     @SuppressLint("StaticFieldLeak")
-    inner class InsertNoteAsyncTask(private var noteDao: NoteDao) : AsyncTask<Note, Void, Void>() {
+    class InsertNoteAsyncTask(private var noteDao: NoteDao) : AsyncTask<Note, Void, Void>() {
         override fun doInBackground(vararg params: Note?): Void? {
             params[0]?.let { noteDao.insert(it) }
             return null
@@ -44,7 +44,7 @@ class NoteRepository {
     }
 
     @SuppressLint("StaticFieldLeak")
-    inner class UpdateNoteAsyncTask(private var noteDao: NoteDao) : AsyncTask<Note, Void, Void>() {
+    class UpdateNoteAsyncTask(private var noteDao: NoteDao) : AsyncTask<Note, Void, Void>() {
         override fun doInBackground(vararg params: Note?): Void? {
             params[0]?.let { noteDao.update(it) }
             return null
@@ -52,7 +52,7 @@ class NoteRepository {
     }
 
     @SuppressLint("StaticFieldLeak")
-    inner class DeleteNoteAsyncTask(private val noteDao: NoteDao) : AsyncTask<Note, Void, Void>() {
+    class DeleteNoteAsyncTask(private val noteDao: NoteDao) : AsyncTask<Note, Void, Void>() {
         override fun doInBackground(vararg params: Note?): Void? {
             params[0]?.let { noteDao.delete(it) }
             return null

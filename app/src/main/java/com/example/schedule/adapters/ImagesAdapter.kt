@@ -2,7 +2,6 @@ package com.example.schedule.adapters
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.example.gallerypicker.model.GalleryData
-import com.example.gallerypicker.utils.DateUtil
 import com.example.gallerypicker.utils.RunOnUiThread
 import com.example.schedule.R
 import kotlinx.android.synthetic.main.item_images.view.*
@@ -28,7 +26,13 @@ class ImagesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagesViewHolder {
         mContext = parent.context
-        return ImagesViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_images, parent, false))
+        return ImagesViewHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.item_images,
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ImagesViewHolder, position: Int) {
@@ -37,7 +41,12 @@ class ImagesAdapter(
                 try {
                     val requestListener: RequestListener<Drawable> = object :
                         RequestListener<Drawable> {
-                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
                             holder.itemView.image.alpha = 0.3f
                             holder.itemView.image.isEnabled = false
                             return false
@@ -55,8 +64,10 @@ class ImagesAdapter(
 
                     }
                     Glide.with(mContext).load(arrayPathImage[holder.adapterPosition]).apply(
-                        RequestOptions().centerCrop().override(100)).transition(
-                        DrawableTransitionOptions.withCrossFade()).listener(requestListener).into(holder.itemView.image)
+                        RequestOptions().centerCrop().override(100)
+                    ).transition(
+                        DrawableTransitionOptions.withCrossFade()
+                    ).listener(requestListener).into(holder.itemView.image)
                 } catch (e: Exception) {
                 }
             }
@@ -64,7 +75,6 @@ class ImagesAdapter(
 
         holder.itemView.deleteBtn.setOnClickListener {
             arrayPathImage.removeAt(holder.adapterPosition)
-            Toast.makeText(mContext, "$arrayPathImage", Toast.LENGTH_LONG).show()
             notifyItemRemoved(holder.adapterPosition)
         }
     }
