@@ -2,13 +2,13 @@ package com.example.schedule.fragments
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ContentUris
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -20,7 +20,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -29,7 +28,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.gallerypicker.utils.RunOnUiThread
 import com.example.schedule.AddNoteActivity
 import com.example.schedule.NoteActivity
 import com.example.schedule.R
@@ -45,9 +43,7 @@ import com.example.schedule.util.RequestCode
 import com.example.schedule.viewmodels.NoteFragmentViewModel
 import kotlinx.android.synthetic.main.activity_note.*
 import kotlinx.android.synthetic.main.fr_note_activity.view.*
-import org.jetbrains.anko.doAsync
 import java.io.*
-import java.lang.NullPointerException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -317,40 +313,37 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
     private fun saveImage(pathUti: String) {
         val arrayPath = ArrayList(pathUti.split("$", ignoreCase = true))
         arrayPath.removeAt(arrayPath.size - 1)
-        for (i in 0 until arrayPath.size) {
-            galleryAddPic(arrayPath[i])
+        Toast.makeText(context, "$arrayPath", Toast.LENGTH_LONG).show()
+        for (i in arrayPath) {
+            AddPictureToStorage().execute(i)
         }
     }
 
     private fun galleryAddPic(pickFilePath: String) {
-        doAsync {
-            RunOnUiThread(context).safely {
-                val f = File(pickFilePath)
-                val contentUri = Uri.fromFile(f)
-                val file = File(
-                    "${context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)}", "PICTURE_${SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())}.jpg"
-                )
-                try {
-                    val out = FileOutputStream(file)
-                    val bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, contentUri)
-                    val ei = ExifInterface(pickFilePath)
-                    val rotatedBitmap: Bitmap? = when (ei.getAttributeInt(
-                        ExifInterface.TAG_ORIENTATION,
-                        ExifInterface.ORIENTATION_UNDEFINED
-                    )) {
-                        ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(bitmap, 90f)
-                        ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(bitmap, 180f)
-                        ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(bitmap, 270f)
-                        ExifInterface.ORIENTATION_NORMAL -> bitmap
-                        else -> null
-                    }
-                    rotatedBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, out)
-                    out.flush()
-                    out.close()
-                } catch (e: Exception) {
-                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
-                }
+        val f = File(pickFilePath)
+        val contentUri = Uri.fromFile(f)
+        val file = File(
+            "${context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)}", "PICTURE_${Regex("\\S+\\.").find(f.name)?.value}jpg"
+        )
+        try {
+            val out = FileOutputStream(file)
+            val bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, contentUri)
+            val ei = ExifInterface(pickFilePath)
+            val rotatedBitmap: Bitmap? = when (ei.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED
+            )) {
+                ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(bitmap, 90f)
+                ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(bitmap, 180f)
+                ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(bitmap, 270f)
+                ExifInterface.ORIENTATION_NORMAL -> bitmap
+                else -> bitmap
             }
+            rotatedBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, out)
+            out.flush()
+            out.close()
+        } catch (e: Exception) {
+            Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -358,5 +351,13 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
         val matrix = Matrix()
         matrix.postRotate(angle)
         return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    inner class AddPictureToStorage() : AsyncTask<String, Void, Void>() {
+        override fun doInBackground(vararg p0: String?): Void? {
+            p0[0]?.let { galleryAddPic(it) }
+            return null
+        }
     }
 }
