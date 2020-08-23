@@ -44,9 +44,6 @@ import com.example.schedule.viewmodels.NoteFragmentViewModel
 import kotlinx.android.synthetic.main.activity_note.*
 import kotlinx.android.synthetic.main.fr_note_activity.view.*
 import java.io.*
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickListener, DialogMenuListener, OnClickItemNoteListener, ShowOrHideFab, DialogRemoveListener {
 
@@ -61,6 +58,8 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
     private lateinit var recyclerView: RecyclerView
     private lateinit var animShowFab: Animation
     private lateinit var showOrHideFab: ShowOrHideFab
+    private var newImagePaths = ""
+    private var copyNote: Note? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -132,8 +131,8 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
         if (resultCode == Activity.RESULT_OK) {
             val note: Note?
             if (data != null) {
-                saveImage(data.getStringExtra("pathUri")!!)
                 if (requestCode == RequestCode.REQUEST_NOTE_ACTIVITY) {
+                    saveImage(data.getStringExtra("pathUri")!!, requestCode)
                     note = data.extras?.getInt("bgColor")?.let {
                         Note(
                             note = data.getStringExtra("note")!!,
@@ -145,9 +144,11 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
                         )
                     }
                     if (note != null) {
+                        copyNote = note
                         noteFragmentViewModel.insert(note)
                     }
                 } else {
+                    saveImage(data.getStringExtra("pathUri")!!, requestCode)
                     note = data.extras?.getLong("itemId")?.let {
                         Note(
                             id = it,
@@ -160,6 +161,7 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
                         )
                     }
                     if (note != null) {
+                        copyNote = note
                         noteFragmentViewModel.update(note)
                     }
                 }
@@ -215,6 +217,7 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
 
     override fun onClickNegativeBtn(position: Int) {
         for (i in listNoteRemove) {
+            deleteImages(i.imagePathUri)
             noteFragmentViewModel.delete(i)
         }
         listNoteRemove.clear()
@@ -310,21 +313,23 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
         (activity as NoteActivity).fab.imageMatrix = matrix
     }
 
-    private fun saveImage(pathUti: String) {
-        val arrayPath = ArrayList(pathUti.split("$", ignoreCase = true))
-        arrayPath.removeAt(arrayPath.size - 1)
-        Toast.makeText(context, "$arrayPath", Toast.LENGTH_LONG).show()
-        for (i in arrayPath) {
-            AddPictureToStorage().execute(i)
-        }
+    private fun deleteImages(imagePathDelete: String) {
+        DeletePicturesFromStorage().execute(imagePathDelete)
     }
 
-    private fun galleryAddPic(pickFilePath: String) {
+    private fun saveImage(pathUti: String, requestCode: Int) {
+        val arrayPath = ArrayList(pathUti.split("$", ignoreCase = true))
+        arrayPath.removeAt(arrayPath.size - 1)
+        AddPictureToStorage(requestCode).execute(arrayPath)
+    }
+
+    private fun galleryAddPic(pickFilePath: String, requestCode: Int) {
         val f = File(pickFilePath)
         val contentUri = Uri.fromFile(f)
         val file = File(
-            "${context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)}", "PICTURE_${Regex("\\S+\\.").find(f.name)?.value}jpg"
+            "${context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)}", "PICTURE_${copyNote?.id}_${Regex("\\S+\\.").find(f.name)?.value}jpg"
         )
+        newImagePaths += "${file.absolutePath}$"
         try {
             val out = FileOutputStream(file)
             val bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, contentUri)
@@ -354,9 +359,27 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
     }
 
     @SuppressLint("StaticFieldLeak")
-    inner class AddPictureToStorage() : AsyncTask<String, Void, Void>() {
+    inner class AddPictureToStorage(private val requestCode: Int) : AsyncTask<ArrayList<String>, Void, Void>() {
+        override fun doInBackground(vararg p0: ArrayList<String>?): Void? {
+            newImagePaths = ""
+            for (i in p0[0]!!) {
+                galleryAddPic(i, requestCode)
+            }
+            copyNote?.imagePathUri = newImagePaths
+            if (copyNote != null) {
+                noteFragmentViewModel.update(copyNote!!)
+            }
+            return null
+        }
+    }
+
+    class DeletePicturesFromStorage() : AsyncTask<String, Void, Void>() {
         override fun doInBackground(vararg p0: String?): Void? {
-            p0[0]?.let { galleryAddPic(it) }
+            val arrayPath = ArrayList(p0[0]!!.split("$"))
+            arrayPath.removeAt(arrayPath.size-1)
+            for (path in arrayPath) {
+                File(path).delete()
+            }
             return null
         }
     }

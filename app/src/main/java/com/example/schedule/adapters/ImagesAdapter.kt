@@ -18,6 +18,7 @@ import com.example.gallerypicker.utils.RunOnUiThread
 import com.example.schedule.R
 import kotlinx.android.synthetic.main.item_images.view.*
 import org.jetbrains.anko.doAsync
+import java.io.File
 
 class ImagesAdapter(
     private var mContext: Context
@@ -74,6 +75,7 @@ class ImagesAdapter(
         }
 
         holder.itemView.deleteBtn.setOnClickListener {
+            File(arrayPathImage[holder.adapterPosition]).delete()
             arrayPathImage.removeAt(holder.adapterPosition)
             notifyItemRemoved(holder.adapterPosition)
         }
