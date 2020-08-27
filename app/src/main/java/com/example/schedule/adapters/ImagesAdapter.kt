@@ -75,7 +75,6 @@ class ImagesAdapter(
         }
 
         holder.itemView.deleteBtn.setOnClickListener {
-            File(arrayPathImage[holder.adapterPosition]).delete()
             arrayPathImage.removeAt(holder.adapterPosition)
             notifyItemRemoved(holder.adapterPosition)
         }

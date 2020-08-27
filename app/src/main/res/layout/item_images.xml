@@ -34,7 +34,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:layout_margin="@dimen/_3sdp"
-                android:src="@drawable/ic_close_circle" />
+                android:src="@drawable/ic_close_circle"
+                android:elevation="8dp"/>
 
             <FrameLayout
                 android:id="@+id/disablestate"

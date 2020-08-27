@@ -118,7 +118,6 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
             val mediaList = data.getParcelableArrayListExtra<GalleryData>("MEDIA")
             if (mediaList != null) {
                 imageAdapter.setList(mediaList)
-                text.text = mediaList.toString()
                 MLog.e("SELECTED MEDIA", mediaList.size.toString())
             }
         }
@@ -244,7 +243,6 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
     @SuppressLint("SetTextI18n")
     private fun getGalleryResults() {
         val images = GalleryPicker(this).getImages()
-        text.text = "IMAGES COUNT: ${images.size}"
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
