@@ -1,17 +1,12 @@
 package com.example.schedule.fragments
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
 import android.graphics.Matrix
-import android.media.ExifInterface
-import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -35,17 +30,17 @@ import com.example.schedule.adapters.NoteAdapter
 import com.example.schedule.database.Note
 import com.example.schedule.dialogs.CustomDialog
 import com.example.schedule.dialogs.CustomDialogMenuStyleNote
-import com.example.schedule.interfaces.DialogMenuListener
-import com.example.schedule.interfaces.DialogRemoveListener
-import com.example.schedule.interfaces.OnClickItemNoteListener
-import com.example.schedule.interfaces.ShowOrHideFab
+import com.example.schedule.interfaces.*
+import com.example.schedule.services.CopyPicturesToAppStorageService
 import com.example.schedule.util.RequestCode
+import com.example.schedule.util.ServiceResultReceiver
 import com.example.schedule.viewmodels.NoteFragmentViewModel
 import kotlinx.android.synthetic.main.activity_note.*
+import kotlinx.android.synthetic.main.fr_note_activity.*
 import kotlinx.android.synthetic.main.fr_note_activity.view.*
 import java.io.*
 
-class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickListener, DialogMenuListener, OnClickItemNoteListener, ShowOrHideFab, DialogRemoveListener {
+class NoteFragment : Fragment(), Receiver, View.OnClickListener, MenuItem.OnMenuItemClickListener, DialogMenuListener, OnClickItemNoteListener, ShowOrHideFab, DialogRemoveListener {
 
     private var listNote: ArrayList<Note> = ArrayList()
     private var listNoteRemove: ArrayList<Note> = ArrayList()
@@ -58,8 +53,7 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
     private lateinit var recyclerView: RecyclerView
     private lateinit var animShowFab: Animation
     private lateinit var showOrHideFab: ShowOrHideFab
-    private var newImagePaths = ""
-    private var copyNote: Note? = null
+    private lateinit var mServiceResultReceiver: ServiceResultReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +70,10 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fr_note_activity, container, false)
+
+        mServiceResultReceiver = ServiceResultReceiver(Handler())
+        mServiceResultReceiver.setReceiver(this)
+
         recyclerView = view.recyclerView
         bgColorFab = (activity as NoteActivity).fab.backgroundTintList!!.defaultColor
         (activity as NoteActivity).toolbar.menu.getItem(1).setOnMenuItemClickListener(this)
@@ -129,41 +127,13 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            val note: Note?
             if (data != null) {
-                if (requestCode == RequestCode.REQUEST_NOTE_ACTIVITY) {
-                    saveImage(data.getStringExtra("pathUri")!!, requestCode)
-                    note = data.extras?.getInt("bgColor")?.let {
-                        Note(
-                            note = data.getStringExtra("note")!!,
-                            lesson = data.getStringExtra("lesson")!!,
-                            deadline = data.getStringExtra("deadline")!!,
-                            checkbox = false,
-                            color = it,
-                            imagePathUri = data.getStringExtra("pathUri")!!
-                        )
-                    }
-                    if (note != null) {
-                        copyNote = note
-                        noteFragmentViewModel.insert(note)
-                    }
+                progressBar.isVisible = true
+                data.putExtra("requestCode", requestCode)
+                if (data.getStringExtra("pathUri") != "") {
+                    context?.let { CopyPicturesToAppStorageService.enqueueWork(it, data, mServiceResultReceiver) }
                 } else {
-                    saveImage(data.getStringExtra("pathUri")!!, requestCode)
-                    note = data.extras?.getLong("itemId")?.let {
-                        Note(
-                            id = it,
-                            note = data.getStringExtra("note")!!,
-                            lesson = data.getStringExtra("lesson")!!,
-                            deadline = data.getStringExtra("deadline")!!,
-                            checkbox = false,
-                            color = data.extras!!.getInt("bgColor"),
-                            imagePathUri = data.getStringExtra("pathUri")!!
-                        )
-                    }
-                    if (note != null) {
-                        copyNote = note
-                        noteFragmentViewModel.update(note)
-                    }
+                    addNoteToDatabase(data)
                 }
             }
         }
@@ -317,63 +287,69 @@ class NoteFragment : Fragment(), View.OnClickListener, MenuItem.OnMenuItemClickL
         DeletePicturesFromStorage().execute(imagePathDelete)
     }
 
-    private fun saveImage(pathUti: String, requestCode: Int) {
-        val arrayPath = ArrayList(pathUti.split("$", ignoreCase = true))
-        arrayPath.removeAt(arrayPath.size - 1)
-        AddPictureToStorage(requestCode).execute(arrayPath)
-    }
-
-    private fun galleryAddPic(pickFilePath: String, requestCode: Int) {
-        val f = File(pickFilePath)
-        val contentUri = Uri.fromFile(f)
-        val file = File(
-            "${context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)}", "PICTURE_${copyNote?.id}_${Regex("\\S+\\.").find(f.name)?.value}jpg"
-        )
-        newImagePaths += "${file.absolutePath}$"
-        try {
-            val out = FileOutputStream(file)
-            val bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, contentUri)
-            val ei = ExifInterface(pickFilePath)
-            val rotatedBitmap: Bitmap? = when (ei.getAttributeInt(
-                ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_UNDEFINED
-            )) {
-                ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(bitmap, 90f)
-                ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(bitmap, 180f)
-                ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(bitmap, 270f)
-                ExifInterface.ORIENTATION_NORMAL -> bitmap
-                else -> bitmap
+    override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
+        when(resultCode) {
+            CopyPicturesToAppStorageService.SHOW_RESULT -> {
+                val note: Note?
+                if (resultData.getInt("requestCode") == RequestCode.REQUEST_NOTE_ACTIVITY) {
+                    note = Note(
+                        note = resultData.getString("note")!!,
+                        lesson = resultData.getString("lesson")!!,
+                        deadline = resultData.getString("deadline")!!,
+                        checkbox = false,
+                        color = resultData.getInt("bgColor"),
+                        imagePathUri = resultData.getString("pathUri")!!
+                    )
+                    noteFragmentViewModel.insert(note)
+                } else {
+                    note = Note(
+                        id = resultData.getLong("itemId"),
+                        note = resultData.getString("note")!!,
+                        lesson = resultData.getString("lesson")!!,
+                        deadline = resultData.getString("deadline")!!,
+                        checkbox = false,
+                        color = resultData.getInt("bgColor"),
+                        imagePathUri = resultData.getString("pathUri")!!
+                    )
+                    noteFragmentViewModel.update(note)
+                }
+                progressBar.isVisible = false
             }
-            rotatedBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, out)
-            out.flush()
-            out.close()
-        } catch (e: Exception) {
-            Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
         }
     }
 
-    private fun rotateImage(source: Bitmap, angle: Float): Bitmap {
-        val matrix = Matrix()
-        matrix.postRotate(angle)
-        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    inner class AddPictureToStorage(private val requestCode: Int) : AsyncTask<ArrayList<String>, Void, Void>() {
-        override fun doInBackground(vararg p0: ArrayList<String>?): Void? {
-            newImagePaths = ""
-            for (i in p0[0]!!) {
-                galleryAddPic(i, requestCode)
+    private fun addNoteToDatabase(data: Intent) {
+        val note: Note?
+        if (data.extras?.getInt("requestCode") == RequestCode.REQUEST_NOTE_ACTIVITY) {
+            note = Note(
+                note = data.getStringExtra("note")!!,
+                lesson = data.getStringExtra("lesson")!!,
+                deadline = data.getStringExtra("deadline")!!,
+                checkbox = false,
+                color = data.extras!!.getInt("bgColor"),
+                imagePathUri = data.getStringExtra("pathUri")!!
+            )
+            noteFragmentViewModel.insert(note)
+        } else {
+            note = data.extras?.getLong("itemId")?.let {
+                Note(
+                    id = it,
+                    note = data.getStringExtra("note")!!,
+                    lesson = data.getStringExtra("lesson")!!,
+                    deadline = data.getStringExtra("deadline")!!,
+                    checkbox = false,
+                    color = data.extras!!.getInt("bgColor"),
+                    imagePathUri = data.getStringExtra("pathUri")!!
+                )
             }
-            copyNote?.imagePathUri = newImagePaths
-            if (copyNote != null) {
-                noteFragmentViewModel.update(copyNote!!)
+            if (note != null) {
+                noteFragmentViewModel.update(note)
             }
-            return null
         }
+        progressBar.isVisible = false
     }
 
-    class DeletePicturesFromStorage() : AsyncTask<String, Void, Void>() {
+    class DeletePicturesFromStorage : AsyncTask<String, Void, Void>() {
         override fun doInBackground(vararg p0: String?): Void? {
             val arrayPath = ArrayList(p0[0]!!.split("$"))
             arrayPath.removeAt(arrayPath.size-1)
