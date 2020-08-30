@@ -1,26 +1,45 @@
 package com.example.schedule
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.FragmentTransaction
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.gallerypicker.model.GalleryData
+import com.example.gallerypicker.model.interactor.GalleryPicker
+import com.example.gallerypicker.utils.MLog
+import com.example.gallerypicker.view.PickerActivity
+import com.example.schedule.adapters.ImagesAdapter
 import com.example.schedule.dialogs.PickColorDialog
+import com.example.schedule.fragments.ShowPictureFragment
 import com.example.schedule.interfaces.DialogRemoveListener
+import com.example.schedule.interfaces.OnClickItemAdapterListener
 import com.example.schedule.util.RequestCode
 import kotlinx.android.synthetic.main.activity_add_note.*
 import kotlinx.android.synthetic.main.activity_add_note.fab
 import kotlinx.android.synthetic.main.activity_add_note.toolbar
+import org.jetbrains.anko.longToast
 import java.util.*
+import kotlin.collections.ArrayList
 
-class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMenuItemClickListener, DialogRemoveListener {
+class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMenuItemClickListener, DialogRemoveListener, OnClickItemAdapterListener {
 
     private var note: String = ""
     private var lesson: String = ""
@@ -28,6 +47,9 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
     private var bgColor: Int = -1
     private var flagModeFab = false
     private lateinit var animShowFab: Animation
+    private val PERMISSIONS_READ_WRITE = 123
+    private lateinit var imageAdapter: ImagesAdapter
+    val REQUEST_RESULT_CODE = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("theme_mode", false))
@@ -58,6 +80,11 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         btn_image_note.setOnClickListener(this)
         fab.setOnClickListener(this)
 
+        recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+        recyclerView.setHasFixedSize(true)
+        imageAdapter = ImagesAdapter(this)
+        recyclerView.adapter = imageAdapter
+
         et_note_schedule.addTextChangedListener {
             note = it.toString()
             checkMandatoryItem()
@@ -67,12 +94,12 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         }
 
         if (intent.extras?.getInt("REQUEST_CODE") == RequestCode.REQUEST_CHANGE_NOTE_FRAGMENT) {
-            et_lesson_note.setText(intent.extras!!.getString("lesson").toString())
-            lesson = intent.extras!!.getString("lesson").toString()
-            et_note_schedule.setText(intent.extras!!.getString("note").toString())
-            note = intent.extras!!.getString("note").toString()
-            btn_deadline_note.text = intent.extras!!.getString("deadline").toString()
-            deadline = intent.extras!!.getString("deadline").toString()
+            et_lesson_note.setText(intent.getStringExtra("lesson"))
+            lesson = intent.getStringExtra("lesson")!!
+            et_note_schedule.setText(intent.getStringExtra("note"))
+            note = intent.getStringExtra("note")!!
+            btn_deadline_note.text = intent.getStringExtra("deadline")
+            deadline = intent.getStringExtra("deadline")!!
             bgColor = intent.extras!!.getInt("bgColor")
             if (bgColor != -1) {
                 if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("theme_mode", false))
@@ -85,11 +112,24 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
                 else
                     btn_bg_color_note.background.setTint(ContextCompat.getColor(this, R.color.card_white))
             }
+            intent.getStringExtra("pathUri")?.let { imageAdapter.setArrayPath(it) }
         }
 
         checkMandatoryItem()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == REQUEST_RESULT_CODE && data != null) {
+            val mediaList = data.getParcelableArrayListExtra<GalleryData>("MEDIA")
+            if (mediaList != null) {
+                imageAdapter.setList(mediaList)
+                MLog.e("SELECTED MEDIA", mediaList.size.toString())
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onClick(v: View?) {
         when(v?.id) {
             R.id.btn_deadline_note -> {
@@ -99,7 +139,11 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
                 openColorPicker()
             }
             R.id.btn_image_note -> {
-
+                if (!isReadWritePermitted()) checkReadWritePermission()
+                val i = Intent(this@AddNoteActivity, PickerActivity::class.java)
+                i.putExtra("IMAGES_LIMIT", 10)
+                i.putExtra("REQUEST_RESULT_CODE", REQUEST_RESULT_CODE)
+                startActivityForResult(i, RequestCode.REQUEST_PICK_IMAGES)
             }
             R.id.fab -> {
                 if (flagModeFab) {
@@ -121,7 +165,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         val dayCurrent = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         val monthCurrent = Calendar.getInstance().get(Calendar.MONTH)
         val yearCurrent = Calendar.getInstance().get(Calendar.YEAR)
-        val dialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+        val dialog = DatePickerDialog(this, { _, year, month, dayOfMonth ->
             var fullDateFix: String = if (dayOfMonth < 10) "0$dayOfMonth, " else "$dayOfMonth, "
             when(month) {
                 0 -> fullDateFix += this.resources.getString(R.string.jan)
@@ -170,8 +214,20 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         data.putExtra("lesson", lesson)
         data.putExtra("deadline", deadline)
         data.putExtra("bgColor", bgColor)
+        data.putExtra("pathUri", getPathImagesToString())
         setResult(Activity.RESULT_OK, data)
         finish()
+    }
+
+    private fun getPathImagesToString() : String {
+        val listItems = imageAdapter.getList()
+        var pathUri = ""
+        for (i in listItems) {
+            if (i != "") {
+                pathUri += "$i$"
+            }
+        }
+        return pathUri
     }
 
     override fun onClickPositiveBtn(position: Int) {
@@ -188,5 +244,24 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
             btn_bg_color_note.background.setTint(this.resources.getIntArray(R.array.rainbow_dark)[bgColor])
         else
             btn_bg_color_note.background.setTint(this.resources.getIntArray(R.array.rainbow)[bgColor])
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun checkReadWritePermission(): Boolean {
+        requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), PERMISSIONS_READ_WRITE)
+        return true
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {}
+
+    private fun isReadWritePermitted(): Boolean = (checkCallingOrSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && checkCallingOrSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+
+    override fun onClickItemAdapter(position: Int, listPath: ArrayList<String>) {
+        frContainer.isVisible = true
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.frContainer, ShowPictureFragment(position, listPath, this))
+            .addToBackStack("showPhoto")
+            .commit()
     }
 }

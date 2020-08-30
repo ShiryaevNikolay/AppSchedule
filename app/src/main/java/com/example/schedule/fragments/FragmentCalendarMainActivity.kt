@@ -65,7 +65,7 @@ class FragmentCalendarMainActivity : Fragment() {
         itemAdapter = NoteCalendarAdapter(listNote)
         view.recyclerView.adapter = itemAdapter
         noteFragmentViewModel.getAll().observe(viewLifecycleOwner,
-            Observer { t ->
+            { t ->
                 if (t != null) {
                     listNote = ArrayList(t)
                     view.calendarView.removeDecorators()

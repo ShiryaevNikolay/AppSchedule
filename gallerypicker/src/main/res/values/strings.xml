@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_done">DONE</string>
+    <string name="title_all_photos">All Photos</string>
+    <string name="title_all_videos">All Videos</string>
+    <string name="info">You haven’t published any posts yet. Start creating awesome content.</string>
+    <string name="btn_text">Allow Access</string>
+    <string name="warning">Uh oh!</string>
+</resources>

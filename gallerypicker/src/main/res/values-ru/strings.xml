@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_done">Выбрать</string>
+    <string name="title_all_photos">Все фотографии</string>
+    <string name="title_all_videos">Все видео</string>
+    <string name="info">Вы не можите выбрать ни одной фотографии или видео.</string>
+    <string name="btn_text">Разрешить доступ</string>
+    <string name="warning">Ой ой!</string>
+</resources>

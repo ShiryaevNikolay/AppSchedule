@@ -11,5 +11,6 @@ class Note(
     var lesson: String,
     var deadline: String,
     var checkbox: Boolean,
-    var color: Int
+    var color: Int,
+    var imagePathUri: String
 )

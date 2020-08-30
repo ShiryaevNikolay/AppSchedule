@@ -1,2 +1,3 @@
+include ':gallerypicker'
 rootProject.name='Schedule'
 include ':app'

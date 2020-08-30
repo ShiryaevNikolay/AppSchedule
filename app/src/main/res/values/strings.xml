@@ -117,4 +117,7 @@
     <string name="exam">Exam</string>
     <string name="test">Test</string>
     <string name="test_with_an_assessment">Test with an assessment</string>
+    <string name="note_image">note image</string>
+
+    <string name="warning_load_image">Failed to upload photo</string>
 </resources>
