@@ -46,7 +46,7 @@ class ShowPictureAdapter(
                 if (rotateBitmap != null) {
                     holder.itemView.photoView.setImage(ImageSource.bitmap(rotateBitmap))
                 } else {
-                    Toast.makeText(mContext, "", Toast.LENGTH_LONG).show()
+                    Toast.makeText(mContext, mContext.resources.getString(R.string.warning_load_image), Toast.LENGTH_LONG).show()
                 }
                 holder.itemView.progressBar.isVisible = false
             }
