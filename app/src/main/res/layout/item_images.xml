@@ -29,20 +29,12 @@
 
             <ImageView
                 android:id="@+id/deleteBtn"
-                android:layout_width="@dimen/_26sdp"
-                android:layout_height="@dimen/_26sdp"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:layout_margin="@dimen/_3sdp"
-                android:src="@drawable/ic_close_circle"
-                android:elevation="8dp"/>
-
-            <FrameLayout
-                android:id="@+id/disablestate"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#000000"
-                android:visibility="invisible" />
+                android:src="@drawable/ic_close_circle" />
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 </com.example.schedule.util.SquareHeightLayout>

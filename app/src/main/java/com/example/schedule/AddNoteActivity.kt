@@ -16,7 +16,9 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.FragmentTransaction
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,14 +28,18 @@ import com.example.gallerypicker.utils.MLog
 import com.example.gallerypicker.view.PickerActivity
 import com.example.schedule.adapters.ImagesAdapter
 import com.example.schedule.dialogs.PickColorDialog
+import com.example.schedule.fragments.ShowPictureFragment
 import com.example.schedule.interfaces.DialogRemoveListener
+import com.example.schedule.interfaces.OnClickItemAdapterListener
 import com.example.schedule.util.RequestCode
 import kotlinx.android.synthetic.main.activity_add_note.*
 import kotlinx.android.synthetic.main.activity_add_note.fab
 import kotlinx.android.synthetic.main.activity_add_note.toolbar
+import org.jetbrains.anko.longToast
 import java.util.*
+import kotlin.collections.ArrayList
 
-class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMenuItemClickListener, DialogRemoveListener {
+class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMenuItemClickListener, DialogRemoveListener, OnClickItemAdapterListener {
 
     private var note: String = ""
     private var lesson: String = ""
@@ -133,7 +139,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
                 openColorPicker()
             }
             R.id.btn_image_note -> {
-                if (isReadWritePermitted()) getGalleryResults() else checkReadWritePermission()
+                if (!isReadWritePermitted()) checkReadWritePermission()
                 val i = Intent(this@AddNoteActivity, PickerActivity::class.java)
                 i.putExtra("IMAGES_LIMIT", 10)
                 i.putExtra("REQUEST_RESULT_CODE", REQUEST_RESULT_CODE)
@@ -240,22 +246,22 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
             btn_bg_color_note.background.setTint(this.resources.getIntArray(R.array.rainbow)[bgColor])
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun getGalleryResults() {
-        val images = GalleryPicker(this).getImages()
-    }
-
     @RequiresApi(Build.VERSION_CODES.M)
     fun checkReadWritePermission(): Boolean {
         requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), PERMISSIONS_READ_WRITE)
         return true
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            PERMISSIONS_READ_WRITE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) getGalleryResults()
-        }
-    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {}
 
     private fun isReadWritePermitted(): Boolean = (checkCallingOrSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && checkCallingOrSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+
+    override fun onClickItemAdapter(position: Int, listPath: ArrayList<String>) {
+        frContainer.isVisible = true
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.frContainer, ShowPictureFragment(position, listPath, this))
+            .addToBackStack("showPhoto")
+            .commit()
+    }
 }

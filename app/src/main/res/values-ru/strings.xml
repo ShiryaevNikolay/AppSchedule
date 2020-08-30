@@ -120,4 +120,6 @@
     <string name="test_with_an_assessment">Зачёт с оценкой</string>
 
     <string name="note_image">Картинка в заметке</string>
+
+    <string name="warning_load_image">Не удалось загрузить фото</string>
 </resources>

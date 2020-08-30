@@ -16,6 +16,7 @@ import com.bumptech.glide.request.target.Target
 import com.example.gallerypicker.model.GalleryData
 import com.example.gallerypicker.utils.RunOnUiThread
 import com.example.schedule.R
+import com.example.schedule.interfaces.OnClickItemAdapterListener
 import kotlinx.android.synthetic.main.item_images.view.*
 import org.jetbrains.anko.doAsync
 import java.io.File
@@ -24,6 +25,7 @@ class ImagesAdapter(
     private var mContext: Context
 ) : RecyclerView.Adapter<ImagesAdapter.ImagesViewHolder>() {
     private var arrayPathImage: ArrayList<String> = ArrayList()
+    private val clickItemListener: OnClickItemAdapterListener = mContext as OnClickItemAdapterListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagesViewHolder {
         mContext = parent.context
@@ -78,11 +80,13 @@ class ImagesAdapter(
             arrayPathImage.removeAt(holder.adapterPosition)
             notifyItemRemoved(holder.adapterPosition)
         }
+
+        holder.itemView.image.setOnClickListener {
+            clickItemListener.onClickItemAdapter(holder.adapterPosition, arrayPathImage)
+        }
     }
 
-    override fun getItemCount(): Int {
-        return arrayPathImage.size-1
-    }
+    override fun getItemCount(): Int = arrayPathImage.size
 
     fun setList(listImages: ArrayList<GalleryData>) {
         var pathUri = ""
@@ -91,16 +95,16 @@ class ImagesAdapter(
         }
         arrayPathImage.clear()
         arrayPathImage = ArrayList(pathUri.split("$", ignoreCase = true))
+        arrayPathImage.removeAt(arrayPathImage.size-1)
         notifyDataSetChanged()
     }
 
-    fun getList() : ArrayList<String> {
-        return arrayPathImage
-    }
+    fun getList() : ArrayList<String> = arrayPathImage
 
     fun setArrayPath(paths: String) {
         arrayPathImage.clear()
         arrayPathImage = ArrayList(paths.split("$", ignoreCase = true))
+        arrayPathImage.removeAt(arrayPathImage.size-1)
         notifyDataSetChanged()
     }
 
