@@ -11,11 +11,9 @@ import android.os.Environment
 import android.os.ResultReceiver
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.Toast
 import androidx.core.app.JobIntentService
 import com.example.schedule.util.RequestCode
 import com.example.schedule.util.ServiceResultReceiver
-import org.jetbrains.anko.longToast
 import java.io.File
 import java.io.FileOutputStream
 
@@ -32,7 +30,7 @@ class CopyPicturesToAppStorageService : JobIntentService() {
         }
 
         val newPathUri = try {
-            saveImage(intent.getStringExtra("pathUri")!!)
+            saveImage(intent.getStringExtra("pathUri")!!, intent.getStringExtra("originalKey")!!)
         } catch (e: Exception) {
             ""
         }
@@ -43,6 +41,7 @@ class CopyPicturesToAppStorageService : JobIntentService() {
         bundle.putString("deadline", intent.getStringExtra("deadline"))
         intent.extras?.getInt("bgColor")?.let { bundle.putInt("bgColor", it) }
         bundle.putString("pathUri", newPathUri)
+        bundle.putString("originalKey", intent.getStringExtra("originalKey"))
         if (intent.extras?.getInt("requestCode") != RequestCode.REQUEST_NOTE_ACTIVITY) {
             intent.extras?.getLong("itemId")?.let { bundle.putLong("itemId", it) }
         }
@@ -63,6 +62,7 @@ class CopyPicturesToAppStorageService : JobIntentService() {
             intent.putExtra("deadline", data.getStringExtra("deadline"))
             intent.putExtra("bgColor", data.extras?.getInt("bgColor"))
             intent.putExtra("pathUri", data.getStringExtra("pathUri"))
+            intent.putExtra("originalKey", data.getStringExtra("originalKey"))
             if (data.extras?.getInt("requestCode") != RequestCode.REQUEST_NOTE_ACTIVITY) {
                 intent.putExtra("itemId", data.extras?.getLong("itemId"))
             }
@@ -70,49 +70,57 @@ class CopyPicturesToAppStorageService : JobIntentService() {
         }
     }
 
-    private fun saveImage(pathUti: String) : String {
+    private fun saveImage(pathUti: String, originalKey: String) : String {
         val arrayPath = ArrayList(pathUti.split("$", ignoreCase = true))
         arrayPath.removeAt(arrayPath.size - 1)
         var newArrayPath = ""
         for (path in arrayPath) {
-            newArrayPath += "${galleryAddPic(path)}$"
+            newArrayPath += if (File("${getExternalFilesDir(Environment.DIRECTORY_PICTURES)}", File(path).name).exists()) {
+                "${path}$"
+            } else {
+                "${galleryAddPic(path, originalKey)}$"
+            }
         }
         return newArrayPath
     }
 
-    private fun galleryAddPic(pickFilePath: String) : String {
+    private fun galleryAddPic(pickFilePath: String, originalKey: String) : String {
         val f = File(pickFilePath)
         val contentUri = Uri.fromFile(f)
         val file = File(
-            "${getExternalFilesDir(Environment.DIRECTORY_PICTURES)}", "PICTURE_${
+            "${getExternalFilesDir(Environment.DIRECTORY_PICTURES)}", "PICTURE_${originalKey}_${
                 Regex(
                     "\\S+\\."
                 ).find(f.name)?.value
             }jpg"
         )
-        return try {
-            val out = FileOutputStream(file)
-            val bitmap = MediaStore.Images.Media.getBitmap(
-                contentResolver,
-                contentUri
-            )
-            val ei = ExifInterface(pickFilePath)
-            val rotatedBitmap: Bitmap? = when (ei.getAttributeInt(
-                ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_UNDEFINED
-            )) {
-                ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(bitmap, 90f)
-                ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(bitmap, 180f)
-                ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(bitmap, 270f)
-                ExifInterface.ORIENTATION_NORMAL -> bitmap
-                else -> bitmap
+        if (file.exists()) {
+            return file.absolutePath
+        } else {
+            return try {
+                val out = FileOutputStream(file)
+                val bitmap = MediaStore.Images.Media.getBitmap(
+                    contentResolver,
+                    contentUri
+                )
+                val ei = ExifInterface(pickFilePath)
+                val rotatedBitmap: Bitmap? = when (ei.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_UNDEFINED
+                )) {
+                    ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(bitmap, 90f)
+                    ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(bitmap, 180f)
+                    ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(bitmap, 270f)
+                    ExifInterface.ORIENTATION_NORMAL -> bitmap
+                    else -> bitmap
+                }
+                rotatedBitmap?.compress(Bitmap.CompressFormat.JPEG, 85, out)
+                out.flush()
+                out.close()
+                file.absolutePath
+            } catch (e: Exception) {
+                ""
             }
-            rotatedBitmap?.compress(Bitmap.CompressFormat.JPEG, 85, out)
-            out.flush()
-            out.close()
-            file.absolutePath
-        } catch (e: Exception) {
-            ""
         }
     }
 

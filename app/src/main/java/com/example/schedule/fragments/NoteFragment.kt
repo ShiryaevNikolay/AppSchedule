@@ -239,6 +239,7 @@ class NoteFragment : Fragment(), Receiver, View.OnClickListener, MenuItem.OnMenu
         intent.putExtra("deadline", note.deadline)
         intent.putExtra("bgColor", note.color)
         intent.putExtra("pathUri", note.imagePathUri)
+        intent.putExtra("originalKey", note.originalKey)
         startActivityForResult(intent, RequestCode.REQUEST_CHANGE_NOTE_FRAGMENT)
     }
 
@@ -296,9 +297,9 @@ class NoteFragment : Fragment(), Receiver, View.OnClickListener, MenuItem.OnMenu
                         note = resultData.getString("note")!!,
                         lesson = resultData.getString("lesson")!!,
                         deadline = resultData.getString("deadline")!!,
-                        checkbox = false,
                         color = resultData.getInt("bgColor"),
-                        imagePathUri = resultData.getString("pathUri")!!
+                        imagePathUri = resultData.getString("pathUri")!!,
+                        originalKey = resultData.getString("originalKey")!!
                     )
                     noteFragmentViewModel.insert(note)
                 } else {
@@ -307,9 +308,9 @@ class NoteFragment : Fragment(), Receiver, View.OnClickListener, MenuItem.OnMenu
                         note = resultData.getString("note")!!,
                         lesson = resultData.getString("lesson")!!,
                         deadline = resultData.getString("deadline")!!,
-                        checkbox = false,
                         color = resultData.getInt("bgColor"),
-                        imagePathUri = resultData.getString("pathUri")!!
+                        imagePathUri = resultData.getString("pathUri")!!,
+                        originalKey = resultData.getString("originalKey")!!
                     )
                     noteFragmentViewModel.update(note)
                 }
@@ -325,9 +326,9 @@ class NoteFragment : Fragment(), Receiver, View.OnClickListener, MenuItem.OnMenu
                 note = data.getStringExtra("note")!!,
                 lesson = data.getStringExtra("lesson")!!,
                 deadline = data.getStringExtra("deadline")!!,
-                checkbox = false,
                 color = data.extras!!.getInt("bgColor"),
-                imagePathUri = data.getStringExtra("pathUri")!!
+                imagePathUri = data.getStringExtra("pathUri")!!,
+                originalKey = data.getStringExtra("originalKey")!!
             )
             noteFragmentViewModel.insert(note)
         } else {
@@ -337,9 +338,9 @@ class NoteFragment : Fragment(), Receiver, View.OnClickListener, MenuItem.OnMenu
                     note = data.getStringExtra("note")!!,
                     lesson = data.getStringExtra("lesson")!!,
                     deadline = data.getStringExtra("deadline")!!,
-                    checkbox = false,
                     color = data.extras!!.getInt("bgColor"),
-                    imagePathUri = data.getStringExtra("pathUri")!!
+                    imagePathUri = data.getStringExtra("pathUri")!!,
+                    originalKey = data.getStringExtra("originalKey")!!
                 )
             }
             if (note != null) {

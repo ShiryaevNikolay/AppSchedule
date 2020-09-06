@@ -7,10 +7,11 @@ import androidx.room.PrimaryKey
 class Note(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
-    var note: String,
-    var lesson: String,
-    var deadline: String,
-    var checkbox: Boolean,
-    var color: Int,
-    var imagePathUri: String
+    var note: String = "",
+    var lesson: String = "",
+    var deadline: String = "",
+    var checkbox: Boolean = false,
+    var color: Int = 0,
+    var imagePathUri: String = "",
+    var originalKey: String = ""
 )

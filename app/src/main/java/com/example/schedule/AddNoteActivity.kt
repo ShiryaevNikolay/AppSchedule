@@ -6,24 +6,22 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.FragmentTransaction
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gallerypicker.model.GalleryData
-import com.example.gallerypicker.model.interactor.GalleryPicker
 import com.example.gallerypicker.utils.MLog
 import com.example.gallerypicker.view.PickerActivity
 import com.example.schedule.adapters.ImagesAdapter
@@ -36,6 +34,10 @@ import kotlinx.android.synthetic.main.activity_add_note.*
 import kotlinx.android.synthetic.main.activity_add_note.fab
 import kotlinx.android.synthetic.main.activity_add_note.toolbar
 import org.jetbrains.anko.longToast
+import java.io.File
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -50,6 +52,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
     private val PERMISSIONS_READ_WRITE = 123
     private lateinit var imageAdapter: ImagesAdapter
     val REQUEST_RESULT_CODE = 101
+    private var mOriginalKey: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("theme_mode", false))
@@ -112,7 +115,9 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
                 else
                     btn_bg_color_note.background.setTint(ContextCompat.getColor(this, R.color.card_white))
             }
-            intent.getStringExtra("pathUri")?.let { imageAdapter.setArrayPath(it) }
+            mOriginalKey = intent.getStringExtra("originalKey")!!
+            longToast(mOriginalKey)
+            imageAdapter.setArrayPath(intent.getStringExtra("pathUri")!!)
         }
 
         checkMandatoryItem()
@@ -122,7 +127,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == REQUEST_RESULT_CODE && data != null) {
             val mediaList = data.getParcelableArrayListExtra<GalleryData>("MEDIA")
-            if (mediaList != null) {
+            if (mediaList != null && mediaList.size > 0) {
                 imageAdapter.setList(mediaList)
                 MLog.e("SELECTED MEDIA", mediaList.size.toString())
             }
@@ -207,7 +212,22 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         PickColorDialog(bgColor, this).show(supportFragmentManager, "pick_color")
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun sendDataResult() {
+        val originalKey = if (intent.extras?.getInt("REQUEST_CODE") == RequestCode.REQUEST_CHANGE_NOTE_FRAGMENT) {
+            mOriginalKey
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val current = LocalDateTime.now()
+                val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy_HH:mm:ss")
+                current.format(formatter)
+            } else {
+                val date = Date()
+                val formatter = SimpleDateFormat("dd.MM.yyyy_HH:mm:ss")
+                formatter.format(date)
+            }
+        }
+        deleteImagesFromStorage(imageAdapter.getListForDelete())
         val data = Intent()
         data.putExtra("itemId", intent.extras?.getLong("itemId"))
         data.putExtra("note", note)
@@ -215,6 +235,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
         data.putExtra("deadline", deadline)
         data.putExtra("bgColor", bgColor)
         data.putExtra("pathUri", getPathImagesToString())
+        data.putExtra("originalKey", originalKey)
         setResult(Activity.RESULT_OK, data)
         finish()
     }
@@ -228,6 +249,19 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMe
             }
         }
         return pathUri
+    }
+
+    private fun deleteImagesFromStorage(list: ArrayList<String>) {
+        DeletePicturesFromStorage().execute(list)
+    }
+
+    class DeletePicturesFromStorage : AsyncTask<ArrayList<String>, Void, Void>() {
+        override fun doInBackground(vararg p0: ArrayList<String>?): Void? {
+            for (path in p0[0]!!) {
+                File(path).delete()
+            }
+            return null
+        }
     }
 
     override fun onClickPositiveBtn(position: Int) {

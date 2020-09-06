@@ -2,6 +2,7 @@ package com.example.schedule.adapters
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,7 @@ class ImagesAdapter(
     private var mContext: Context
 ) : RecyclerView.Adapter<ImagesAdapter.ImagesViewHolder>() {
     private var arrayPathImage: ArrayList<String> = ArrayList()
+    private var arrayPathImageForDelete: ArrayList<String> = ArrayList()
     private val clickItemListener: OnClickItemAdapterListener = mContext as OnClickItemAdapterListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagesViewHolder {
@@ -77,6 +79,10 @@ class ImagesAdapter(
         }
 
         holder.itemView.deleteBtn.setOnClickListener {
+            if (File("${mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES)}", File(arrayPathImage[holder.adapterPosition]).name).exists()) {
+                arrayPathImageForDelete.add("${mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES)}/${File(arrayPathImage[holder.adapterPosition]).name}")
+//                File("${mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES)}", File(arrayPathImage[holder.adapterPosition]).name).delete()
+            }
             arrayPathImage.removeAt(holder.adapterPosition)
             notifyItemRemoved(holder.adapterPosition)
         }
@@ -100,6 +106,8 @@ class ImagesAdapter(
     }
 
     fun getList() : ArrayList<String> = arrayPathImage
+
+    fun getListForDelete() : ArrayList<String> = arrayPathImageForDelete
 
     fun setArrayPath(paths: String) {
         arrayPathImage.clear()
