@@ -8,6 +8,8 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.preference.PreferenceManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
@@ -20,6 +22,9 @@ class MainActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        MobileAds.initialize(this)
+        adView.loadAd(AdRequest.Builder().build())
 
         toolbar.menu.getItem(0).setOnMenuItemClickListener(this)
         toolbar.menu.getItem(1).setOnMenuItemClickListener(this)

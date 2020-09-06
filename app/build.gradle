@@ -66,4 +66,5 @@ dependencies {
     implementation 'org.jetbrains.anko:anko-sqlite:0.10.2'
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
     implementation project(':gallerypicker')
+    implementation 'com.google.android.gms:play-services-ads:19.3.0'
 }
