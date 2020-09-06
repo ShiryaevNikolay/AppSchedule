@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/fragmentWeekMainActivity"
-        android:name="com.example.schedule.fragments.FragmentWeekMainActivity"
+        android:name="com.shiryaev.schedule.fragments.FragmentWeekMainActivity"
         android:label="fr_week_main_activity"
         tools:layout="@layout/fr_week_main_activity" >
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentCalendarMainActivity"
-        android:name="com.example.schedule.fragments.FragmentCalendarMainActivity"
+        android:name="com.shiryaev.schedule.fragments.FragmentCalendarMainActivity"
         android:label="fr_calendar_main_activity"
         tools:layout="@layout/fr_calendar_main_activity" >
         <action

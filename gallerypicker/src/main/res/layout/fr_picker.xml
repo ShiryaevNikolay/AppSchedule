@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:name="com.example.gallerypicker.view.PhotosFragment"
+            android:name="com.shiryaev.gallerypicker.view.PhotosFragment"
             tools:layout="@layout/fr_media" />
     </LinearLayout>
 

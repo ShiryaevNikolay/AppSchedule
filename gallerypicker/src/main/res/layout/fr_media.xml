@@ -61,7 +61,7 @@
         </RelativeLayout>
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <com.example.gallerypicker.utils.scroll.FastScrollRecyclerView
+    <com.shiryaev.gallerypicker.utils.scroll.FastScrollRecyclerView
         android:id="@+id/imageGrid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

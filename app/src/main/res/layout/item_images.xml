@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.schedule.util.SquareHeightLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.shiryaev.schedule.util.SquareHeightLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frame"
@@ -37,4 +37,4 @@
                 android:src="@drawable/ic_close_circle" />
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
-</com.example.schedule.util.SquareHeightLayout>
+</com.shiryaev.schedule.util.SquareHeightLayout>

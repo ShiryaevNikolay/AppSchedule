@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.schedule">
+    package="com.shiryaev.schedule">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:name=".util.App"
+        android:name="com.shiryaev.schedule.util.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,26 +16,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name=".services.CopyPicturesToAppStorageService"
+            android:name="com.shiryaev.schedule.services.CopyPicturesToAppStorageService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="false"/>
 
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.shiryaev.schedule.SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".AddNoteActivity"
-            android:parentActivityName=".NoteActivity" />
+            android:name="com.shiryaev.schedule.AddNoteActivity"
+            android:parentActivityName="com.shiryaev.schedule.NoteActivity" />
         <activity
-            android:name=".NoteActivity"
+            android:name="com.shiryaev.schedule.NoteActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".AddScheduleActivity"
-            android:parentActivityName=".ScheduleActivity" />
+            android:name="com.shiryaev.schedule.AddScheduleActivity"
+            android:parentActivityName="com.shiryaev.schedule.ScheduleActivity" />
         <activity
-            android:name=".ScheduleActivity"
+            android:name="com.shiryaev.schedule.ScheduleActivity"
             android:launchMode="singleTop" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.shiryaev.schedule.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
