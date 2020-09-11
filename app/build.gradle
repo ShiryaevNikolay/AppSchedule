@@ -8,7 +8,7 @@ android {
     buildToolsVersion '30.0.2'
 
     defaultConfig {
-        applicationId "com.schiryaev.schedule"
+        applicationId "com.shiryaev.schedule"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 3
