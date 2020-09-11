@@ -16,10 +16,11 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fr_note_activity"
-        android:name="com.example.schedule.fragments.NoteFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"/>
+        android:layout_below="@id/toolbar"
+        android:name="com.shiryaev.schedule.fragments.NoteFragment"
+        tools:layout="@layout/fr_note_activity" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
