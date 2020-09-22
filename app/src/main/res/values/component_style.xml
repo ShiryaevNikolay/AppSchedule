@@ -67,4 +67,9 @@
         <item name="backgroundTint">?android:attr/colorAccent</item>
         <item name="tint">?android:attr/windowBackground</item>
     </style>
+
+    <style name="AlertDialogLightStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="buttonBarButtonStyle">@style/ButtonLightStyle</item>
+        <item name="android:windowBackground">@drawable/dialog_style</item>
+    </style>
 </resources>

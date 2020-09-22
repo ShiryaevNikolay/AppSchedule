@@ -49,4 +49,9 @@
         <item name="backgroundTint">?android:attr/colorAccent</item>
         <item name="tint">?android:attr/windowBackground</item>
     </style>
+
+    <style name="AlertDialogDarkStyle" parent="Theme.AppCompat.Dialog">
+        <item name="buttonBarButtonStyle">@style/ButtonDarkStyle</item>
+        <item name="android:windowBackground">@drawable/dialog_style</item>
+    </style>
 </resources>

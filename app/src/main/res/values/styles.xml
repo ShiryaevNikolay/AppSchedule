@@ -21,6 +21,7 @@
         <item name="buttonBarButtonStyle">@style/ButtonLightStyle</item>
         <item name="materialCardViewStyle">@style/CardLightStyle</item>
         <item name="floatingActionButtonStyle">@style/FabLightStyle</item>
+        <item name="alertDialogTheme">@style/AlertDialogLightStyle</item>
     </style>
 
     <style name="ThemeDark" parent="Theme.MaterialComponents.NoActionBar">
@@ -40,5 +41,6 @@
         <item name="buttonBarButtonStyle">@style/ButtonDarkStyle</item>
         <item name="materialCardViewStyle">@style/CardDarkStyle</item>
         <item name="floatingActionButtonStyle">@style/FabDarkStyle</item>
+        <item name="alertDialogTheme">@style/AlertDialogDarkStyle</item>
     </style>
 </resources>

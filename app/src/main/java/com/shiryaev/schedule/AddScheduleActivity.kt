@@ -16,7 +16,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceManager
 import com.shiryaev.schedule.database.Schedule
@@ -56,6 +55,8 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
 
         if (savedInstanceState != null) {
             daySchedule = savedInstanceState.getInt("daySchedule")
+        } else {
+            daySchedule = intent.extras?.getInt("day")!!
         }
 
         scheduleViewModel = ViewModelProviders.of(this).get(ScheduleFragmentViewModel::class.java)
@@ -119,7 +120,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
         subtext_tr_select_week.isVisible = PreferenceManager.getDefaultSharedPreferences(this).getString("number_of_week", "1") != "1"
 
         scheduleViewModel.getAllListByDay(daySchedule).observe(this,
-            Observer { t ->
+            { t ->
                 if (t != null) {
                     listSchedule = ArrayList(t.sortedWith(compareBy {it.timeStart}))
                 }
@@ -238,9 +239,9 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
 
     @SuppressLint("SetTextI18n")
     private fun callTimePicker(clock: Boolean) {
-        val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        val minutes = Calendar.getInstance().get(Calendar.MINUTE)
-        val dialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+//        val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+//        val minutes = Calendar.getInstance().get(Calendar.MINUTE)
+        val dialog = TimePickerDialog(this, { _, hourOfDay, minute ->
             val hourString = if (hourOfDay < 10) "0$hourOfDay" else "$hourOfDay"
             val minuteString = if (minute < 10) "0$minute" else "$minute"
             if (checkCondition(week, ("$hourString$minuteString").toInt())) {
@@ -255,7 +256,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             } else {
                 Toast.makeText(this, this.resources.getString(R.string.there_are_lessons_at_this_time), Toast.LENGTH_SHORT).show()
             }
-        }, hour, minutes, true)
+        }, 12, 0, true)
         dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_style)
         dialog.show()
     }
